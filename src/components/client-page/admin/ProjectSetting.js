@@ -61,9 +61,32 @@ function ProjectSetting() {
     const [confirmDialog, setConfirmDialog] = useState({ open: false, message: "", onConfirm: null, });
 
     useEffect(() => {
+        getContext();
         getProjects();
 
-    }, [])
+    }, []);
+
+    const getContext = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch(`/api/admin/context`);
+
+            if (!res.ok) {
+                const error = await res.json();
+                throw new Error(error.message);
+            }
+
+            const result = await res.json();
+            setoptions(result.data.options);
+
+        } catch (error) {
+            console.error(error);
+            setAlert({ open: true, severity: "error", message: error.message });
+
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const getProjects = async () => {
         setLoading(true);
@@ -340,8 +363,8 @@ function ProjectSetting() {
                                 </TableCell>
                                 <TableCell>{row.title}</TableCell>
                                 <TableCell>{row.slug}</TableCell>
-                                <TableCell>{row.houseStyle}</TableCell>
-                                <TableCell>{row.housePlan}</TableCell>
+                                <TableCell>{options.houseStyles.find((option) => option.id === row.houseStyle)?.name}</TableCell>
+                                <TableCell>{options.housePlans.find((option) => option.id === row.housePlan)?.name}</TableCell>
                                 <TableCell>{row.area}</TableCell>
                                 <TableCell>{row.bedroom}</TableCell>
                                 <TableCell>{row.bathroom}</TableCell>
@@ -408,9 +431,10 @@ function ProjectSetting() {
                                 <Autocomplete
                                     fullWidth
                                     size="small"
-                                    options={[]}
-                                    value={formData.houseStyle}
-                                    onChange={(event, newValue) => handleChange("houseStyle", newValue)}
+                                    options={options.houseStyles}
+                                    getOptionLabel={(option) => option.name}
+                                    value={options.houseStyles.find((option) => option.id === formData.houseStyle) || null}
+                                    onChange={(event, newValue) => handleChange("houseStyle", newValue ? newValue.id : null)}
                                     renderInput={(params) => <TextField {...params} label="สไตล์" />}
                                 />
                             </Grid>
@@ -419,9 +443,10 @@ function ProjectSetting() {
                                 <Autocomplete
                                     fullWidth
                                     size="small"
-                                    options={[]}
-                                    value={formData.housePlan}
-                                    onChange={(event, newValue) => handleChange("housePlan", newValue)}
+                                    options={options.housePlans}
+                                    getOptionLabel={(option) => option.name}
+                                    value={options.housePlans.find((option) => option.id === formData.housePlan) || null}
+                                    onChange={(event, newValue) => handleChange("housePlan", newValue ? newValue.id : null)}
                                     renderInput={(params) => <TextField {...params} label="แบบบ้าน" />}
                                 />
                             </Grid>
