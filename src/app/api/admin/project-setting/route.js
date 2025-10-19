@@ -14,25 +14,28 @@ export async function POST(request) {
         }
 
         const data = await request.formData();
-        const name = data.get("name");
+        const title = data.get("title");
         const slug = data.get("slug");
+        const description = data.get("description");
         const houseStyle = data.get("houseStyle");
         const housePlan = data.get("housePlan");
-        const description = data.get("description");
         const detail = data.get("detail");
         const area = data.get("area");
+        const space = data.get("space");
         const bedroom = data.get("bedroom");
         const bathroom = data.get("bathroom");
+        const livingroom = data.get("livingroom");
+        const kitchen = data.get("kitchen");
         const parking = data.get("parking");
         const files = data.getAll("files") || [];
 
-        if (!name) {
+        if (!title) {
             return NextResponse.json({ message: "ข้อมูลไม่ครบ" }, { status: 400 });
         }
 
         const snapshot = await db
             .collection(collectionName)
-            .where("name", "==", name)
+            .where("title", "==", title)
             .get();
 
         if (!snapshot.empty) {
@@ -40,15 +43,18 @@ export async function POST(request) {
         }
 
         const docRef = await db.collection(collectionName).add({
-            name,
+            title,
             slug,
+            description,
             houseStyle,
             housePlan,
-            description,
             detail,
             area,
+            space,
             bedroom,
             bathroom,
+            livingroom,
+            kitchen,
             parking,
             images: [],
             createdAt: new Date(),

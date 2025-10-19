@@ -13,8 +13,11 @@ import {
     CardContent,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
+import StraightenIcon from "@mui/icons-material/Straighten";
 import BedIcon from "@mui/icons-material/Bed";
 import BathtubIcon from "@mui/icons-material/Bathtub";
+import WeekendIcon from "@mui/icons-material/Weekend";
+import KitchenIcon from "@mui/icons-material/Kitchen";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
 // lightbox
@@ -54,7 +57,7 @@ function ProjectDetail({ project, otherProjects }) {
 
                     <Box textAlign="center">
                         <Typography variant="h1" fontSize={{ xs: "32px", md: "40px" }} fontWeight="400" gutterBottom>
-                            {project.name}
+                            {project.title}
                         </Typography>
                         <Typography variant="subtitle1" color="textSecondary">
                             {project.description}
@@ -125,8 +128,22 @@ function ProjectDetail({ project, otherProjects }) {
                                             borderColor="divider"
                                             bgcolor="background.paper"
                                         >
-                                            < HomeIcon />
+                                            <HomeIcon />
                                             <Typography variant="body1">พื้นที่ใช้สอย {project.area} ตร.ม.</Typography>
+                                        </Box>
+                                    </Grid>
+                                    <Grid size={{ xs: 12, sm: 6 }}>
+                                        <Box
+                                            p={2}
+                                            display="flex"
+                                            alignItems="center"
+                                            gap={1}
+                                            border="1px solid"
+                                            borderColor="divider"
+                                            bgcolor="background.paper"
+                                        >
+                                            <StraightenIcon />
+                                            <Typography variant="body1">กว้างลึก {project.space} ม.</Typography>
                                         </Box>
                                     </Grid>
                                     <Grid size={{ xs: 12, sm: 6 }}>
@@ -155,6 +172,34 @@ function ProjectDetail({ project, otherProjects }) {
                                         >
                                             <BathtubIcon />
                                             <Typography variant="body1">{project.bathroom} ห้องน้ำ</Typography>
+                                        </Box>
+                                    </Grid>
+                                    <Grid size={{ xs: 12, sm: 6 }}>
+                                        <Box
+                                            p={2}
+                                            display="flex"
+                                            alignItems="center"
+                                            gap={1}
+                                            border="1px solid"
+                                            borderColor="divider"
+                                            bgcolor="background.paper"
+                                        >
+                                            <WeekendIcon />
+                                            <Typography variant="body1">{project.livingroom} ห้องนั่งเล่น</Typography>
+                                        </Box>
+                                    </Grid>
+                                    <Grid size={{ xs: 12, sm: 6 }}>
+                                        <Box
+                                            p={2}
+                                            display="flex"
+                                            alignItems="center"
+                                            gap={1}
+                                            border="1px solid"
+                                            borderColor="divider"
+                                            bgcolor="background.paper"
+                                        >
+                                            <KitchenIcon />
+                                            <Typography variant="body1">{project.kitchen} ห้องครัว</Typography>
                                         </Box>
                                     </Grid>
                                     <Grid size={{ xs: 12, sm: 6 }}>
@@ -199,7 +244,7 @@ function ProjectDetail({ project, otherProjects }) {
                                         <Box width="100%" height="180px" position="relative">
                                             <Image
                                                 src={project.images[0]}
-                                                alt={`${project.name} โดย Mepatcs`}
+                                                alt={`${project.title} โดย Mepatcs`}
                                                 fill
                                                 sizes={gridToSizes({ xs: 12, sm: 6, md: 3, lg: 2.4 }, 1400)}
                                                 style={{ objectFit: "cover" }}
@@ -219,7 +264,7 @@ function ProjectDetail({ project, otherProjects }) {
                                                     WebkitLineClamp: 1,
                                                 }}
                                             >
-                                                {project.name}
+                                                {project.title}
                                             </Typography>
                                             <Typography
                                                 variant="body2"

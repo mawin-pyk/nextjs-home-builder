@@ -37,15 +37,18 @@ function ProjectSetting() {
     });
     const [projects, setProjects] = useState([]);
     const [formData, setFormData] = useState({
-        name: "",
+        title: "",
         slug: "",
+        description: "",
         houseStyle: "",
         housePlan: "",
-        description: "",
         detail: "",
         area: "",
+        space: "",
         bedroom: "",
         bathroom: "",
+        livingroom: "",
+        kitchen: "",
         parking: "",
     });
     const [files, setFiles] = useState([]);
@@ -252,15 +255,18 @@ function ProjectSetting() {
         if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
             setFormDialog(false);
             setFormData({
-                name: "",
+                title: "",
                 slug: "",
+                description: "",
                 houseStyle: "",
                 housePlan: "",
-                description: "",
                 detail: "",
                 area: "",
+                space: "",
                 bedroom: "",
                 bathroom: "",
+                livingroom: "",
+                kitchen: "",
                 parking: "",
             });
             setFiles([]);
@@ -322,7 +328,7 @@ function ProjectSetting() {
                                     {row.images && row.images[0] ?
                                         <Image
                                             src={row.images[0]}
-                                            alt={row.name}
+                                            alt={row.title}
                                             width={100}
                                             height={75}
                                             style={{ objectFit: "cover" }}
@@ -332,7 +338,7 @@ function ProjectSetting() {
                                         "No Image"
                                     }
                                 </TableCell>
-                                <TableCell>{row.name}</TableCell>
+                                <TableCell>{row.title}</TableCell>
                                 <TableCell>{row.slug}</TableCell>
                                 <TableCell>{row.houseStyle}</TableCell>
                                 <TableCell>{row.housePlan}</TableCell>
@@ -370,8 +376,8 @@ function ProjectSetting() {
                                     fullWidth
                                     size="small"
                                     label="ชื่อผลงาน"
-                                    name="name"
-                                    value={formData.name}
+                                    name="title"
+                                    value={formData.title}
                                     onChange={(e) => handleChange(e.target.name, e.target.value)}
                                 />
                             </Grid>
@@ -380,9 +386,20 @@ function ProjectSetting() {
                                 <TextField
                                     fullWidth
                                     size="small"
-                                    label="ชื่อ URL"
+                                    label="URL"
                                     name="slug"
                                     value={formData.slug}
+                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                />
+                            </Grid>
+
+                            <Grid size={{ xs: 12 }}>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    label="คำอธิบาย"
+                                    name="description"
+                                    value={formData.description}
                                     onChange={(e) => handleChange(e.target.name, e.target.value)}
                                 />
                             </Grid>
@@ -413,18 +430,7 @@ function ProjectSetting() {
                                 <TextField
                                     fullWidth
                                     size="small"
-                                    label="รายละเอียด (Description)"
-                                    name="description"
-                                    value={formData.description}
-                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
-                                />
-                            </Grid>
-
-                            <Grid size={{ xs: 12 }}>
-                                <TextField
-                                    fullWidth
-                                    size="small"
-                                    label="รายละเอียดเพิ่มเติม (Detail)"
+                                    label="รายละเอียด"
                                     name="detail"
                                     multiline
                                     rows={4}
@@ -433,7 +439,7 @@ function ProjectSetting() {
                                 />
                             </Grid>
 
-                            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                                 <TextField
                                     fullWidth
                                     size="small"
@@ -444,7 +450,18 @@ function ProjectSetting() {
                                 />
                             </Grid>
 
-                            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    label="กว้าง x ลึก (ม.)"
+                                    name="space"
+                                    value={formData.space}
+                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                />
+                            </Grid>
+
+                            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                                 <TextField
                                     fullWidth
                                     size="small"
@@ -462,6 +479,28 @@ function ProjectSetting() {
                                     label="จำนวนห้องน้ำ"
                                     name="bathroom"
                                     value={formData.bathroom}
+                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                />
+                            </Grid>
+
+                            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    label="จำนวนห้องนั่งเล่น"
+                                    name="livingroom"
+                                    value={formData.livingroom}
+                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                />
+                            </Grid>
+
+                            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    label="จำนวนห้องครัว"
+                                    name="kitchen"
+                                    value={formData.kitchen}
                                     onChange={(e) => handleChange(e.target.name, e.target.value)}
                                 />
                             </Grid>
