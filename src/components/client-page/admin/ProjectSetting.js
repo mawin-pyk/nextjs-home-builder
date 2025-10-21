@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
+import imageCompression from "browser-image-compression";
+
 import {
     Box,
     Grid,
@@ -116,11 +118,23 @@ function ProjectSetting() {
         try {
             const fd = new FormData();
 
+            const compressedFiles = await Promise.all(
+                files.map(async (file) => {
+                    const options = {
+                        maxSizeMB: 0.25,
+                        maxWidthOrHeight: undefined,
+                        fileType: "image/webp",
+                        useWebWorker: true
+                    };
+                    return await imageCompression(file, options);
+                })
+            );
+
             Object.entries(formData).forEach(([key, value]) => {
                 fd.append(key, value);
             });
 
-            files.forEach((file) => {
+            compressedFiles.forEach((file) => {
                 fd.append(`files`, file);
             });
 
@@ -209,11 +223,29 @@ function ProjectSetting() {
         try {
             const fd = new FormData();
 
+            const compressedFiles = await Promise.all(
+                files.map(async (file) => {
+                    if (file instanceof File) {
+                        const options = {
+                            maxSizeMB: 0.25,
+                            maxWidthOrHeight: undefined,
+                            fileType: "image/webp",
+                            useWebWorker: true,
+                        };
+                        const compressed = await imageCompression(file, options);
+                        return compressed;
+
+                    } else {
+                        return file;
+                    }
+                })
+            );
+
             Object.entries(formData).forEach(([key, value]) => {
                 fd.append(key, value);
             });
 
-            files.forEach((file) => {
+            compressedFiles.forEach((file) => {
                 if (file instanceof File) {
                     fd.append("files", file);
 

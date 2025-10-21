@@ -3,8 +3,6 @@ import { db } from "@/lib/firebaseAdmin";
 import { format } from "date-fns";
 import { verifyToken } from "@/helpers/auth";
 
-export const runtime = "nodejs";
-
 const collectionName = "articles";
 
 export async function POST(request) {
