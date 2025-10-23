@@ -232,8 +232,7 @@ function ProjectSetting() {
                             fileType: "image/webp",
                             useWebWorker: true,
                         };
-                        const compressed = await imageCompression(file, options);
-                        return compressed;
+                        return await imageCompression(file, options);
 
                     } else {
                         return file;
@@ -246,7 +245,7 @@ function ProjectSetting() {
             });
 
             compressedFiles.forEach((file) => {
-                if (file instanceof File) {
+                if (file instanceof Blob) {
                     fd.append("files", file);
 
                 } else if (file.preview) {
