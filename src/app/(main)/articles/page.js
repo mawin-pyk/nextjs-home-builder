@@ -2,6 +2,21 @@ import { db } from "@/lib/firebaseAdmin";
 import { format } from "date-fns";
 import Articles from "@/components/client-page/main/Articles";
 
+export const metadata = {
+    title: "บทความ",
+    description: "ติดตามบทความดี ๆ จาก Mepatcs รวมความรู้เกี่ยวกับการสร้างบ้าน การเลือกวัสดุ เทคนิคออกแบบ และแนวทางดูแลบ้านให้สวยทนนาน",
+    keywords: [
+        "บทความสร้างบ้าน",
+        "ความรู้ก่อสร้าง",
+        "เคล็ดลับสร้างบ้าน",
+        "การออกแบบบ้าน",
+        "วัสดุก่อสร้าง",
+        "Mepatcs"
+    ],
+    canonical: "/articles",
+    robots: "index, follow",
+}
+
 const getArticles = async () => {
     try {
         const snapshot = await db.collection("articles").get();
