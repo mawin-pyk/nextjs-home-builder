@@ -12,7 +12,6 @@ import {
 import FacebookIcon from "@mui/icons-material/Facebook";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import XIcon from "@mui/icons-material/X";
 
 function Footer() {
     const year = new Date().getFullYear();
@@ -33,11 +32,11 @@ function Footer() {
             >
                 <Grid container spacing={4}>
                     <Grid size={{ xs: 12, md: 4 }}>
-                        <Typography variant="h5" fontSize="20px" fontWeight="600" gutterBottom>
+                        <Typography variant="h5" color="primary" fontSize="20px" fontWeight="600" gutterBottom>
                             บริษัท เมพัฒน์.ซีเอส จำกัด
                         </Typography>
                         <Typography variant="subtitle1" color="textSecondary">
-                            Lorem ipsum dolor sit amet consectetur adipisicing. <br /> Placeat totam nostrum earum vel enim sit?
+                            บ้านคือความฝัน และทุกความฝัน เราอยากช่วยสร้างให้เป็นจริง <br /> ด้วยความอบอุ่น เหมือนคนในบ้านเดียวกัน
                         </Typography>
                     </Grid>
                     <Grid size={{ xs: 12, md: 2 }}>
@@ -56,10 +55,10 @@ function Footer() {
                         <Typography variant="subtitle1" fontWeight="600" gutterBottom>
                             ติดต่อ
                         </Typography>
-                        <Stack spacing={0.5}>
-                            <Typography variant="body2">123 ถนนสุขุมวิท กรุงเทพฯ 10110</Typography>
-                            <Typography variant="body2">โทร: 02-123-4567</Typography>
-                            <Typography variant="body2">hello@example.com</Typography>
+                        <Stack spacing={1}>
+                            <Typography variant="body2">58/1 หมู่5 ตำบลบางรักพัฒนา <br /> อำเภอบางบัวทอง จังหวัดนนทบุรี 11110</Typography>
+                            <Typography variant="body2">ติดต่อ: 02-120-6859, 064-649-8717</Typography>
+                            <Typography variant="body2">mepatcs.co.th@gmail.com</Typography>
                         </Stack>
                     </Grid>
                     <Grid size={{ xs: 12, md: 3 }}>
@@ -67,17 +66,14 @@ function Footer() {
                             ติดตามเรา
                         </Typography>
                         <Stack direction="row" spacing={1}>
-                            <IconButton component="a" href="#" target="_blank" rel="me noopener noreferrer" size="small">
+                            <IconButton component="a" href="https://www.facebook.com/MepatCS" target="_blank" rel="me noopener noreferrer" size="small">
                                 <FacebookIcon />
                             </IconButton>
-                            <IconButton component="a" href="#" target="_blank" rel="me noopener noreferrer" size="small">
+                            <IconButton component="a" href="https://www.instagram.com/mepat.cs" target="_blank" rel="me noopener noreferrer" size="small">
                                 <InstagramIcon />
                             </IconButton>
-                            <IconButton component="a" href="#" target="_blank" rel="me noopener noreferrer" size="small">
+                            <IconButton component="a" href="https://www.youtube.com/@mepatcs" target="_blank" rel="me noopener noreferrer" size="small">
                                 <YouTubeIcon />
-                            </IconButton>
-                            <IconButton component="a" href="#" target="_blank" rel="me noopener noreferrer" size="small">
-                                <XIcon />
                             </IconButton>
                         </Stack>
                     </Grid>

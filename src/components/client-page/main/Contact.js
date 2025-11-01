@@ -12,7 +12,6 @@ import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import XIcon from "@mui/icons-material/X";
 
 import CustomBreadcrumbs from "@/components/share/CustomBreadcrumbs";
 import Footer from "@/components/layout/Footer";
@@ -46,7 +45,7 @@ function Contact() {
                             ติดต่อเรา
                         </Typography>
                         <Typography variant="subtitle1" color="textSecondary">
-                            หากต้องการข้อมูลเพิ่มเติม หรือต้องการติดต่อเรา กรุณากรอกแบบฟอร์ม
+                            ทีมงานของเราพร้อมให้คำปรึกษา และตอบคำถามทุกเรื่องเกี่ยวกับบริการ
                         </Typography>
                     </Box>
                     <Grid container spacing={4}>
@@ -54,7 +53,7 @@ function Contact() {
                             <Grid container spacing={2}>
                                 <Grid size={{ xs: 12, md: 6 }}>
                                     <Box
-                                        height="160px"
+                                        height="180px"
                                         p={2}
                                         boxSizing="border-box"
                                         display="flex"
@@ -68,13 +67,13 @@ function Contact() {
                                         <LocationOnIcon color="primary" fontSize="large" sx={{ mb: 2 }} />
                                         <Typography variant="h2" fontSize="20px" fontWeight="400" gutterBottom>ที่อยู่</Typography>
                                         <Typography variant="body2" color="textSecondary">
-                                            123 ถนนสุขุมวิท เขตวัฒนา กรุงเทพฯ 10110
+                                            58/1 หมู่5 ตำบลบางรักพัฒนา <br /> อำเภอบางบัวทอง จังหวัดนนทบุรี 11110
                                         </Typography>
                                     </Box>
                                 </Grid>
                                 <Grid size={{ xs: 12, md: 6 }}>
                                     <Box
-                                        height="160px"
+                                        height="180px"
                                         p={2}
                                         boxSizing="border-box"
                                         display="flex"
@@ -88,13 +87,13 @@ function Contact() {
                                         <PhoneIcon color="primary" fontSize="large" sx={{ mb: 2 }} />
                                         <Typography variant="h2" fontSize="20px" fontWeight="400" gutterBottom>โทรหาเรา</Typography>
                                         <Typography variant="body2" color="textSecondary">
-                                            02-123-4567
+                                            สำนักงานใหญ่: 02-120-6859 <br /> ลูกค้าสัมพันธ์: 064-649-8717 <br /> ฝ่ายจัดซื้อ: 064-649-8717
                                         </Typography>
                                     </Box>
                                 </Grid>
                                 <Grid size={{ xs: 12, md: 6 }}>
                                     <Box
-                                        height="160px"
+                                        height="180px"
                                         p={2}
                                         boxSizing="border-box"
                                         display="flex"
@@ -108,13 +107,13 @@ function Contact() {
                                         <EmailIcon color="primary" fontSize="large" sx={{ mb: 2 }} />
                                         <Typography variant="h2" fontSize="20px" fontWeight="400" gutterBottom>อีเมล</Typography>
                                         <Typography variant="body2" color="textSecondary">
-                                            hello@example.com
+                                            mepatcs.co.th@gmail.com
                                         </Typography>
                                     </Box>
                                 </Grid>
                                 <Grid size={{ xs: 12, md: 6 }}>
                                     <Box
-                                        height="160px"
+                                        height="180px"
                                         p={2}
                                         boxSizing="border-box"
                                         display="flex"
@@ -127,17 +126,14 @@ function Contact() {
                                     >
                                         <Typography variant="h2" fontSize="20px" fontWeight="400" gutterBottom>ติดตามเรา</Typography>
                                         <Stack direction="row" spacing={1} justifyContent="center">
-                                            <IconButton href="#" size="small">
+                                            <IconButton component="a" href="https://www.facebook.com/MepatCS" target="_blank" rel="me noopener noreferrer" size="small">
                                                 <FacebookIcon color="primary" />
                                             </IconButton>
-                                            <IconButton href="#" size="small">
+                                            <IconButton component="a" href="https://www.instagram.com/mepat.cs" target="_blank" rel="me noopener noreferrer" size="small">
                                                 <InstagramIcon color="primary" />
                                             </IconButton>
-                                            <IconButton href="#" size="small">
+                                            <IconButton component="a" href="https://www.youtube.com/@mepatcs" target="_blank" rel="me noopener noreferrer" size="small">
                                                 <YouTubeIcon color="primary" />
-                                            </IconButton>
-                                            <IconButton href="#" size="small">
-                                                <XIcon color="primary" />
                                             </IconButton>
                                         </Stack>
                                     </Box>
@@ -153,7 +149,7 @@ function Contact() {
                                 </Typography>
                                 <Box
                                     width="100%"
-                                    height="272px"
+                                    height="310px"
                                 >
                                     <iframe
                                         title="google-map"

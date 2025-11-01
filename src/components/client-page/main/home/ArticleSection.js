@@ -32,7 +32,7 @@ function ArticleSection({ articles }) {
                     บทความล่าสุด
                 </Typography>
                 <Typography variant="subtitle1" color="textSecondary">
-                    อัปเดตบทความล่าสุดเกี่ยวกับเทคโนโลยี การออกแบบ และการพัฒนาเว็บ
+                    บทความเกี่ยวกับบ้าน เคล็ดลับและความรู้
                 </Typography>
             </Box>
             <Grid container spacing={4} width="100%" maxWidth="1400px" m="0px auto">

@@ -30,7 +30,7 @@ function ProjectSection({ projects }) {
                     ผลงานของเรา
                 </Typography>
                 <Typography variant="subtitle1" color="textSecondary">
-                    รวมผลงานการออกแบบและก่อสร้างบ้านจากลูกค้าจริง
+                    ผลงานการก่อสร้างบ้านจริง ที่ลูกค้าไว้วางใจให้เราดูแล
                 </Typography>
             </Box>
             <Grid container spacing={4} width="100%" maxWidth="1400px" m="0px auto">
