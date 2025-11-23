@@ -23,9 +23,11 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
+    Divider
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 import FileDropZone from "@/components/share/FileDropZone";
 import Loading from "@/components/share/Loading";
@@ -42,6 +44,7 @@ function ProjectSetting() {
         title: "",
         slug: "",
         description: "",
+        keywords: [],
         houseStyle: "",
         housePlan: "",
         detail: "",
@@ -53,6 +56,7 @@ function ProjectSetting() {
         kitchen: "",
         parking: "",
     });
+    const [keyword, setKeyword] = useState("");
     const [files, setFiles] = useState([]);
     const [editId, setEditId] = useState(null);
 
@@ -131,7 +135,12 @@ function ProjectSetting() {
             );
 
             Object.entries(formData).forEach(([key, value]) => {
-                fd.append(key, value);
+                if (key === "keywords") {
+                    value.forEach((keyword) => fd.append("keywords", keyword));
+
+                } else {
+                    fd.append(key, value);
+                }
             });
 
             compressedFiles.forEach((file) => {
@@ -241,7 +250,12 @@ function ProjectSetting() {
             );
 
             Object.entries(formData).forEach(([key, value]) => {
-                fd.append(key, value);
+                if (key === "keywords") {
+                    value.forEach((keyword) => fd.append("keywords", keyword));
+
+                } else {
+                    fd.append(key, value);
+                }
             });
 
             compressedFiles.forEach((file) => {
@@ -301,6 +315,23 @@ function ProjectSetting() {
         });
     }
 
+    const handleAddKeyword = () => {
+        if (keyword.trim() !== "" && !formData.keywords.includes(keyword.trim())) {
+            setFormData({
+                ...formData,
+                keywords: [...formData.keywords, keyword.trim()]
+            });
+            setKeyword("");
+        }
+    }
+
+    const handleRemoveKeyword = (index) => {
+        setFormData({
+            ...formData,
+            keywords: formData.keywords.filter((_, i) => i !== index)
+        });
+    }
+
     const handleCloseConfirmDialog = () => {
         setConfirmDialog({ open: false, message: "", onConfirm: null });
     }
@@ -312,6 +343,7 @@ function ProjectSetting() {
                 title: "",
                 slug: "",
                 description: "",
+                keywords: [],
                 houseStyle: "",
                 housePlan: "",
                 detail: "",
@@ -456,6 +488,44 @@ function ProjectSetting() {
                                     value={formData.description}
                                     onChange={(e) => handleChange(e.target.name, e.target.value)}
                                 />
+                            </Grid>
+
+                            <Grid size={{ xs: 12 }}>
+                                <Box display="flex" justifyContent="flex-start" alignItems="center" gap={2}>
+                                    <TextField
+                                        size="small"
+                                        label="Keyword"
+                                        name="keyword"
+                                        value={keyword}
+                                        onChange={(e) => setKeyword(e.target.value)}
+                                    />
+                                    <Button variant="contained" onClick={handleAddKeyword}>เพิ่ม</Button>
+                                </Box>
+                                <Box mt={formData.keywords.length > 0 ? 2 : 0} display="flex" flexWrap="wrap" gap={2}>
+                                    {formData.keywords.map((keyword, index) => (
+                                        <Box
+                                            key={index}
+                                            py={0.5}
+                                            px={1}
+                                            position="relative"
+                                            bgcolor="divider"
+                                            borderRadius={1}
+                                        >
+                                            {keyword}
+                                            <IconButton
+                                                size="small"
+                                                sx={{ position: "absolute", top: -15, right: -15 }}
+                                                onClick={() => handleRemoveKeyword(index)}
+                                            >
+                                                <CancelIcon color="error" fontSize="small" />
+                                            </IconButton>
+                                        </Box>
+                                    ))}
+                                </Box>
+                            </Grid>
+
+                            <Grid size={{ xs: 12 }}>
+                                <Divider sx={{ my: 2 }} />
                             </Grid>
 
                             <Grid size={{ xs: 12, sm: 6 }}>

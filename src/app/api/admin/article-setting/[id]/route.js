@@ -97,20 +97,21 @@ export async function PUT(request, { params }) {
         }
 
         const data = await request.formData();
-        const name = data.get("name");
+        const title = data.get("title");
         const slug = data.get("slug");
         const description = data.get("description");
+        const keywords = data.getAll("keywords") || [];
         const content = data.get("content");
         const files = data.getAll("files") || [];
         const urls = data.getAll("urls") || [];
 
-        if (!name) {
+        if (!title) {
             return NextResponse.json({ message: "ข้อมูลไม่ครบ" }, { status: 400 });
         }
 
         const snapshot = await db
             .collection(collectionName)
-            .where("name", "==", name)
+            .where("title", "==", title)
             .get();
 
         if (!snapshot.empty) {
@@ -154,9 +155,10 @@ export async function PUT(request, { params }) {
         }
 
         const updateResult = await docRef.update({
-            name,
+            title,
             slug,
             description,
+            keywords,
             content,
             images: [...urls, ...images],
             updatedAt: new Date()

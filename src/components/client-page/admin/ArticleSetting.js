@@ -21,9 +21,11 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
+    Divider
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 import Tiptap from "@/components/share/Tiptap";
 import FileDropZone from "@/components/share/FileDropZone";
@@ -38,11 +40,13 @@ function ArticleSetting() {
     });
     const [articles, setArticles] = useState([]);
     const [formData, setFormData] = useState({
-        name: "",
+        title: "",
         slug: "",
         description: "",
+        keywords: [],
         content: "",
     });
+    const [keyword, setKeyword] = useState("");
     const [files, setFiles] = useState([]);
     const [editId, setEditId] = useState(null);
 
@@ -98,7 +102,12 @@ function ArticleSetting() {
             );
 
             Object.entries(formData).forEach(([key, value]) => {
-                fd.append(key, value);
+                if (key === "keywords") {
+                    value.forEach((keyword) => fd.append("keywords", keyword));
+
+                } else {
+                    fd.append(key, value);
+                }
             });
 
             compressedFiles.forEach((file) => {
@@ -268,6 +277,23 @@ function ArticleSetting() {
         });
     }
 
+    const handleAddKeyword = () => {
+        if (keyword.trim() !== "" && !formData.keywords.includes(keyword.trim())) {
+            setFormData({
+                ...formData,
+                keywords: [...formData.keywords, keyword.trim()]
+            });
+            setKeyword("");
+        }
+    }
+
+    const handleRemoveKeyword = (index) => {
+        setFormData({
+            ...formData,
+            keywords: formData.keywords.filter((_, i) => i !== index)
+        });
+    }
+
     const handleCloseConfirmDialog = () => {
         setConfirmDialog({ open: false, message: "", onConfirm: null });
     }
@@ -276,9 +302,10 @@ function ArticleSetting() {
         if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
             setFormDialog(false);
             setFormData({
-                name: "",
+                title: "",
                 slug: "",
                 description: "",
+                keywords: [],
                 content: ""
             });
             setFiles([]);
@@ -335,7 +362,7 @@ function ArticleSetting() {
                                     {row.images && row.images[0] ?
                                         <Image
                                             src={row.images[0]}
-                                            alt={row.name}
+                                            alt={row.title}
                                             width={100}
                                             height={75}
                                             style={{ objectFit: "cover" }}
@@ -345,7 +372,7 @@ function ArticleSetting() {
                                         "No Image"
                                     }
                                 </TableCell>
-                                <TableCell>{row.name}</TableCell>
+                                <TableCell>{row.title}</TableCell>
                                 <TableCell>{row.slug}</TableCell>
                                 <TableCell>{row.updatedAt}</TableCell>
                                 <TableCell sx={cellStyle} align="right">
@@ -378,8 +405,8 @@ function ArticleSetting() {
                                     fullWidth
                                     size="small"
                                     label="ชื่อบทความ"
-                                    name="name"
-                                    value={formData.name}
+                                    name="title"
+                                    value={formData.title}
                                     onChange={(e) => handleChange(e.target.name, e.target.value)}
                                 />
                             </Grid>
@@ -404,6 +431,44 @@ function ArticleSetting() {
                                     value={formData.description}
                                     onChange={(e) => handleChange(e.target.name, e.target.value)}
                                 />
+                            </Grid>
+
+                            <Grid size={{ xs: 12 }}>
+                                <Box display="flex" justifyContent="flex-start" alignItems="center" gap={2}>
+                                    <TextField
+                                        size="small"
+                                        label="Keyword"
+                                        name="keyword"
+                                        value={keyword}
+                                        onChange={(e) => setKeyword(e.target.value)}
+                                    />
+                                    <Button variant="contained" onClick={handleAddKeyword}>เพิ่ม</Button>
+                                </Box>
+                                <Box mt={formData.keywords.length > 0 ? 2 : 0} display="flex" flexWrap="wrap" gap={2}>
+                                    {formData.keywords.map((keyword, index) => (
+                                        <Box
+                                            key={index}
+                                            py={0.5}
+                                            px={1}
+                                            position="relative"
+                                            bgcolor="divider"
+                                            borderRadius={1}
+                                        >
+                                            {keyword}
+                                            <IconButton
+                                                size="small"
+                                                sx={{ position: "absolute", top: -15, right: -15 }}
+                                                onClick={() => handleRemoveKeyword(index)}
+                                            >
+                                                <CancelIcon color="error" fontSize="small" />
+                                            </IconButton>
+                                        </Box>
+                                    ))}
+                                </Box>
+                            </Grid>
+
+                            <Grid size={{ xs: 12 }}>
+                                <Divider sx={{ my: 2 }} />
                             </Grid>
 
                             <Grid size={{ xs: 12 }}>

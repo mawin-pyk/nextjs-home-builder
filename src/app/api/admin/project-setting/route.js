@@ -17,6 +17,7 @@ export async function POST(request) {
         const title = data.get("title");
         const slug = data.get("slug");
         const description = data.get("description");
+        const keywords = data.getAll("keywords") || [];
         const houseStyle = data.get("houseStyle");
         const housePlan = data.get("housePlan");
         const detail = data.get("detail");
@@ -46,6 +47,7 @@ export async function POST(request) {
             title,
             slug,
             description,
+            keywords,
             houseStyle,
             housePlan,
             detail,
