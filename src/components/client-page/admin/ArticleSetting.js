@@ -25,6 +25,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+import Tiptap from "@/components/share/Tiptap";
 import FileDropZone from "@/components/share/FileDropZone";
 import Loading from "@/components/share/Loading";
 import SnackbarAlert from "@/components/share/SnackbarAlert";
@@ -406,15 +407,9 @@ function ArticleSetting() {
                             </Grid>
 
                             <Grid size={{ xs: 12 }}>
-                                <TextField
-                                    fullWidth
-                                    size="small"
-                                    label="บทความ"
-                                    name="content"
-                                    multiline
-                                    rows={4}
+                                <Tiptap
                                     value={formData.content}
-                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                    onChange={(html) => handleChange("content", html)}
                                 />
                             </Grid>
 
