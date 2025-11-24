@@ -219,7 +219,12 @@ function ArticleSetting() {
             );
 
             Object.entries(formData).forEach(([key, value]) => {
-                fd.append(key, value);
+                if (key === "keywords") {
+                    value.forEach((keyword) => fd.append("keywords", keyword));
+
+                } else {
+                    fd.append(key, value);
+                }
             });
 
             compressedFiles.forEach((file) => {
