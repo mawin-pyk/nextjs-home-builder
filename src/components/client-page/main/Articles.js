@@ -73,7 +73,7 @@ function Articles({ articles }) {
                                     <Box width="100%" height="180px" position="relative">
                                         <Image
                                             src={article.images[0]}
-                                            alt={`${article.name} โดย Mepatcs`}
+                                            alt={`${article.title} โดย Mepatcs`}
                                             fill
                                             sizes={gridToSizes({ xs: 12, sm: 6, md: 3, lg: 2.4 }, 1400)}
                                             style={{ objectFit: "cover" }}
@@ -93,7 +93,7 @@ function Articles({ articles }) {
                                                 WebkitLineClamp: 1,
                                             }}
                                         >
-                                            {article.name}
+                                            {article.title}
                                         </Typography>
                                         <Typography
                                             variant="body2"
