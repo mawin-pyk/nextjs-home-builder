@@ -1,6 +1,7 @@
+import { createMetadata } from "@/helpers/metadata";
 import Services from "@/components/client-page/main/Services";
 
-export const metadata = {
+export const metadata = createMetadata({
     title: "บริการของเรา",
     description: "Mepatcs ครอบคลุมตั้งแต่เขียนแบบ ออกแบบบ้าน ขออนุญาตก่อสร้าง ไปจนถึงงานตกแต่งภายใน ครบจบในที่เดียว โดยทีมงานมืออาชีพ",
     keywords: [
@@ -12,8 +13,7 @@ export const metadata = {
         "Mepatcs"
     ],
     canonical: "/services",
-    robots: "index, follow",
-}
+});
 
 function ServicesPage() {
     return (

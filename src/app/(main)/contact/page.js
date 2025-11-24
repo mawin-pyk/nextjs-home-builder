@@ -1,6 +1,7 @@
+import { createMetadata } from "@/helpers/metadata";
 import Contact from "@/components/client-page/main/Contact";
 
-export const metadata = {
+export const metadata = createMetadata({
     title: "ติดต่อเรา",
     description: "ติดต่อทีมงาน Mepatcs เพื่อสอบถามราคา ขอใบเสนอราคา หรือปรึกษาการสร้างบ้านฟรี เราพร้อมให้คำแนะนำและดูแลทุกขั้นตอนด้วยความใส่ใจ",
     keywords: [
@@ -11,8 +12,7 @@ export const metadata = {
         "ติดต่อ Mepatcs"
     ],
     canonical: "/contact",
-    robots: "index, follow",
-}
+});
 
 function ContactPage() {
     return (

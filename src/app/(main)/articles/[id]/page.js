@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { db } from "@/lib/firebaseAdmin";
 import { format } from "date-fns";
+import { createMetadata } from "@/helpers/metadata";
 import ArticleDetail from "@/components/client-page/main/ArticleDetail";
 
 const getArticle = async (id) => {
@@ -18,6 +19,27 @@ const getArticle = async (id) => {
     } catch (error) {
         console.error(error);
     }
+}
+
+export async function generateMetadata({ params }) {
+    const { id } = await params;
+    const article = await getArticle(id);
+
+    if (!article) {
+        return createMetadata({
+            title: "ไม่พบบทความ",
+            description: "ไม่พบข้อมูลบทความนี้",
+            canonical: `/articles/${id}`,
+            robots: "noindex, follow",
+        });
+    }
+
+    return createMetadata({
+        title: article.title,
+        description: article.description,
+        keywords: article.keywords,
+        canonical: `/articles/${id}`
+    });
 }
 
 const getOtherArticles = async (excludeId) => {

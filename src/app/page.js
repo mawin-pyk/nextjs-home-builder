@@ -1,8 +1,9 @@
 import { db } from "@/lib/firebaseAdmin";
 import { format } from "date-fns";
+import { createMetadata } from "@/helpers/metadata";
 import Home from "@/components/client-page/main/home/Home";
 
-export const metadata = {
+export const metadata = createMetadata({
     title: "Mepatcs | รับสร้างบ้าน",
     description: "Mepatcs รับสร้างบ้านครบวงจร ตั้งแต่แบบบ้าน งานโครงสร้าง จนถึงตกแต่งภายใน ทีมงานมืออาชีพ ดูแลทุกขั้นตอนอย่างใส่ใจ รับประกันคุณภาพทุกหลัง",
     keywords: [
@@ -14,8 +15,7 @@ export const metadata = {
         "Mepatcs"
     ],
     canonical: "/",
-    robots: "index, follow",
-}
+});
 
 const getProjects = async () => {
     try {

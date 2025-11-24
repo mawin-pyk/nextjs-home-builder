@@ -1,8 +1,9 @@
 import { db } from "@/lib/firebaseAdmin";
 import { format } from "date-fns";
+import { createMetadata } from "@/helpers/metadata";
 import Articles from "@/components/client-page/main/Articles";
 
-export const metadata = {
+export const metadata = createMetadata({
     title: "บทความ",
     description: "ติดตามบทความดี ๆ จาก Mepatcs รวมความรู้เกี่ยวกับการสร้างบ้าน การเลือกวัสดุ เทคนิคออกแบบ และแนวทางดูแลบ้านให้สวยทนนาน",
     keywords: [
@@ -14,8 +15,7 @@ export const metadata = {
         "Mepatcs"
     ],
     canonical: "/articles",
-    robots: "index, follow",
-}
+});
 
 const getArticles = async () => {
     try {
