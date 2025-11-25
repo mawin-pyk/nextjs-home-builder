@@ -6,6 +6,8 @@ import {
     Button
 } from "@mui/material";
 
+import FadeInSection from "@/components/share/FadeInSection";
+
 function BannerSection() {
     return (
         <Box
@@ -33,22 +35,24 @@ function BannerSection() {
                     }
                 }}
             >
-                <Typography variant="h1" fontSize="48px" fontWeight="400">
-                    รับสร้างบ้าน
-                </Typography>
-                <Typography variant="h2" fontSize="40px" fontWeight="400">
-                    Mepatcs
-                </Typography>
-                <Typography variant="subtitle1" fontSize="24px" gutterBottom>
-                    Build Your Dream Home
-                </Typography>
-                <Button
-                    component={Link}
-                    href="/contact"
-                    variant="contained"
-                >
-                    ติดต่อเรา
-                </Button>
+                <FadeInSection direction="right">
+                    <Typography variant="h1" fontSize="48px" fontWeight="400">
+                        รับสร้างบ้าน
+                    </Typography>
+                    <Typography variant="h2" fontSize="40px" fontWeight="400">
+                        Mepatcs
+                    </Typography>
+                    <Typography variant="subtitle1" fontSize="24px" gutterBottom>
+                        Build Your Dream Home
+                    </Typography>
+                    <Button
+                        component={Link}
+                        href="/contact"
+                        variant="contained"
+                    >
+                        ติดต่อเรา
+                    </Button>
+                </FadeInSection>
             </Box>
         </Box>
     );

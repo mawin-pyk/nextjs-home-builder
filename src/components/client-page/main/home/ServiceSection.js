@@ -8,6 +8,8 @@ import {
     Typography,
 } from "@mui/material";
 
+import FadeInSection from "@/components/share/FadeInSection";
+
 const services = [
     {
         title: "งานก่อสร้าง",
@@ -47,45 +49,47 @@ function ServiceSection() {
                     เราพร้อมดูแลทุกขั้นตอนในการสร้างบ้านในฝันของคุณ
                 </Typography>
             </Box>
-            <Grid container spacing={4} width="100%" maxWidth="1400px" m="0px auto">
-                {services.map((service, index) => (
-                    <Grid
-                        component={Link}
-                        href={`/services`}
-                        key={index}
-                        size={{ xs: 12, sm: 6, lg: 4 }}
-                    >
-                        <Box
-                            height="300px"
-                            mt={{ xs: 0, sm: 0, lg: index % 2 === 0 ? 0 : 10 }}
-                            position="relative"
+            <FadeInSection>
+                <Grid container spacing={4} width="100%" maxWidth="1400px" m="0px auto">
+                    {services.map((service, index) => (
+                        <Grid
+                            component={Link}
+                            href={`/services`}
+                            key={index}
+                            size={{ xs: 12, sm: 6, lg: 4 }}
                         >
-                            <Image
-                                src={service.image}
-                                alt={service.title}
-                                fill
-                                sizes={gridToSizes({ xs: 12, sm: 6, lg: 4 }, 1400)}
-                                style={{ objectFit: "cover" }}
-                            />
                             <Box
-                                width="100%"
-                                p={2}
-                                position="absolute"
-                                bottom="0px"
-                                color="#ffffff"
-                                sx={{ background: "linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0))" }}
+                                height="300px"
+                                mt={{ xs: 0, sm: 0, lg: index % 2 === 0 ? 0 : 10 }}
+                                position="relative"
                             >
-                                <Typography variant="h4" fontSize="18px" fontWeight="600" gutterBottom>
-                                    {service.title}
-                                </Typography>
-                                <Typography variant="body2">
-                                    {service.description}
-                                </Typography>
+                                <Image
+                                    src={service.image}
+                                    alt={service.title}
+                                    fill
+                                    sizes={gridToSizes({ xs: 12, sm: 6, lg: 4 }, 1400)}
+                                    style={{ objectFit: "cover" }}
+                                />
+                                <Box
+                                    width="100%"
+                                    p={2}
+                                    position="absolute"
+                                    bottom="0px"
+                                    color="#ffffff"
+                                    sx={{ background: "linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0))" }}
+                                >
+                                    <Typography variant="h4" fontSize="18px" fontWeight="600" gutterBottom>
+                                        {service.title}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        {service.description}
+                                    </Typography>
+                                </Box>
                             </Box>
-                        </Box>
-                    </Grid>
-                ))}
-            </Grid>
+                        </Grid>
+                    ))}
+                </Grid>
+            </FadeInSection>
         </Box>
     );
 }
