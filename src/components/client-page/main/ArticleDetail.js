@@ -107,9 +107,9 @@ function ArticleDetail({ article, otherArticles }) {
                         maxWidth="lg"
                         m="0px auto"
                     >
-                        <Typography variant="body1">
-                            {article.content}
-                        </Typography>
+                        <div
+                            dangerouslySetInnerHTML={{ __html: article.content }}
+                        />
                     </Box>
 
                     <Divider />
