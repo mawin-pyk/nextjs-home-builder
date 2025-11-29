@@ -236,7 +236,7 @@ function ProjectDetail({ project, otherProjects }) {
                             {otherProjects.map((project, index) => (
                                 <Grid
                                     component={Link}
-                                    href={`/projects/${project.id}`}
+                                    href={`/projects/${project.slug}`}
                                     key={index}
                                     size={{ xs: 12, sm: 6, md: 3, lg: 2.4 }}
                                 >

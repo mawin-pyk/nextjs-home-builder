@@ -53,19 +53,9 @@ function Articles({ articles }) {
                         </Typography>
                     </Box>
 
-                    <Box display="flex" justifyContent="flex-end" alignItems="center">
-                        <TextField
-                            variant="outlined"
-                            size="medium"
-                            label="ค้นหาบทความ"
-                        />
-                    </Box>
-
                     <Grid container spacing={4}>
                         {articles.map((article, index) => (
                             <Grid
-                                component={Link}
-                                href={`/articles/${article.id}`}
                                 key={index}
                                 size={{ xs: 12, sm: 6, md: 3, lg: 2.4 }}
                             >
@@ -109,6 +99,11 @@ function Articles({ articles }) {
                                             {article.description}
                                         </Typography>
                                     </CardContent>
+                                    <Box px={2} pb={2}>
+                                        <Button component={Link} href={`/articles/${article.slug}`} size="small" variant="outlined">
+                                            อ่านต่อ
+                                        </Button>
+                                    </Box>
                                 </Card>
                             </Grid>
                         ))}

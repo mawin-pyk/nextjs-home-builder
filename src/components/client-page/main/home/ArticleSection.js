@@ -82,7 +82,7 @@ function ArticleSection({ articles }) {
                                     </Typography>
                                 </CardContent>
                                 <Box px={2} pb={2}>
-                                    <Button component={Link} href={`/articles/${article.id}`} size="small" variant="outlined">
+                                    <Button component={Link} href={`/articles/${article.slug}`} size="small" variant="outlined">
                                         อ่านต่อ
                                     </Button>
                                 </Box>

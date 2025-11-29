@@ -58,74 +58,11 @@ function Projects({ projects }) {
                         </Typography>
                     </Box>
 
-                    <Box
-                        p={2}
-                        border="1px solid"
-                        borderColor="divider"
-                    >
-                        <Typography variant="h2" fontSize="20px" fontWeight="400" gutterBottom>
-                            ค้นหา
-                        </Typography>
-                        <Divider sx={{ mb: 2 }} />
-
-                        <Grid container spacing={2}>
-
-                            {/* ประเภท */}
-                            <Grid size={{ xs: 12, md: 3.5 }}>
-                                <Typography variant="h3" width="80px" fontSize="16px" fontWeight="400" gutterBottom>
-                                    ประเภท
-                                </Typography>
-                                <Autocomplete
-                                    multiple
-                                    options={categories}
-                                    renderInput={(params) => <TextField {...params} size="small" />}
-                                />
-                            </Grid>
-
-                            {/* จำนวนชั้น */}
-                            <Grid size={{ xs: 12, md: 3.5 }}>
-                                <Typography variant="h3" width="80px" fontSize="16px" fontWeight="400" gutterBottom>
-                                    จำนวนชั้น
-                                </Typography>
-                                <Autocomplete
-                                    multiple
-                                    options={floors}
-                                    renderInput={(params) => <TextField {...params} size="small" />}
-                                />
-                            </Grid>
-
-                            {/* สไตล์ */}
-                            <Grid size={{ xs: 12, md: 3.5 }}>
-                                <Typography variant="h3" width="80px" fontSize="16px" fontWeight="400" gutterBottom>
-                                    สไตล์
-                                </Typography>
-                                <Autocomplete
-                                    multiple
-                                    options={styles}
-                                    renderInput={(params) => <TextField {...params} size="small" />}
-                                />
-                            </Grid>
-
-                            <Grid
-                                size={{ xs: 12, md: 1.5 }}
-                                display="flex"
-                                flexDirection="column"
-                                justifyContent="flex-start"
-                                alignItems="flex-end"
-                            >
-                                <Box width="80px" height="25px"></Box>
-                                <Button variant="contained" size="large">ค้นหา</Button>
-                            </Grid>
-
-                        </Grid>
-
-                    </Box>
-
                     <Grid container spacing={4}>
                         {projects.map((project, index) => (
                             <Grid
                                 component={Link}
-                                href={`/projects/${project.id}`}
+                                href={`/projects/${project.slug}`}
                                 key={index}
                                 size={{ xs: 12, sm: 6, md: 3, lg: 2.4 }}
                             >

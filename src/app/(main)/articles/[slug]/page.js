@@ -4,13 +4,13 @@ import { format } from "date-fns";
 import { createMetadata } from "@/helpers/metadata";
 import ArticleDetail from "@/components/client-page/main/ArticleDetail";
 
-const getArticle = async (id) => {
+const getArticle = async (slug) => {
     try {
-        const docSnap = await db.collection("articles").doc(id).get();
-        if (!docSnap.exists) return null;
-        const data = docSnap.data();
+        const querySnapshot = await db.collection("articles").where("slug", "==", slug).limit(1).get();
+        if (querySnapshot.empty) return null;
+        const doc = querySnapshot.docs[0];
+        const data = doc.data();
         return {
-            id: docSnap.id,
             ...data,
             createdAt: data.createdAt ? format(data.createdAt.toDate(), "dd/MM/yyyy HH:mm") : null,
             updatedAt: data.updatedAt ? format(data.updatedAt.toDate(), "dd/MM/yyyy HH:mm") : null,
@@ -22,14 +22,14 @@ const getArticle = async (id) => {
 }
 
 export async function generateMetadata({ params }) {
-    const { id } = await params;
-    const article = await getArticle(id);
+    const { slug } = await params;
+    const article = await getArticle(slug);
 
     if (!article) {
         return createMetadata({
             title: "ไม่พบบทความ",
             description: "ไม่พบข้อมูลบทความนี้",
-            canonical: `/articles/${id}`,
+            canonical: `/articles/${slug}`,
             robots: "noindex, follow",
         });
     }
@@ -38,22 +38,21 @@ export async function generateMetadata({ params }) {
         title: article.title,
         description: article.description,
         keywords: article.keywords,
-        canonical: `/articles/${id}`
+        canonical: `/articles/${slug}`
     });
 }
 
-const getOtherArticles = async (excludeId) => {
+const getOtherArticles = async (excludeSlug) => {
     try {
         const snapshot = await db.collection("articles").limit(5).get();
         const articles = snapshot.docs.map((doc) => {
             const data = doc.data();
             return {
-                id: doc.id,
                 ...data,
                 createdAt: data.createdAt ? format(data.createdAt.toDate(), "dd/MM/yyyy HH:mm") : null,
                 updatedAt: data.updatedAt ? format(data.updatedAt.toDate(), "dd/MM/yyyy HH:mm") : null,
             };
-        }).filter((article) => article.id !== excludeId);
+        }).filter((article) => article.slug !== excludeSlug);
         return articles;
 
     } catch (error) {
@@ -63,12 +62,12 @@ const getOtherArticles = async (excludeId) => {
 }
 
 export default async function ArticleDetailPage({ params }) {
-    const { id } = await params;
+    const { slug } = await params;
 
-    const article = await getArticle(id);
+    const article = await getArticle(slug);
     if (!article) notFound();
 
-    const otherArticles = await getOtherArticles(id);
+    const otherArticles = await getOtherArticles(slug);
 
     return <ArticleDetail article={article} otherArticles={otherArticles} />;
 }
