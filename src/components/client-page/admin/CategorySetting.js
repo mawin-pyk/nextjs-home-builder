@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 import {
     Box,
@@ -17,7 +18,6 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
-    DialogActions,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -27,7 +27,6 @@ import ConfirmDialog from "@/components/share/ConfirmDialog";
 
 function CategorySetting({ heading, collectionName }) {
     const [categories, setCategories] = useState([]);
-    const [formData, setFormData] = useState({ name: "" });
     const [editId, setEditId] = useState(null);
 
     const [formDialog, setFormDialog] = useState(false);
@@ -35,6 +34,12 @@ function CategorySetting({ heading, collectionName }) {
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState({ open: false, severity: "", message: "" });
     const [confirmDialog, setConfirmDialog] = useState({ open: false, message: "", onConfirm: null, });
+
+    const { handleSubmit, register, control, watch, setValue, formState: { errors }, setError, reset } = useForm({
+        defaultValues: {
+            name: "",
+        },
+    });
 
     useEffect(() => {
         getCategories();
@@ -64,14 +69,13 @@ function CategorySetting({ heading, collectionName }) {
         }
     }
 
-    const createCategory = async (e) => {
-        e.preventDefault();
+    const createCategory = async (data) => {
         setLoading(true);
         try {
             const res = await fetch(`/api/admin/category-setting?collection=${collectionName}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(data)
             });
 
             if (!res.ok) {
@@ -131,7 +135,7 @@ function CategorySetting({ heading, collectionName }) {
             }
 
             const result = await res.json();
-            setFormData({ name: result.data.name });
+            setValue("name", result.data.name);
 
         } catch (error) {
             console.log(error);
@@ -142,14 +146,13 @@ function CategorySetting({ heading, collectionName }) {
         }
     }
 
-    const updateCategory = async (e, id) => {
-        e.preventDefault();
+    const updateCategory = async (data, id) => {
         setLoading(true);
         try {
             const res = await fetch(`/api/admin/category-setting/${id}?collection=${collectionName}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(data)
             });
 
             if (!res.ok) {
@@ -170,13 +173,6 @@ function CategorySetting({ heading, collectionName }) {
         } finally {
             setLoading(false);
         }
-    }
-
-    const handleChange = (key, value) => {
-        setFormData({
-            ...formData,
-            [key]: value
-        });
     }
 
     const handleEdit = async (id) => {
@@ -203,7 +199,7 @@ function CategorySetting({ heading, collectionName }) {
     const handleCloseFormDialog = (e, reason) => {
         if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
             setFormDialog(false);
-            setFormData({ name: "" });
+            reset();
             setEditId(null);
         }
     }
@@ -265,28 +261,46 @@ function CategorySetting({ heading, collectionName }) {
             </TableContainer>
             <Dialog
                 fullWidth
-                maxWidth="sm"
+                maxWidth="xs"
                 open={formDialog}
                 onClose={handleCloseFormDialog}
                 scroll="body"
             >
-                <DialogTitle>{editId ? `แก้ไข${heading}` : "เพิ่ม"}</DialogTitle>
+                <DialogTitle>{editId ? `แก้ไข${heading}` : `เพิ่ม${heading}`}</DialogTitle>
                 <DialogContent>
-                    <Box component="form" pt={4}>
+                    <Box
+                        component="form"
+                        onSubmit={handleSubmit((data) => {
+                            if (editId) {
+                                updateCategory(data, editId);
+
+                            } else {
+                                createCategory(data);
+                            }
+                        })}
+                        display="flex"
+                        flexDirection="column"
+                        gap={4}
+                        mt={2}
+                    >
                         <TextField
                             fullWidth
                             size="small"
-                            label={heading}
-                            name="name"
-                            value={formData.name}
-                            onChange={(e) => handleChange(e.target.name, e.target.value)}
+                            label={`ชื่อ${heading}`}
+                            {...register("name", {
+                                required: `กรุณากรอกชื่อ${heading}`,
+                                minLength: { value: 2, message: "ต้องมีความยาวอย่างน้อย 2 ตัวอักษร" },
+                                maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
+                            })}
+                            error={!!errors.name}
+                            helperText={errors.name?.message}
                         />
+                        <Box display="flex" justifyContent="flex-end" alignItems="center" gap={2}>
+                            <Button onClick={handleCloseFormDialog}>ยกเลิก</Button>
+                            <Button variant="contained" type="submit">{editId ? "บันทึก" : "เพิ่ม"}</Button>
+                        </Box>
                     </Box>
                 </DialogContent>
-                <DialogActions sx={{ pb: 2, px: 3 }}>
-                    <Button onClick={handleCloseFormDialog}>ยกเลิก</Button>
-                    <Button variant="contained" onClick={editId ? (e) => updateCategory(e, editId) : createCategory}>ตกลง</Button>
-                </DialogActions>
             </Dialog>
             <ConfirmDialog
                 open={confirmDialog.open}

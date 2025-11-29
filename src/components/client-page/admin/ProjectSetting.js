@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import Image from "next/image";
 
 import imageCompression from "browser-image-compression";
@@ -40,24 +41,7 @@ function ProjectSetting() {
         housePlans: []
     });
     const [projects, setProjects] = useState([]);
-    const [formData, setFormData] = useState({
-        title: "",
-        slug: "",
-        description: "",
-        keywords: [],
-        houseStyle: "",
-        housePlan: "",
-        detail: "",
-        area: "",
-        space: "",
-        bedroom: "",
-        bathroom: "",
-        livingroom: "",
-        kitchen: "",
-        parking: "",
-    });
     const [keyword, setKeyword] = useState("");
-    const [files, setFiles] = useState([]);
     const [editId, setEditId] = useState(null);
 
     const [formDialog, setFormDialog] = useState(false);
@@ -65,6 +49,26 @@ function ProjectSetting() {
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState({ open: false, severity: "", message: "" });
     const [confirmDialog, setConfirmDialog] = useState({ open: false, message: "", onConfirm: null, });
+
+    const { handleSubmit, register, control, watch, setValue, formState: { errors }, setError, reset } = useForm({
+        defaultValues: {
+            title: "",
+            slug: "",
+            description: "",
+            keywords: [],
+            houseStyle: "",
+            housePlan: "",
+            detail: "",
+            area: "",
+            space: "",
+            bedroom: "",
+            bathroom: "",
+            livingroom: "",
+            kitchen: "",
+            parking: "",
+            files: [],
+        },
+    });
 
     useEffect(() => {
         getContext();
@@ -116,14 +120,13 @@ function ProjectSetting() {
         }
     }
 
-    const createProject = async (e) => {
-        e.preventDefault();
+    const createProject = async (data) => {
         setLoading(true);
         try {
             const fd = new FormData();
 
             const compressedFiles = await Promise.all(
-                files.map(async (file) => {
+                data.files.map(async (file) => {
                     const options = {
                         maxSizeMB: 0.25,
                         maxWidthOrHeight: undefined,
@@ -134,18 +137,15 @@ function ProjectSetting() {
                 })
             );
 
-            Object.entries(formData).forEach(([key, value]) => {
-                if (key === "keywords") {
-                    value.forEach((keyword) => fd.append("keywords", keyword));
-
-                } else {
+            Object.entries(data).forEach(([key, value]) => {
+                if (key !== "keywords" && key !== "files") {
                     fd.append(key, value);
                 }
             });
 
-            compressedFiles.forEach((file) => {
-                fd.append(`files`, file);
-            });
+            data.keywords.forEach((keyword) => fd.append("keywords", keyword));
+
+            compressedFiles.forEach((file) => fd.append("files", file));
 
             const res = await fetch(`/api/admin/project-setting`, {
                 method: "POST",
@@ -207,15 +207,32 @@ function ProjectSetting() {
             }
 
             const result = await res.json();
-            setFormData(result.data);
+            const project = result.data;
 
-            const filesWithName = result.data.images.map((url) => {
+            const filesWithPreview = (project.images || []).map((url) => {
                 const parts = url.split("/");
                 const name = parts[parts.length - 1];
                 const type = "image/" + name.split(".").pop();
                 return { name, type, preview: url };
             });
-            setFiles(filesWithName);
+
+            reset({
+                title: project.title,
+                slug: project.slug,
+                description: project.description,
+                keywords: project.keywords,
+                houseStyle: project.houseStyle,
+                housePlan: project.housePlan,
+                detail: project.detail,
+                area: project.area,
+                space: project.space,
+                bedroom: project.bedroom,
+                bathroom: project.bathroom,
+                livingroom: project.livingroom,
+                kitchen: project.kitchen,
+                parking: project.parking,
+                files: filesWithPreview,
+            });
 
         } catch (error) {
             console.log(error);
@@ -226,14 +243,13 @@ function ProjectSetting() {
         }
     }
 
-    const updateProject = async (e, id) => {
-        e.preventDefault();
+    const updateProject = async (data, id) => {
         setLoading(true);
         try {
             const fd = new FormData();
 
             const compressedFiles = await Promise.all(
-                files.map(async (file) => {
+                data.files.map(async (file) => {
                     if (file instanceof File) {
                         const options = {
                             maxSizeMB: 0.25,
@@ -249,14 +265,13 @@ function ProjectSetting() {
                 })
             );
 
-            Object.entries(formData).forEach(([key, value]) => {
-                if (key === "keywords") {
-                    value.forEach((keyword) => fd.append("keywords", keyword));
-
-                } else {
+            Object.entries(data).forEach(([key, value]) => {
+                if (key !== "keywords" && key !== "files") {
                     fd.append(key, value);
                 }
             });
+
+            data.keywords.forEach((keyword) => fd.append("keywords", keyword));
 
             compressedFiles.forEach((file) => {
                 if (file instanceof Blob) {
@@ -291,13 +306,6 @@ function ProjectSetting() {
         }
     }
 
-    const handleChange = (key, value) => {
-        setFormData({
-            ...formData,
-            [key]: value
-        });
-    }
-
     const handleEdit = async (id) => {
         await getProject(id);
         setEditId(id);
@@ -315,23 +323,6 @@ function ProjectSetting() {
         });
     }
 
-    const handleAddKeyword = () => {
-        if (keyword.trim() !== "" && !formData.keywords.includes(keyword.trim())) {
-            setFormData({
-                ...formData,
-                keywords: [...formData.keywords, keyword.trim()]
-            });
-            setKeyword("");
-        }
-    }
-
-    const handleRemoveKeyword = (index) => {
-        setFormData({
-            ...formData,
-            keywords: formData.keywords.filter((_, i) => i !== index)
-        });
-    }
-
     const handleCloseConfirmDialog = () => {
         setConfirmDialog({ open: false, message: "", onConfirm: null });
     }
@@ -339,23 +330,7 @@ function ProjectSetting() {
     const handleCloseFormDialog = (e, reason) => {
         if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
             setFormDialog(false);
-            setFormData({
-                title: "",
-                slug: "",
-                description: "",
-                keywords: [],
-                houseStyle: "",
-                housePlan: "",
-                detail: "",
-                area: "",
-                space: "",
-                bedroom: "",
-                bathroom: "",
-                livingroom: "",
-                kitchen: "",
-                parking: "",
-            });
-            setFiles([]);
+            reset();
             setEditId(null);
         }
     }
@@ -454,7 +429,21 @@ function ProjectSetting() {
             >
                 <DialogTitle>{editId ? "แก้ไขผลงาน" : "เพิ่มผลงาน"}</DialogTitle>
                 <DialogContent>
-                    <Box component="form" pt={4}>
+                    <Box
+                        component="form"
+                        onSubmit={handleSubmit((data) => {
+                            if (editId) {
+                                updateProject(data, editId);
+
+                            } else {
+                                createProject(data);
+                            }
+                        })}
+                        display="flex"
+                        flexDirection="column"
+                        gap={4}
+                        mt={2}
+                    >
                         <Grid container spacing={4}>
 
                             <Grid size={{ xs: 12, sm: 6 }}>
@@ -462,9 +451,13 @@ function ProjectSetting() {
                                     fullWidth
                                     size="small"
                                     label="ชื่อผลงาน"
-                                    name="title"
-                                    value={formData.title}
-                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                    {...register("title", {
+                                        required: "กรุณากรอกชื่อผลงาน",
+                                        minLength: { value: 2, message: "ต้องมีความยาวอย่างน้อย 2 ตัวอักษร" },
+                                        maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.title}
+                                    helperText={errors.title?.message}
                                 />
                             </Grid>
 
@@ -473,9 +466,14 @@ function ProjectSetting() {
                                     fullWidth
                                     size="small"
                                     label="URL"
-                                    name="slug"
-                                    value={formData.slug}
-                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                    {...register("slug", {
+                                        required: "กรุณากรอกชื่อ URL",
+                                        pattern: { value: /^[\u0E00-\u0E7Fa-z0-9-]+$/, message: "ใช้ได้เฉพาะภาษาไทย, อังกฤษ, ตัวเลข และขีดกลาง (-)" },
+                                        minLength: { value: 2, message: "ต้องมีความยาวอย่างน้อย 2 ตัวอักษร" },
+                                        maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.slug}
+                                    helperText={errors.slug?.message}
                                 />
                             </Grid>
 
@@ -484,44 +482,77 @@ function ProjectSetting() {
                                     fullWidth
                                     size="small"
                                     label="คำอธิบาย"
-                                    name="description"
-                                    value={formData.description}
-                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                    {...register("description", {
+                                        required: "กรุณากรอกคำอธิบาย",
+                                        minLength: { value: 2, message: "ต้องมีความยาวอย่างน้อย 2 ตัวอักษร" },
+                                        maxLength: { value: 160, message: "ต้องมีความยาวไม่เกิน 160 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.description}
+                                    helperText={errors.description?.message}
                                 />
                             </Grid>
 
                             <Grid size={{ xs: 12 }}>
-                                <Box display="flex" justifyContent="flex-start" alignItems="center" gap={2}>
-                                    <TextField
-                                        size="small"
-                                        label="Keyword"
-                                        name="keyword"
-                                        value={keyword}
-                                        onChange={(e) => setKeyword(e.target.value)}
-                                    />
-                                    <Button variant="contained" onClick={handleAddKeyword}>เพิ่ม</Button>
-                                </Box>
-                                <Box mt={formData.keywords.length > 0 ? 2 : 0} display="flex" flexWrap="wrap" gap={2}>
-                                    {formData.keywords.map((keyword, index) => (
-                                        <Box
-                                            key={index}
-                                            py={0.5}
-                                            px={1}
-                                            position="relative"
-                                            bgcolor="divider"
-                                            borderRadius={1}
-                                        >
-                                            {keyword}
-                                            <IconButton
-                                                size="small"
-                                                sx={{ position: "absolute", top: -15, right: -15 }}
-                                                onClick={() => handleRemoveKeyword(index)}
-                                            >
-                                                <CancelIcon color="error" fontSize="small" />
-                                            </IconButton>
-                                        </Box>
-                                    ))}
-                                </Box>
+                                <Controller
+                                    name="keywords"
+                                    control={control}
+                                    defaultValue={[]}
+                                    rules={{ validate: (value) => (value.length > 0 ? true : "กรุณาเพิ่มอย่างน้อย 1 Keyword") }}
+                                    render={({ field, fieldState }) => (
+                                        <>
+                                            <Box display="flex" justifyContent="flex-start" alignItems="center" gap={2}>
+                                                <TextField
+                                                    size="small"
+                                                    label="Keyword"
+                                                    value={keyword}
+                                                    onChange={(e) => setKeyword(e.target.value)}
+                                                />
+                                                <Button
+                                                    variant="contained"
+                                                    onClick={() => {
+                                                        if (!keyword.trim()) return;
+                                                        if (field.value.includes(keyword.trim())) return;
+                                                        field.onChange([...field.value, keyword.trim()]);
+                                                        setKeyword("");
+                                                    }}
+                                                >
+                                                    เพิ่ม
+                                                </Button>
+                                            </Box>
+
+                                            <Box mt={field.value.length > 0 ? 2 : 0} display="flex" flexWrap="wrap" gap={2}>
+                                                {field.value.map((kw, index) => (
+                                                    <Box
+                                                        key={index}
+                                                        py={0.5}
+                                                        px={1}
+                                                        position="relative"
+                                                        bgcolor="divider"
+                                                        borderRadius={1}
+                                                    >
+                                                        {kw}
+                                                        <IconButton
+                                                            size="small"
+                                                            sx={{ position: "absolute", top: -15, right: -15 }}
+                                                            onClick={() => {
+                                                                const newKeywords = field.value.filter((_, i) => i !== index);
+                                                                field.onChange(newKeywords);
+                                                            }}
+                                                        >
+                                                            <CancelIcon color="error" fontSize="small" />
+                                                        </IconButton>
+                                                    </Box>
+                                                ))}
+                                            </Box>
+
+                                            {fieldState.error && (
+                                                <Typography color="error" fontSize={12} mt={0.5} mx="14px">
+                                                    {fieldState.error.message}
+                                                </Typography>
+                                            )}
+                                        </>
+                                    )}
+                                />
                             </Grid>
 
                             <Grid size={{ xs: 12 }}>
@@ -529,26 +560,62 @@ function ProjectSetting() {
                             </Grid>
 
                             <Grid size={{ xs: 12, sm: 6 }}>
-                                <Autocomplete
-                                    fullWidth
-                                    size="small"
-                                    options={options.houseStyles}
-                                    getOptionLabel={(option) => option.name}
-                                    value={options.houseStyles.find((option) => option.id === formData.houseStyle) || null}
-                                    onChange={(event, newValue) => handleChange("houseStyle", newValue ? newValue.id : null)}
-                                    renderInput={(params) => <TextField {...params} label="สไตล์" />}
+                                <Controller
+                                    name="houseStyle"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: "กรุณาเลือกสไตล์" }}
+                                    render={({ field }) => {
+                                        const selectedOption = options.houseStyles.find(option => option.id === field.value) || null;
+                                        return (
+                                            <Autocomplete
+                                                fullWidth
+                                                size="small"
+                                                options={options.houseStyles}
+                                                getOptionLabel={(option) => option.name}
+                                                value={selectedOption}
+                                                onChange={(event, newValue) => field.onChange(newValue ? newValue.id : "")}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="สไตล์"
+                                                        error={!!errors.houseStyle}
+                                                        helperText={errors.houseStyle?.message}
+                                                    />
+                                                )}
+                                            />
+                                        );
+                                    }}
                                 />
                             </Grid>
 
                             <Grid size={{ xs: 12, sm: 6 }}>
-                                <Autocomplete
-                                    fullWidth
-                                    size="small"
-                                    options={options.housePlans}
-                                    getOptionLabel={(option) => option.name}
-                                    value={options.housePlans.find((option) => option.id === formData.housePlan) || null}
-                                    onChange={(event, newValue) => handleChange("housePlan", newValue ? newValue.id : null)}
-                                    renderInput={(params) => <TextField {...params} label="แบบบ้าน" />}
+                                <Controller
+                                    name="housePlan"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: "กรุณาเลือกสไตล์" }}
+                                    render={({ field }) => {
+                                        const selectedOption = options.housePlans.find(option => option.id === field.value) || null;
+                                        return (
+                                            <Autocomplete
+                                                fullWidth
+                                                size="small"
+                                                options={options.housePlans}
+                                                getOptionLabel={(option) => option.name}
+                                                value={selectedOption}
+                                                onChange={(event, newValue) => field.onChange(newValue ? newValue.id : "")}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="แบบบ้าน"
+                                                        error={!!errors.housePlan}
+                                                        helperText={errors.housePlan?.message}
+                                                    />
+                                                )}
+                                            />
+                                        );
+                                    }}
                                 />
                             </Grid>
 
@@ -557,11 +624,15 @@ function ProjectSetting() {
                                     fullWidth
                                     size="small"
                                     label="รายละเอียด"
-                                    name="detail"
                                     multiline
                                     rows={4}
-                                    value={formData.detail}
-                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                    {...register("detail", {
+                                        required: "กรุณากรอกรายละเอียด",
+                                        minLength: { value: 1, message: "ต้องมีความยาวอย่างน้อย 1 ตัวอักษร" },
+                                        maxLength: { value: 1000, message: "ต้องมีความยาวไม่เกิน 1000 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.detail}
+                                    helperText={errors.detail?.message}
                                 />
                             </Grid>
 
@@ -570,9 +641,13 @@ function ProjectSetting() {
                                     fullWidth
                                     size="small"
                                     label="พื้นที่ใช้สอย (ตร.ม.)"
-                                    name="area"
-                                    value={formData.area}
-                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                    {...register("area", {
+                                        required: "กรุณากรอกพื้นที่ใช้สอย (ตร.ม.)",
+                                        minLength: { value: 1, message: "ต้องมีความยาวอย่างน้อย 1 ตัวอักษร" },
+                                        maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.area}
+                                    helperText={errors.area?.message}
                                 />
                             </Grid>
 
@@ -581,9 +656,13 @@ function ProjectSetting() {
                                     fullWidth
                                     size="small"
                                     label="กว้าง x ลึก (ม.)"
-                                    name="space"
-                                    value={formData.space}
-                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                    {...register("space", {
+                                        required: "กรุณากรอกกว้าง x ลึก (ม.)",
+                                        minLength: { value: 1, message: "ต้องมีความยาวอย่างน้อย 1 ตัวอักษร" },
+                                        maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.space}
+                                    helperText={errors.space?.message}
                                 />
                             </Grid>
 
@@ -592,9 +671,13 @@ function ProjectSetting() {
                                     fullWidth
                                     size="small"
                                     label="จำนวนห้องนอน"
-                                    name="bedroom"
-                                    value={formData.bedroom}
-                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                    {...register("bedroom", {
+                                        required: "กรุณากรอกจำนวนห้องนอน",
+                                        minLength: { value: 1, message: "ต้องมีความยาวอย่างน้อย 1 ตัวอักษร" },
+                                        maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.bedroom}
+                                    helperText={errors.bedroom?.message}
                                 />
                             </Grid>
 
@@ -603,9 +686,13 @@ function ProjectSetting() {
                                     fullWidth
                                     size="small"
                                     label="จำนวนห้องน้ำ"
-                                    name="bathroom"
-                                    value={formData.bathroom}
-                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                    {...register("bathroom", {
+                                        required: "กรุณากรอกจำนวนห้องน้ำ",
+                                        minLength: { value: 1, message: "ต้องมีความยาวอย่างน้อย 1 ตัวอักษร" },
+                                        maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.bathroom}
+                                    helperText={errors.bathroom?.message}
                                 />
                             </Grid>
 
@@ -614,9 +701,13 @@ function ProjectSetting() {
                                     fullWidth
                                     size="small"
                                     label="จำนวนห้องนั่งเล่น"
-                                    name="livingroom"
-                                    value={formData.livingroom}
-                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                    {...register("livingroom", {
+                                        required: "กรุณากรอกจำนวนห้องนั่งเล่น",
+                                        minLength: { value: 1, message: "ต้องมีความยาวอย่างน้อย 1 ตัวอักษร" },
+                                        maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.livingroom}
+                                    helperText={errors.livingroom?.message}
                                 />
                             </Grid>
 
@@ -625,9 +716,13 @@ function ProjectSetting() {
                                     fullWidth
                                     size="small"
                                     label="จำนวนห้องครัว"
-                                    name="kitchen"
-                                    value={formData.kitchen}
-                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                    {...register("kitchen", {
+                                        required: "กรุณากรอกจำนวนห้องครัว",
+                                        minLength: { value: 1, message: "ต้องมีความยาวอย่างน้อย 1 ตัวอักษร" },
+                                        maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.kitchen}
+                                    helperText={errors.kitchen?.message}
                                 />
                             </Grid>
 
@@ -636,28 +731,48 @@ function ProjectSetting() {
                                     fullWidth
                                     size="small"
                                     label="จำนวนที่จอดรถ"
-                                    name="parking"
-                                    value={formData.parking}
-                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                    {...register("parking", {
+                                        required: "กรุณากรอกจำนวนที่จอดรถ",
+                                        minLength: { value: 1, message: "ต้องมีความยาวอย่างน้อย 1 ตัวอักษร" },
+                                        maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.parking}
+                                    helperText={errors.parking?.message}
                                 />
                             </Grid>
 
                             <Grid size={{ xs: 12 }}>
-                                <FileDropZone
-                                    files={files}
-                                    setFiles={setFiles}
-                                    maxFiles={10}
-                                    accept={{ "image/*": [] }}
+                                <Controller
+                                    name="files"
+                                    control={control}
+                                    defaultValue={[]}
+                                    rules={{ validate: (value) => (value.length > 0 ? true : "กรุณาอัปโหลดอย่างน้อย 1 รูปภาพ") }}
+                                    render={({ field, fieldState }) => (
+                                        <>
+                                            <FileDropZone
+                                                files={field.value}
+                                                setFiles={field.onChange}
+                                                maxFiles={10}
+                                                accept={{ "image/*": [] }}
+                                            />
+                                            {fieldState.error && (
+                                                <Typography color="error" fontSize={12} mt={0.5} mx="14px" >
+                                                    {fieldState.error.message}
+                                                </Typography>
+                                            )}
+                                        </>
+                                    )}
                                 />
                             </Grid>
 
                         </Grid>
+
+                        <Box display="flex" justifyContent="flex-end" alignItems="center" gap={2}>
+                            <Button onClick={handleCloseFormDialog}>ยกเลิก</Button>
+                            <Button variant="contained" type="submit">{editId ? "บันทึก" : "เพิ่ม"}</Button>
+                        </Box>
                     </Box>
                 </DialogContent>
-                <DialogActions sx={{ pb: 2, px: 3 }}>
-                    <Button onClick={handleCloseFormDialog}>ยกเลิก</Button>
-                    <Button variant="contained" onClick={editId ? (e) => updateProject(e, editId) : createProject}>ตกลง</Button>
-                </DialogActions>
             </Dialog>
             <ConfirmDialog
                 open={confirmDialog.open}
