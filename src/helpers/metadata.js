@@ -4,12 +4,14 @@ export function createMetadata({
     keywords,
     canonical,
     robots = "index, follow",
+    openGraph,
 }) {
     return {
         title,
         description,
         keywords,
         canonical,
-        robots
+        robots,
+        openGraph
     };
 }

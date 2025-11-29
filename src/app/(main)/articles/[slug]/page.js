@@ -31,6 +31,12 @@ export async function generateMetadata({ params }) {
             description: "ไม่พบข้อมูลบทความนี้",
             canonical: `/articles/${slug}`,
             robots: "noindex, follow",
+            openGraph: {
+                title: "ไม่พบบทความ",
+                description: "ไม่พบข้อมูลบทความนี้",
+                url: `${process.env.NEXT_PUBLIC_BASE_URL}/articles/${slug}`,
+                type: "article",
+            },
         });
     }
 
@@ -38,7 +44,14 @@ export async function generateMetadata({ params }) {
         title: article.title,
         description: article.description,
         keywords: article.keywords,
-        canonical: `/articles/${slug}`
+        canonical: `/articles/${slug}`,
+        openGraph: {
+            title: article.title,
+            description: article.description,
+            url: `${process.env.NEXT_PUBLIC_BASE_URL}/articles/${slug}`,
+            type: "article",
+            images: [article.images[0]],
+        },
     });
 }
 

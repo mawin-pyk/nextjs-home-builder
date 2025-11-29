@@ -15,9 +15,6 @@ import {
     Button
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import XIcon from "@mui/icons-material/X";
 
 // lightbox
 import { PhotoProvider, PhotoView } from "react-photo-view";
@@ -35,6 +32,8 @@ const breadcrumbs = [
 ];
 
 function ArticleDetail({ article, otherArticles }) {
+    const shareUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/articles/${article.slug}`;
+
     return (
         <>
             <Box
@@ -59,33 +58,31 @@ function ArticleDetail({ article, otherArticles }) {
                         maxWidth="lg"
                         m="0px auto"
                         display="flex"
+                        flexDirection="column"
                         justifyContent="center"
-                        alignItems="center"
+                        alignItems="flex-end"
+                        gap={2}
                     >
-                        <Box width="calc(100% - 66px)" height="400px" position="relative">
+                        <Box width="100%" height="500px" position="relative">
                             <Image
                                 src={article.images[0]}
                                 alt="service"
                                 fill
-                                sizes={gridToSizes({ xs: 12, md: 5 }, 1200)}
+                                // sizes={gridToSizes({ xs: 12, md: 5 }, 1200)}
                                 style={{ objectFit: "cover" }}
                             />
                         </Box>
-                        <Box px={2} boxSizing="border-box">
-                            <Stack direction="column" spacing={1}>
-                                <IconButton component="a" href="#" target="_blank" rel="me noopener noreferrer" size="small">
-                                    <FacebookIcon />
-                                </IconButton>
-                                <IconButton component="a" href="#" target="_blank" rel="me noopener noreferrer" size="small">
-                                    <InstagramIcon />
-                                </IconButton>
-                                <IconButton component="a" href="#" target="_blank" rel="me noopener noreferrer" size="small">
-                                    <YouTubeIcon />
-                                </IconButton>
-                                <IconButton component="a" href="#" target="_blank" rel="me noopener noreferrer" size="small">
-                                    <XIcon />
-                                </IconButton>
-                            </Stack>
+                        <Box display="flex" alignItems="center" gap={1}>
+                            แชร์บทความ:
+                            <IconButton
+                                component="a"
+                                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+                                target="_blank"
+                                rel="me noopener noreferrer"
+                                size="small"
+                            >
+                                <FacebookIcon />
+                            </IconButton>
                         </Box>
                     </Box>
 
