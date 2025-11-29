@@ -9,20 +9,13 @@ import {
     Card,
     CardContent,
     Typography,
-    Button,
-    Autocomplete,
-    TextField,
-    Divider,
 } from "@mui/material";
 
 import { gridToSizes } from "@/helpers/helpers";
 
 import CustomBreadcrumbs from "@/components/share/CustomBreadcrumbs";
 import Footer from "@/components/layout/Footer";
-
-const categories = ["บ้านเดี่ยว", "คอนโด", "รีสอร์ท"];
-const floors = ["1 ชั้น", "2 ชั้น", "3 ชั้นขึ้นไป", "สูง"];
-const styles = ["โมเดิร์น", "ลอฟท์", "คลาสสิค"];
+import FadeInSection from "@/components/share/FadeInSection";
 
 const breadcrumbs = [
     { label: "หน้าแรก", href: "/" },
@@ -49,67 +42,71 @@ function Projects({ projects }) {
                 >
                     <CustomBreadcrumbs items={breadcrumbs} />
 
-                    <Box textAlign="center">
-                        <Typography variant="h1" fontSize={{ xs: "32px", md: "40px" }} fontWeight="400" gutterBottom>
-                            ผลงานของเรา
-                        </Typography>
-                        <Typography variant="subtitle1" color="textSecondary">
-                            รวมผลงานที่เราออกแบบและสร้างด้วยความใส่ใจทุกรายละเอียด ทั้งบ้านเดี่ยว คอนโด และรีสอร์ท
-                        </Typography>
-                    </Box>
+                    <FadeInSection direction="right">
+                        <Box textAlign="center">
+                            <Typography variant="h1" fontSize={{ xs: "32px", md: "40px" }} fontWeight="400" gutterBottom>
+                                ผลงานของเรา
+                            </Typography>
+                            <Typography variant="subtitle1" color="textSecondary">
+                                รวมผลงานที่เราออกแบบและสร้างด้วยความใส่ใจทุกรายละเอียด ทั้งบ้านเดี่ยว คอนโด และรีสอร์ท
+                            </Typography>
+                        </Box>
+                    </FadeInSection>
 
-                    <Grid container spacing={4}>
-                        {projects.map((project, index) => (
-                            <Grid
-                                component={Link}
-                                href={`/projects/${project.slug}`}
-                                key={index}
-                                size={{ xs: 12, sm: 6, md: 3, lg: 2.4 }}
-                            >
-                                <Card sx={{ height: "100%" }}>
-                                    <Box width="100%" height="180px" position="relative">
-                                        <Image
-                                            src={project.images[0]}
-                                            alt={`${project.title} โดย Mepatcs`}
-                                            fill
-                                            sizes={gridToSizes({ xs: 12, sm: 6, md: 3, lg: 2.4 }, 1400)}
-                                            style={{ objectFit: "cover" }}
-                                        />
-                                    </Box>
-                                    <CardContent>
-                                        <Typography
-                                            variant="h4"
-                                            fontSize="18px"
-                                            fontWeight="600"
-                                            gutterBottom
-                                            sx={{
-                                                display: "-webkit-box",
-                                                overflow: "hidden",
-                                                textOverflow: "ellipsis",
-                                                WebkitBoxOrient: "vertical",
-                                                WebkitLineClamp: 1,
-                                            }}
-                                        >
-                                            {project.title}
-                                        </Typography>
-                                        <Typography
-                                            variant="body2"
-                                            color="textSecondary"
-                                            sx={{
-                                                display: "-webkit-box",
-                                                overflow: "hidden",
-                                                textOverflow: "ellipsis",
-                                                WebkitBoxOrient: "vertical",
-                                                WebkitLineClamp: 2,
-                                            }}
-                                        >
-                                            {project.description}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        ))}
-                    </Grid>
+                    <FadeInSection>
+                        <Grid container spacing={4}>
+                            {projects.map((project, index) => (
+                                <Grid
+                                    component={Link}
+                                    href={`/projects/${project.slug}`}
+                                    key={index}
+                                    size={{ xs: 12, sm: 6, md: 3, lg: 2.4 }}
+                                >
+                                    <Card sx={{ height: "100%" }}>
+                                        <Box width="100%" height="180px" position="relative">
+                                            <Image
+                                                src={project.images[0]}
+                                                alt={`${project.title} โดย Mepatcs`}
+                                                fill
+                                                sizes={gridToSizes({ xs: 12, sm: 6, md: 3, lg: 2.4 }, 1400)}
+                                                style={{ objectFit: "cover" }}
+                                            />
+                                        </Box>
+                                        <CardContent>
+                                            <Typography
+                                                variant="h4"
+                                                fontSize="18px"
+                                                fontWeight="600"
+                                                gutterBottom
+                                                sx={{
+                                                    display: "-webkit-box",
+                                                    overflow: "hidden",
+                                                    textOverflow: "ellipsis",
+                                                    WebkitBoxOrient: "vertical",
+                                                    WebkitLineClamp: 1,
+                                                }}
+                                            >
+                                                {project.title}
+                                            </Typography>
+                                            <Typography
+                                                variant="body2"
+                                                color="textSecondary"
+                                                sx={{
+                                                    display: "-webkit-box",
+                                                    overflow: "hidden",
+                                                    textOverflow: "ellipsis",
+                                                    WebkitBoxOrient: "vertical",
+                                                    WebkitLineClamp: 2,
+                                                }}
+                                            >
+                                                {project.description}
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </FadeInSection>
                 </Box>
             </Box>
             <Footer />

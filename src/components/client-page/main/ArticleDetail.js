@@ -11,7 +11,6 @@ import {
     Divider,
     Card,
     CardContent,
-    Stack,
     Button
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -24,6 +23,7 @@ import { gridToSizes } from "@/helpers/helpers";
 
 import CustomBreadcrumbs from "@/components/share/CustomBreadcrumbs";
 import Footer from "@/components/layout/Footer";
+import FadeInSection from "@/components/share/FadeInSection";
 
 const breadcrumbs = [
     { label: "หน้าแรก", href: "/" },
@@ -49,61 +49,57 @@ function ArticleDetail({ article, otherArticles }) {
                     m="0px auto"
                     display="flex"
                     flexDirection="column"
-                    gap={8}
+                    gap={4}
                 >
                     <CustomBreadcrumbs items={breadcrumbs} />
 
-                    <Box
-                        width="100%"
-                        maxWidth="lg"
-                        m="0px auto"
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="center"
-                        alignItems="flex-end"
-                        gap={2}
-                    >
-                        <Box width="100%" height="500px" position="relative">
-                            <Image
-                                src={article.images[0]}
-                                alt="service"
-                                fill
-                                // sizes={gridToSizes({ xs: 12, md: 5 }, 1200)}
-                                style={{ objectFit: "cover" }}
-                            />
+                    <FadeInSection direction="right">
+                        <Box
+                            width="100%"
+                            maxWidth="lg"
+                            m="0px auto"
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                            alignItems="flex-end"
+                            gap={2}
+                        >
+                            <Box width="100%" height="500px" position="relative">
+                                <Image
+                                    src={article.images[0]}
+                                    alt="service"
+                                    fill
+                                    // sizes={gridToSizes({ xs: 12, md: 5 }, 1200)}
+                                    style={{ objectFit: "cover" }}
+                                />
+                            </Box>
+                            <Box display="flex" alignItems="center" gap={1}>
+                                แชร์บทความ:
+                                <IconButton
+                                    component="a"
+                                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+                                    target="_blank"
+                                    rel="me noopener noreferrer"
+                                    size="small"
+                                >
+                                    <FacebookIcon />
+                                </IconButton>
+                            </Box>
                         </Box>
-                        <Box display="flex" alignItems="center" gap={1}>
-                            แชร์บทความ:
-                            <IconButton
-                                component="a"
-                                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
-                                target="_blank"
-                                rel="me noopener noreferrer"
-                                size="small"
-                            >
-                                <FacebookIcon />
-                            </IconButton>
+                    </FadeInSection>
+
+                    <FadeInSection>
+                        <Box width="100%" maxWidth="lg" m="0px auto">
+                            <Typography variant="h1" fontSize={{ xs: "32px", md: "40px" }} fontWeight="400">
+                                {article.title}
+                            </Typography>
+                            <Typography variant="subtitle1" color="textSecondary">
+                                {article.description}
+                            </Typography>
                         </Box>
-                    </Box>
+                    </FadeInSection>
 
-                    <Box
-                        width="100%"
-                        maxWidth="lg"
-                        m="0px auto"
-                    >
-                        <Typography variant="h1" fontSize={{ xs: "32px", md: "40px" }} fontWeight="400">
-                            {article.title}
-                        </Typography>
-                        <Typography variant="subtitle1" color="textSecondary">
-                            {article.description}
-                        </Typography>
-                    </Box>
-
-                    <Box
-                        width="100%"
-                        maxWidth="lg"
-                        m="0px auto"
-                    >
+                    <Box width="100%" maxWidth="lg" m="0px auto">
                         <div
                             dangerouslySetInnerHTML={{ __html: article.content }}
                         />

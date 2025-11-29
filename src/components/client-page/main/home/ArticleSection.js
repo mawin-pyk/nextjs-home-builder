@@ -91,7 +91,7 @@ function ArticleSection({ articles }) {
                     ))}
                 </Grid>
             </FadeInSection>
-            <Box width="100%" maxWidth="1400px" m="0px auto" display="flex" justifyContent={{ xs: "center", lg: "flex-end" }} alignItems="center">
+            <Box width="100%" maxWidth="1400px" m="0px auto" display="flex" justifyContent="flex-end" alignItems="center">
                 <Button component={Link} href="/articles" variant="contained" size="large">ดูบทความทั้งหมด</Button>
             </Box>
         </Box>

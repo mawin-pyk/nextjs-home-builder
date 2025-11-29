@@ -28,6 +28,7 @@ import { gridToSizes } from "@/helpers/helpers";
 
 import CustomBreadcrumbs from "@/components/share/CustomBreadcrumbs";
 import Footer from "@/components/layout/Footer";
+import FadeInSection from "@/components/share/FadeInSection";
 
 const breadcrumbs = [
     { label: "หน้าแรก", href: "/" },
@@ -55,176 +56,180 @@ function ProjectDetail({ project, otherProjects }) {
                 >
                     <CustomBreadcrumbs items={breadcrumbs} />
 
-                    <Box textAlign="center">
-                        <Typography variant="h1" fontSize={{ xs: "32px", md: "40px" }} fontWeight="400" gutterBottom>
-                            {project.title}
-                        </Typography>
-                        <Typography variant="subtitle1" color="textSecondary">
-                            {project.description}
-                        </Typography>
-                    </Box>
+                    <FadeInSection direction="right">
+                        <Box textAlign="center">
+                            <Typography variant="h1" fontSize={{ xs: "32px", md: "40px" }} fontWeight="400" gutterBottom>
+                                {project.title}
+                            </Typography>
+                            <Typography variant="subtitle1" color="textSecondary">
+                                {project.description}
+                            </Typography>
+                        </Box>
+                    </FadeInSection>
 
-                    <Grid container spacing={4}>
-                        <Grid size={{ xs: 12, md: 6 }}>
+                    <FadeInSection>
+                        <Grid container spacing={4}>
+                            <Grid size={{ xs: 12, md: 6 }}>
 
-                            <PhotoProvider>
-                                <PhotoView src={project.images[0]}>
-                                    <Box position="relative" width="100%" height="400px">
-                                        <Image
-                                            src={project.images[0]}
-                                            alt="บ้านสไตล์โมเดิร์น 2 ชั้น"
-                                            fill
-                                            sizes={gridToSizes({ xs: 12, sm: 6 }, 1400)}
-                                            style={{ objectFit: "cover", cursor: "pointer" }}
-                                        />
-                                    </Box>
-                                </PhotoView>
-                                <Box
-                                    sx={{
-                                        py: 1,
-                                        display: "flex",
-                                        gap: 2,
-                                        overflowX: "auto"
-                                    }}
-                                >
-                                    {project.images.slice(1).map((src, i) => (
-                                        <PhotoView key={i + 1} src={src}>
+                                <PhotoProvider>
+                                    <PhotoView src={project.images[0]}>
+                                        <Box position="relative" width="100%" height="400px">
                                             <Image
-                                                src={src}
-                                                alt={`ภาพตัวอย่าง ${i + 2}`}
-                                                width={160}
-                                                height={120}
-                                                style={{
-                                                    flexShrink: 0,
-                                                    objectFit: "cover",
-                                                    cursor: "pointer",
-                                                }}
+                                                src={project.images[0]}
+                                                alt="บ้านสไตล์โมเดิร์น 2 ชั้น"
+                                                fill
+                                                sizes={gridToSizes({ xs: 12, sm: 6 }, 1400)}
+                                                style={{ objectFit: "cover", cursor: "pointer" }}
                                             />
-                                        </PhotoView>
-                                    ))}
-                                </Box>
-                            </PhotoProvider>
-                        </Grid>
+                                        </Box>
+                                    </PhotoView>
+                                    <Box
+                                        sx={{
+                                            py: 1,
+                                            display: "flex",
+                                            gap: 2,
+                                            overflowX: "auto"
+                                        }}
+                                    >
+                                        {project.images.slice(1).map((src, i) => (
+                                            <PhotoView key={i + 1} src={src}>
+                                                <Image
+                                                    src={src}
+                                                    alt={`ภาพตัวอย่าง ${i + 2}`}
+                                                    width={160}
+                                                    height={120}
+                                                    style={{
+                                                        flexShrink: 0,
+                                                        objectFit: "cover",
+                                                        cursor: "pointer",
+                                                    }}
+                                                />
+                                            </PhotoView>
+                                        ))}
+                                    </Box>
+                                </PhotoProvider>
+                            </Grid>
 
-                        <Grid size={{ xs: 12, md: 6 }}>
-                            <Box display="flex" flexDirection="column" gap={4}>
-                                <Box>
-                                    <Typography variant="h2" fontSize="24px" fontWeight="400" gutterBottom>
-                                        รายละเอียดโครงการ
-                                    </Typography>
-                                    <Typography variant="body1">
-                                        {project.detail}
-                                    </Typography>
-                                </Box>
+                            <Grid size={{ xs: 12, md: 6 }}>
+                                <Box display="flex" flexDirection="column" gap={4}>
+                                    <Box>
+                                        <Typography variant="h2" fontSize="24px" fontWeight="400" gutterBottom>
+                                            รายละเอียดโครงการ
+                                        </Typography>
+                                        <Typography variant="body1">
+                                            {project.detail}
+                                        </Typography>
+                                    </Box>
 
-                                <Grid container spacing={2}>
-                                    <Grid size={{ xs: 12, sm: 6 }}>
-                                        <Box
-                                            p={2}
-                                            display="flex"
-                                            alignItems="center"
-                                            gap={1}
-                                            border="1px solid"
-                                            borderColor="divider"
-                                            bgcolor="background.paper"
-                                        >
-                                            <HomeIcon />
-                                            <Typography variant="body1">พื้นที่ใช้สอย {project.area} ตร.ม.</Typography>
-                                        </Box>
+                                    <Grid container spacing={2}>
+                                        <Grid size={{ xs: 12, sm: 6 }}>
+                                            <Box
+                                                p={2}
+                                                display="flex"
+                                                alignItems="center"
+                                                gap={1}
+                                                border="1px solid"
+                                                borderColor="divider"
+                                                bgcolor="background.paper"
+                                            >
+                                                <HomeIcon />
+                                                <Typography variant="body1">พื้นที่ใช้สอย {project.area} ตร.ม.</Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid size={{ xs: 12, sm: 6 }}>
+                                            <Box
+                                                p={2}
+                                                display="flex"
+                                                alignItems="center"
+                                                gap={1}
+                                                border="1px solid"
+                                                borderColor="divider"
+                                                bgcolor="background.paper"
+                                            >
+                                                <StraightenIcon />
+                                                <Typography variant="body1">กว้างลึก {project.space} ม.</Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid size={{ xs: 12, sm: 6 }}>
+                                            <Box
+                                                p={2}
+                                                display="flex"
+                                                alignItems="center"
+                                                gap={1}
+                                                border="1px solid"
+                                                borderColor="divider"
+                                                bgcolor="background.paper"
+                                            >
+                                                <BedIcon />
+                                                <Typography variant="body1">{project.bedroom} ห้องนอน</Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid size={{ xs: 12, sm: 6 }}>
+                                            <Box
+                                                p={2}
+                                                display="flex"
+                                                alignItems="center"
+                                                gap={1}
+                                                border="1px solid"
+                                                borderColor="divider"
+                                                bgcolor="background.paper"
+                                            >
+                                                <BathtubIcon />
+                                                <Typography variant="body1">{project.bathroom} ห้องน้ำ</Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid size={{ xs: 12, sm: 6 }}>
+                                            <Box
+                                                p={2}
+                                                display="flex"
+                                                alignItems="center"
+                                                gap={1}
+                                                border="1px solid"
+                                                borderColor="divider"
+                                                bgcolor="background.paper"
+                                            >
+                                                <WeekendIcon />
+                                                <Typography variant="body1">{project.livingroom} ห้องนั่งเล่น</Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid size={{ xs: 12, sm: 6 }}>
+                                            <Box
+                                                p={2}
+                                                display="flex"
+                                                alignItems="center"
+                                                gap={1}
+                                                border="1px solid"
+                                                borderColor="divider"
+                                                bgcolor="background.paper"
+                                            >
+                                                <KitchenIcon />
+                                                <Typography variant="body1">{project.kitchen} ห้องครัว</Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid size={{ xs: 12, sm: 6 }}>
+                                            <Box
+                                                p={2}
+                                                display="flex"
+                                                alignItems="center"
+                                                gap={1}
+                                                border="1px solid"
+                                                borderColor="divider"
+                                                bgcolor="background.paper"
+                                            >
+                                                <DirectionsCarIcon />
+                                                <Typography variant="body1">ที่จอดรถ {project.parking} คัน</Typography>
+                                            </Box>
+                                        </Grid>
                                     </Grid>
-                                    <Grid size={{ xs: 12, sm: 6 }}>
-                                        <Box
-                                            p={2}
-                                            display="flex"
-                                            alignItems="center"
-                                            gap={1}
-                                            border="1px solid"
-                                            borderColor="divider"
-                                            bgcolor="background.paper"
-                                        >
-                                            <StraightenIcon />
-                                            <Typography variant="body1">กว้างลึก {project.space} ม.</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid size={{ xs: 12, sm: 6 }}>
-                                        <Box
-                                            p={2}
-                                            display="flex"
-                                            alignItems="center"
-                                            gap={1}
-                                            border="1px solid"
-                                            borderColor="divider"
-                                            bgcolor="background.paper"
-                                        >
-                                            <BedIcon />
-                                            <Typography variant="body1">{project.bedroom} ห้องนอน</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid size={{ xs: 12, sm: 6 }}>
-                                        <Box
-                                            p={2}
-                                            display="flex"
-                                            alignItems="center"
-                                            gap={1}
-                                            border="1px solid"
-                                            borderColor="divider"
-                                            bgcolor="background.paper"
-                                        >
-                                            <BathtubIcon />
-                                            <Typography variant="body1">{project.bathroom} ห้องน้ำ</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid size={{ xs: 12, sm: 6 }}>
-                                        <Box
-                                            p={2}
-                                            display="flex"
-                                            alignItems="center"
-                                            gap={1}
-                                            border="1px solid"
-                                            borderColor="divider"
-                                            bgcolor="background.paper"
-                                        >
-                                            <WeekendIcon />
-                                            <Typography variant="body1">{project.livingroom} ห้องนั่งเล่น</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid size={{ xs: 12, sm: 6 }}>
-                                        <Box
-                                            p={2}
-                                            display="flex"
-                                            alignItems="center"
-                                            gap={1}
-                                            border="1px solid"
-                                            borderColor="divider"
-                                            bgcolor="background.paper"
-                                        >
-                                            <KitchenIcon />
-                                            <Typography variant="body1">{project.kitchen} ห้องครัว</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid size={{ xs: 12, sm: 6 }}>
-                                        <Box
-                                            p={2}
-                                            display="flex"
-                                            alignItems="center"
-                                            gap={1}
-                                            border="1px solid"
-                                            borderColor="divider"
-                                            bgcolor="background.paper"
-                                        >
-                                            <DirectionsCarIcon />
-                                            <Typography variant="body1">ที่จอดรถ {project.parking} คัน</Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-                                <Box>
-                                    <Button component={Link} href="/contact" variant="contained">
-                                        ติดต่อเรา
-                                    </Button>
+                                    <Box>
+                                        <Button component={Link} href="/contact" variant="contained">
+                                            ติดต่อเรา
+                                        </Button>
+                                    </Box>
                                 </Box>
-                            </Box>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </FadeInSection>
 
                     <Divider />
 

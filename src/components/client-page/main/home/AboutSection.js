@@ -24,22 +24,20 @@ function AboutSection() {
         >
             <Grid container spacing={6} maxWidth="1400px" m="0px auto" alignItems="center">
                 <Grid size={{ xs: 12, lg: 6 }}>
-                    <FadeInSection direction="left">
-                        <Box
-                            width="100%"
-                            height={{ xs: 250, sm: 350, md: 450 }}
-                            position="relative"
-                            overflow="hidden"
-                        >
-                            <Image
-                                src="/about.webp"
-                                alt="ทีมงานออกแบบบ้านและรีโนเวทบ้าน โดย Mepatcs"
-                                fill
-                                sizes={gridToSizes({ xs: 12, lg: 6 }, 1400)}
-                                style={{ objectFit: "cover" }}
-                            />
-                        </Box>
-                    </FadeInSection>
+                    <Box
+                        width="100%"
+                        height={{ xs: 250, sm: 350, md: 450 }}
+                        position="relative"
+                        overflow="hidden"
+                    >
+                        <Image
+                            src="/about.webp"
+                            alt="ทีมงานออกแบบบ้านและรีโนเวทบ้าน โดย Mepatcs"
+                            fill
+                            sizes={gridToSizes({ xs: 12, lg: 6 }, 1400)}
+                            style={{ objectFit: "cover" }}
+                        />
+                    </Box>
                 </Grid>
                 <Grid size={{ xs: 12, lg: 6 }}>
                     <FadeInSection direction="right">

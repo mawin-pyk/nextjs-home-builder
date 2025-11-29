@@ -25,7 +25,6 @@
     "cloudinary": "^2.7.0",
     "date-fns": "^4.1.0",
     "firebase-admin": "^13.5.0",
-    "framer-motion": "^12.23.9",
     "jose": "^6.1.0",
     "jsonwebtoken": "^9.0.2",
     "next": "15.4.3",
