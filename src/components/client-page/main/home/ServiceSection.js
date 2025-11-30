@@ -42,55 +42,55 @@ function ServiceSection() {
             gap={4}
         >
             <Box width="100%" maxWidth="1400px" m="0px auto" textAlign="center">
-                <Typography variant="h3" fontSize="32px" fontWeight="600" gutterBottom>
-                    บริการของเรา
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary">
-                    เราพร้อมดูแลทุกขั้นตอนในการสร้างบ้านในฝันของคุณ
-                </Typography>
+                <FadeInSection direction="right">
+                    <Typography variant="h3" fontSize="32px" fontWeight="600" gutterBottom>
+                        บริการของเรา
+                    </Typography>
+                    <Typography variant="subtitle1" color="textSecondary">
+                        เราพร้อมดูแลทุกขั้นตอนในการสร้างบ้านในฝันของคุณ
+                    </Typography>
+                </FadeInSection>
             </Box>
-            <FadeInSection>
-                <Grid container spacing={4} width="100%" maxWidth="1400px" m="0px auto">
-                    {services.map((service, index) => (
-                        <Grid
-                            component={Link}
-                            href={`/services`}
-                            key={index}
-                            size={{ xs: 12, sm: 6, lg: 4 }}
+            <Grid container spacing={4} width="100%" maxWidth="1400px" m="0px auto">
+                {services.map((service, index) => (
+                    <Grid
+                        component={Link}
+                        href={`/services`}
+                        key={index}
+                        size={{ xs: 12, sm: 6, lg: 4 }}
+                    >
+                        <Box
+                            height="300px"
+                            mt={{ xs: 0, sm: 0, lg: index % 2 === 0 ? 0 : 10 }}
+                            position="relative"
                         >
+                            <Image
+                                src={service.image}
+                                alt={service.title}
+                                fill
+                                sizes={gridToSizes({ xs: 12, sm: 6, lg: 4 }, 1400)}
+                                style={{ objectFit: "cover" }}
+                            />
                             <Box
-                                height="300px"
-                                mt={{ xs: 0, sm: 0, lg: index % 2 === 0 ? 0 : 10 }}
-                                position="relative"
+                                width="100%"
+                                p={2}
+                                position="absolute"
+                                bottom="0px"
+                                color="#ffffff"
+                                sx={{ background: "linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0))" }}
                             >
-                                <Image
-                                    src={service.image}
-                                    alt={service.title}
-                                    fill
-                                    sizes={gridToSizes({ xs: 12, sm: 6, lg: 4 }, 1400)}
-                                    style={{ objectFit: "cover" }}
-                                />
-                                <Box
-                                    width="100%"
-                                    p={2}
-                                    position="absolute"
-                                    bottom="0px"
-                                    color="#ffffff"
-                                    sx={{ background: "linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0))" }}
-                                >
-                                    <Typography variant="h4" fontSize="18px" fontWeight="600" gutterBottom>
-                                        {service.title}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                        {service.description}
-                                    </Typography>
-                                </Box>
+                                <Typography variant="h4" fontSize="18px" fontWeight="600" gutterBottom>
+                                    {service.title}
+                                </Typography>
+                                <Typography variant="body2">
+                                    {service.description}
+                                </Typography>
                             </Box>
-                        </Grid>
-                    ))}
-                </Grid>
-            </FadeInSection>
-        </Box>
+                        </Box>
+                    </Grid>
+                ))}
+            </Grid>
+        </Box >
     );
 }
 

@@ -28,68 +28,67 @@ function ProjectSection({ projects }) {
             gap={4}
         >
             <Box width="100%" maxWidth="1400px" m="0px auto">
-                <Typography variant="h3" fontSize="32px" fontWeight="600" gutterBottom>
-                    ผลงานของเรา
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary">
-                    ผลงานการก่อสร้างบ้านจริง ที่ลูกค้าไว้วางใจให้เราดูแล
-                </Typography>
+                <FadeInSection direction="right">
+                    <Typography variant="h3" fontSize="32px" fontWeight="600" gutterBottom>
+                        ผลงานของเรา
+                    </Typography>
+                    <Typography variant="subtitle1" color="textSecondary">
+                        ผลงานการก่อสร้างบ้านจริง ที่ลูกค้าไว้วางใจให้เราดูแล
+                    </Typography>
+                </FadeInSection>
             </Box>
-            <FadeInSection>
-                <Grid container spacing={4} width="100%" maxWidth="1400px" m="0px auto">
-                    {projects.map((project, index) => (
-                        <Grid
-                            component={Link}
-                            href={`/projects/${project.slug}`}
-                            key={index}
-                            size={{ xs: 12, sm: 6, md: 3, lg: 2.4 }}
-                        >
-                            <Card sx={{ height: "100%" }}>
-                                <Box width="100%" height="180px" position="relative">
-                                    <Image
-                                        src={project.images[0]}
-                                        alt={`${project.title} โดย Mepatcs`}
-                                        fill
-                                        sizes={gridToSizes({ xs: 12, sm: 6, md: 3, lg: 2.4 }, 1400)}
-                                        style={{ objectFit: "cover" }}
-                                    />
-                                </Box>
-                                <CardContent>
-                                    <Typography
-                                        variant="h4"
-                                        fontSize="18px"
-                                        fontWeight="600"
-                                        gutterBottom
-                                        sx={{
-                                            display: "-webkit-box",
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            WebkitBoxOrient: "vertical",
-                                            WebkitLineClamp: 1,
-                                        }}
-                                    >
-                                        {project.title}
-                                    </Typography>
-                                    <Typography
-                                        variant="body2"
-                                        color="textSecondary"
-                                        sx={{
-                                            display: "-webkit-box",
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            WebkitBoxOrient: "vertical",
-                                            WebkitLineClamp: 2,
-                                        }}
-                                    >
-                                        {project.description}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-            </FadeInSection>
-
+            <Grid container spacing={4} width="100%" maxWidth="1400px" m="0px auto">
+                {projects.map((project, index) => (
+                    <Grid
+                        component={Link}
+                        href={`/projects/${project.slug}`}
+                        key={index}
+                        size={{ xs: 12, sm: 6, md: 3, lg: 2.4 }}
+                    >
+                        <Card sx={{ height: "100%" }}>
+                            <Box width="100%" height="180px" position="relative">
+                                <Image
+                                    src={project.images[0]}
+                                    alt={`${project.title} โดย Mepatcs`}
+                                    fill
+                                    sizes={gridToSizes({ xs: 12, sm: 6, md: 3, lg: 2.4 }, 1400)}
+                                    style={{ objectFit: "cover" }}
+                                />
+                            </Box>
+                            <CardContent>
+                                <Typography
+                                    variant="h4"
+                                    fontSize="18px"
+                                    fontWeight="600"
+                                    gutterBottom
+                                    sx={{
+                                        display: "-webkit-box",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        WebkitBoxOrient: "vertical",
+                                        WebkitLineClamp: 1,
+                                    }}
+                                >
+                                    {project.title}
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="textSecondary"
+                                    sx={{
+                                        display: "-webkit-box",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        WebkitBoxOrient: "vertical",
+                                        WebkitLineClamp: 2,
+                                    }}
+                                >
+                                    {project.description}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
             <Box width="100%" maxWidth="1400px" m="0px auto" display="flex" justifyContent="flex-end" alignItems="center">
                 <Button component={Link} href="/projects" variant="contained" size="large">ดูผลงานของเราทั้งหมด</Button>
             </Box>

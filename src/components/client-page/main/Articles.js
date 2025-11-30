@@ -53,63 +53,61 @@ function Articles({ articles }) {
                         </Box>
                     </FadeInSection>
 
-                    <FadeInSection>
-                        <Grid container spacing={4}>
-                            {articles.map((article, index) => (
-                                <Grid
-                                    key={index}
-                                    size={{ xs: 12, sm: 6, md: 3, lg: 2.4 }}
-                                >
-                                    <Card sx={{ height: "100%" }}>
-                                        <Box width="100%" height="180px" position="relative">
-                                            <Image
-                                                src={article.images[0]}
-                                                alt={`${article.title} โดย Mepatcs`}
-                                                fill
-                                                sizes={gridToSizes({ xs: 12, sm: 6, md: 3, lg: 2.4 }, 1400)}
-                                                style={{ objectFit: "cover" }}
-                                            />
-                                        </Box>
-                                        <CardContent>
-                                            <Typography
-                                                variant="h4"
-                                                fontSize="18px"
-                                                fontWeight="600"
-                                                gutterBottom
-                                                sx={{
-                                                    display: "-webkit-box",
-                                                    overflow: "hidden",
-                                                    textOverflow: "ellipsis",
-                                                    WebkitBoxOrient: "vertical",
-                                                    WebkitLineClamp: 1,
-                                                }}
-                                            >
-                                                {article.title}
-                                            </Typography>
-                                            <Typography
-                                                variant="body2"
-                                                color="textSecondary"
-                                                sx={{
-                                                    display: "-webkit-box",
-                                                    overflow: "hidden",
-                                                    textOverflow: "ellipsis",
-                                                    WebkitBoxOrient: "vertical",
-                                                    WebkitLineClamp: 2,
-                                                }}
-                                            >
-                                                {article.description}
-                                            </Typography>
-                                        </CardContent>
-                                        <Box px={2} pb={2}>
-                                            <Button component={Link} href={`/articles/${article.slug}`} size="small" variant="outlined">
-                                                อ่านต่อ
-                                            </Button>
-                                        </Box>
-                                    </Card>
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </FadeInSection>
+                    <Grid container spacing={4}>
+                        {articles.map((article, index) => (
+                            <Grid
+                                key={index}
+                                size={{ xs: 12, sm: 6, md: 3, lg: 2.4 }}
+                            >
+                                <Card sx={{ height: "100%" }}>
+                                    <Box width="100%" height="180px" position="relative">
+                                        <Image
+                                            src={article.images[0]}
+                                            alt={`${article.title} โดย Mepatcs`}
+                                            fill
+                                            sizes={gridToSizes({ xs: 12, sm: 6, md: 3, lg: 2.4 }, 1400)}
+                                            style={{ objectFit: "cover" }}
+                                        />
+                                    </Box>
+                                    <CardContent>
+                                        <Typography
+                                            variant="h4"
+                                            fontSize="18px"
+                                            fontWeight="600"
+                                            gutterBottom
+                                            sx={{
+                                                display: "-webkit-box",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitBoxOrient: "vertical",
+                                                WebkitLineClamp: 1,
+                                            }}
+                                        >
+                                            {article.title}
+                                        </Typography>
+                                        <Typography
+                                            variant="body2"
+                                            color="textSecondary"
+                                            sx={{
+                                                display: "-webkit-box",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitBoxOrient: "vertical",
+                                                WebkitLineClamp: 2,
+                                            }}
+                                        >
+                                            {article.description}
+                                        </Typography>
+                                    </CardContent>
+                                    <Box px={2} pb={2}>
+                                        <Button component={Link} href={`/articles/${article.slug}`} size="small" variant="outlined">
+                                            อ่านต่อ
+                                        </Button>
+                                    </Box>
+                                </Card>
+                            </Grid>
+                        ))}
+                    </Grid>
                 </Box>
             </Box>
             <Footer />

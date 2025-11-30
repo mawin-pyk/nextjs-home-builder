@@ -35,7 +35,7 @@ function BannerSection() {
                     }
                 }}
             >
-                <FadeInSection direction="right">
+                <FadeInSection>
                     <Typography variant="h1" fontSize="48px" fontWeight="400">
                         รับสร้างบ้าน
                     </Typography>

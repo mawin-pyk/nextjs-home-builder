@@ -88,16 +88,14 @@ function ArticleDetail({ article, otherArticles }) {
                         </Box>
                     </FadeInSection>
 
-                    <FadeInSection>
-                        <Box width="100%" maxWidth="lg" m="0px auto">
-                            <Typography variant="h1" fontSize={{ xs: "32px", md: "40px" }} fontWeight="400">
-                                {article.title}
-                            </Typography>
-                            <Typography variant="subtitle1" color="textSecondary">
-                                {article.description}
-                            </Typography>
-                        </Box>
-                    </FadeInSection>
+                    <Box width="100%" maxWidth="lg" m="0px auto">
+                        <Typography variant="h1" fontSize={{ xs: "32px", md: "40px" }} fontWeight="400">
+                            {article.title}
+                        </Typography>
+                        <Typography variant="subtitle1" color="textSecondary">
+                            {article.description}
+                        </Typography>
+                    </Box>
 
                     <Box width="100%" maxWidth="lg" m="0px auto">
                         <div
