@@ -1,3 +1,5 @@
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
 export function createMetadata({
     title,
     description,
@@ -10,7 +12,10 @@ export function createMetadata({
         title,
         description,
         keywords,
-        canonical,
+        baseUrl,
+        alternates: {
+            canonical: canonical,
+        },
         robots,
         openGraph
     };
