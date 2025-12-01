@@ -12,7 +12,7 @@ export function createMetadata({
         title,
         description,
         keywords,
-        baseUrl,
+        metadataBase: new URL(baseUrl),
         alternates: {
             canonical: canonical,
         },
