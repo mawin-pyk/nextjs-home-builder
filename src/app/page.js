@@ -4,7 +4,7 @@ import { createMetadata } from "@/helpers/metadata";
 import Home from "@/components/client-page/main/home/Home";
 
 export const metadata = createMetadata({
-    title: "Mepatcs | รับสร้างบ้าน",
+    title: "Mepatcs | รับสร้างบ้านครบวงจร บ้านคุณภาพ งานโครงสร้างและตกแต่งภายใน",
     description: "Mepatcs รับสร้างบ้านครบวงจร ตั้งแต่แบบบ้าน งานโครงสร้าง จนถึงตกแต่งภายใน ทีมงานมืออาชีพ ดูแลทุกขั้นตอนอย่างใส่ใจ รับประกันคุณภาพทุกหลัง",
     keywords: [
         "รับสร้างบ้าน",
