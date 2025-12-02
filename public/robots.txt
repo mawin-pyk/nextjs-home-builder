@@ -4,3 +4,5 @@ Allow: /
 Disallow: /admin
 Disallow: /login
 Disallow: /register
+
+Sitemap: http://nextjs-home-builder.vercel.app/sitemap.xml

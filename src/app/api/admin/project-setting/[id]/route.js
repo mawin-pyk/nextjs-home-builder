@@ -178,6 +178,7 @@ export async function PUT(request, { params }) {
             kitchen,
             parking,
             images: [...urls, ...images],
+            updatedAt: new Date()
         });
 
         if (!updateResult) {
