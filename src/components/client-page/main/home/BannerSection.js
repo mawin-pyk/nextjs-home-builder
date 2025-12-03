@@ -16,43 +16,77 @@ function BannerSection() {
             height="100vh"
             position="relative"
         >
-            <Image src="/banner.webp" alt="ออกแบบบ้าน" fill sizes="100vw" style={{ objectFit: "cover" }} priority />
+            <Image
+                src="/banner.webp"
+                alt="banner"
+                fill
+                sizes="100vw"
+                style={{ objectFit: "cover", filter: "brightness(40%)" }}
+                priority
+            />
             <Box
-                width="85%"
-                maxWidth="360px"
-                p={2}
+                width="100%"
+                pt={{ xs: 6, sm: 20 }}
+                pb={{ xs: 6, sm: 8 }}
+                px={{ xs: 2, sm: 3 }}
+                boxSizing="border-box"
                 position="absolute"
                 top="50%"
                 left="50%"
-                textAlign={{ xs: "center", lg: "left" }}
-                color="#ffffff"
-                bgcolor="rgba(0, 0, 0, 0.7)"
-                sx={{
-                    transform: {
-                        xs: "translate(-50%, -50%)",
-                        lg: "translate(-120%, -50%)",
-                        xl: "translate(-160%, -50%)",
-                    }
-                }}
+                sx={{ transform: "translate(-50%, -50%)" }}
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                gap={2}
             >
+
                 <FadeInSection>
-                    <Typography variant="h1" fontSize="48px" fontWeight="400">
-                        รับสร้างบ้าน
+                    <Typography
+                        variant="h1"
+                        sx={{
+                            fontSize: { xs: "56px", md: "64px", lg: "72px" },
+                            fontWeight: { xs: "400", md: "600" },
+                            color: "#ffffff",
+                            textAlign: "center"
+                        }}>
+                        MEPATCH รับสร้างบ้าน
                     </Typography>
-                    <Typography variant="h2" fontSize="40px" fontWeight="400">
-                        Mepatcs
+                    <Typography
+                        variant="h2"
+                        sx={{
+                            fontSize: { xs: "32px", md: "40px", lg: "48px" },
+                            fontWeight: { xs: "400", md: "600" },
+                            color: "#ffffff",
+                            textAlign: "center"
+                        }}
+                    >
+                        รับสร้างบ้านครบวงจร งานโครงสร้างและตกแต่งภายใน
                     </Typography>
-                    <Typography variant="subtitle1" fontSize="24px" gutterBottom>
-                        Build Your Dream Home
-                    </Typography>
+                </FadeInSection>
+
+                <Box mt={8} display="flex" justifyContent="center" alignItems="center" gap={2}>
+                    <Button
+                        component={Link}
+                        href="/"
+                        variant="outlined"
+                        size="large"
+                        sx={{
+                            border: "2px solid"
+                        }}
+                    >
+                        แบบบ้าน
+                    </Button>
                     <Button
                         component={Link}
                         href="/contact"
                         variant="contained"
+                        size="large"
                     >
                         ติดต่อเรา
                     </Button>
-                </FadeInSection>
+                </Box>
+
             </Box>
         </Box>
     );
