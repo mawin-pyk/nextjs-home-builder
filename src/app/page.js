@@ -19,7 +19,7 @@ export const metadata = createMetadata({
 
 const getProjects = async () => {
     try {
-        const snapshot = await db.collection("projects").limit(5).get();
+        const snapshot = await db.collection("projects").limit(4).get();
         const projects = snapshot.docs.map((doc) => {
             const data = doc.data();
             return {
@@ -39,7 +39,7 @@ const getProjects = async () => {
 
 const getArticles = async () => {
     try {
-        const snapshot = await db.collection("articles").limit(5).get();
+        const snapshot = await db.collection("articles").limit(4).get();
         const articles = snapshot.docs.map((doc) => {
             const data = doc.data();
             return {
