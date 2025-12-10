@@ -58,21 +58,23 @@ function ServiceSection() {
             </Box>
 
             <FadeInSection>
-                <Grid container spacing={4} width="100%" maxWidth="1400px" m="0px auto">
+                <Box
+                    display={{ xs: "flex", sm: "none" }}
+                    overflow="auto"
+                    gap={2}
+                    sx={{
+                        scrollSnapType: "x mandatory",
+                        "&::-webkit-scrollbar": { display: "none" },
+                    }}
+                >
                     {services.map((service, index) => (
-                        <Grid
-                            component={Link}
-                            href={`/services`}
+                        <Box
                             key={index}
-                            size={{ xs: 12, sm: 6, lg: 4 }}
+                            component={Link}
+                            href={`/services/${service.slug}`}
                             sx={{
-                                overflow: "hidden",
-                                "& img": {
-                                    transition: "transform 0.6s ease"
-                                },
-                                "&:hover img": {
-                                    transform: "scale(1.1)"
-                                }
+                                flex: "0 0 85%",
+                                scrollSnapAlign: "center",
                             }}
                         >
                             <Box>
@@ -110,9 +112,66 @@ function ServiceSection() {
                                     </Typography>
                                 </Box>
                             </Box>
-                        </Grid>
+                        </Box>
                     ))}
-                </Grid>
+                </Box>
+                <Box display={{ xs: "none", sm: "block" }}>
+                    <Grid container spacing={4} width="100%" maxWidth="1400px" m="0px auto">
+                        {services.map((service, index) => (
+                            <Grid
+                                component={Link}
+                                href={`/services`}
+                                key={index}
+                                size={{ xs: 12, sm: 6, lg: 4 }}
+                                sx={{
+                                    overflow: "hidden",
+                                    "& img": {
+                                        transition: "transform 0.6s ease"
+                                    },
+                                    "&:hover img": {
+                                        transform: "scale(1.1)"
+                                    }
+                                }}
+                            >
+                                <Box>
+                                    <Box position="relative" width="100%" height="360px">
+                                        <Image
+                                            src={service.image}
+                                            alt={service.title}
+                                            fill
+                                            sizes={gridToSizes({ xs: 12, sm: 6, lg: 4 }, 1400)}
+                                            style={{ objectFit: "cover" }}
+                                        />
+                                    </Box>
+                                    <Box p={4} border="1px solid" borderColor="divider" sx={{ color: "text.primary" }}>
+                                        <Box display="flex" justifyContent="flex-start" alignItems="center" gap={2}>
+                                            <Box
+                                                width="50px"
+                                                height="50px"
+                                                mb={2}
+                                                p={1}
+                                                boxSizing="border-box"
+                                                display="flex"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                                bgcolor="divider"
+                                                borderRadius="50%"
+                                            >
+                                                {service.icon}
+                                            </Box>
+                                            <Typography variant="h4" fontSize="22px" fontWeight="600" gutterBottom>
+                                                {service.title}
+                                            </Typography>
+                                        </Box>
+                                        <Typography variant="body2">
+                                            {service.description}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
             </FadeInSection>
         </Box>
     );
