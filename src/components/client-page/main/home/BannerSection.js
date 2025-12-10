@@ -50,7 +50,7 @@ function BannerSection() {
                             color: "#ffffff",
                             textAlign: "center"
                         }}>
-                        MEPATCH รับสร้างบ้าน
+                        MEPATCS รับสร้างบ้าน
                     </Typography>
                     <Typography
                         variant="h2"
