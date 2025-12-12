@@ -11,9 +11,9 @@ import {
     Divider,
     Card,
     CardContent,
-    Button
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 // lightbox
 import { PhotoProvider, PhotoView } from "react-photo-view";
@@ -53,7 +53,7 @@ function ArticleDetail({ article, otherArticles }) {
                 >
                     <CustomBreadcrumbs items={breadcrumbs} />
 
-                    <FadeInSection direction="right">
+                    <FadeInSection>
                         <Box
                             width="100%"
                             maxWidth="lg"
@@ -111,14 +111,19 @@ function ArticleDetail({ article, otherArticles }) {
                         </Typography>
                         <Grid container spacing={4}>
                             {otherArticles.map((article, index) => (
-                                <Grid key={index} size={{ xs: 12, sm: 6, md: 3, lg: 2.4 }}>
+                                <Grid
+                                    component={Link}
+                                    href={`/articles/${article.slug}`}
+                                    key={index}
+                                    size={{ xs: 12, sm: 6, lg: 3, }}
+                                >
                                     <Card sx={{ height: "100%" }}>
                                         <Box width="100%" height="180px" position="relative">
                                             <Image
                                                 src={article.images[0]}
                                                 alt={`${article.title} โดย Mepatcs`}
                                                 fill
-                                                sizes={gridToSizes({ xs: 12, sm: 6, md: 3, lg: 2.4 }, 1400)}
+                                                sizes={gridToSizes({ xs: 12, sm: 6, lg: 3, }, 1400)}
                                                 style={{ objectFit: "cover" }}
                                             />
                                         </Box>
@@ -151,12 +156,10 @@ function ArticleDetail({ article, otherArticles }) {
                                             >
                                                 {article.description}
                                             </Typography>
+                                            <Typography variant="body2" color="textSecondary" mt={4} textAlign="right" display="flex" alignItems="center" justifyContent="flex-end" gap={0.5}>
+                                                <AccessTimeIcon fontSize="small" /> {article.createdAt.split(" ")[0]}
+                                            </Typography>
                                         </CardContent>
-                                        <Box px={2} pb={2}>
-                                            <Button component={Link} href={`/articles/${article.slug}`} size="small" variant="outlined">
-                                                อ่านต่อ
-                                            </Button>
-                                        </Box>
                                     </Card>
                                 </Grid>
                             ))}

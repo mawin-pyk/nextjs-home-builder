@@ -6,9 +6,9 @@ import {
     Grid,
     Card,
     CardContent,
-    Typography,
-    Button,
+    Typography
 } from "@mui/material";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 import { gridToSizes } from "@/helpers/helpers";
 
@@ -42,13 +42,13 @@ function Articles({ articles }) {
                 >
                     <CustomBreadcrumbs items={breadcrumbs} />
 
-                    <FadeInSection direction="right">
+                    <FadeInSection>
                         <Box textAlign="center">
                             <Typography variant="h1" fontSize={{ xs: "32px", md: "40px" }} fontWeight="400" gutterBottom>
                                 บทความ
                             </Typography>
                             <Typography variant="subtitle1" color="textSecondary">
-                                รวมผลงานที่เราออกแบบและสร้างด้วยความใส่ใจทุกรายละเอียด ทั้งบ้านเดี่ยว คอนโด และรีสอร์ท
+                                บทความเกี่ยวกับบ้าน เคล็ดลับและความรู้
                             </Typography>
                         </Box>
                     </FadeInSection>
@@ -56,8 +56,10 @@ function Articles({ articles }) {
                     <Grid container spacing={4}>
                         {articles.map((article, index) => (
                             <Grid
+                                component={Link}
+                                href={`/articles/${article.slug}`}
                                 key={index}
-                                size={{ xs: 12, sm: 6, md: 3, lg: 2.4 }}
+                                size={{ xs: 12, sm: 6, lg: 3, }}
                             >
                                 <Card sx={{ height: "100%" }}>
                                     <Box width="100%" height="180px" position="relative">
@@ -65,7 +67,7 @@ function Articles({ articles }) {
                                             src={article.images[0]}
                                             alt={`${article.title} โดย Mepatcs`}
                                             fill
-                                            sizes={gridToSizes({ xs: 12, sm: 6, md: 3, lg: 2.4 }, 1400)}
+                                            sizes={gridToSizes({ xs: 12, sm: 6, lg: 3, }, 1400)}
                                             style={{ objectFit: "cover" }}
                                         />
                                     </Box>
@@ -98,12 +100,10 @@ function Articles({ articles }) {
                                         >
                                             {article.description}
                                         </Typography>
+                                        <Typography variant="body2" color="textSecondary" mt={4} textAlign="right" display="flex" alignItems="center" justifyContent="flex-end" gap={0.5}>
+                                            <AccessTimeIcon fontSize="small" /> {article.createdAt.split(" ")[0]}
+                                        </Typography>
                                     </CardContent>
-                                    <Box px={2} pb={2}>
-                                        <Button component={Link} href={`/articles/${article.slug}`} size="small" variant="outlined">
-                                            อ่านต่อ
-                                        </Button>
-                                    </Box>
                                 </Card>
                             </Grid>
                         ))}

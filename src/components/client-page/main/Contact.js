@@ -42,7 +42,7 @@ function Contact() {
                 >
                     <CustomBreadcrumbs items={breadcrumbs} />
 
-                    <FadeInSection direction="right">
+                    <FadeInSection>
                         <Box textAlign="center">
                             <Typography variant="h1" fontSize={{ xs: "32px", md: "40px" }} fontWeight="400" gutterBottom>
                                 ติดต่อเรา

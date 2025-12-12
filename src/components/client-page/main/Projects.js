@@ -10,6 +10,9 @@ import {
     CardContent,
     Typography,
 } from "@mui/material";
+import BedIcon from "@mui/icons-material/Bed";
+import BathtubIcon from "@mui/icons-material/Bathtub";
+import KitchenIcon from "@mui/icons-material/Kitchen";
 
 import { gridToSizes } from "@/helpers/helpers";
 
@@ -42,13 +45,13 @@ function Projects({ projects }) {
                 >
                     <CustomBreadcrumbs items={breadcrumbs} />
 
-                    <FadeInSection direction="right">
+                    <FadeInSection>
                         <Box textAlign="center">
                             <Typography variant="h1" fontSize={{ xs: "32px", md: "40px" }} fontWeight="400" gutterBottom>
                                 ผลงานของเรา
                             </Typography>
                             <Typography variant="subtitle1" color="textSecondary">
-                                รวมผลงานที่เราออกแบบและสร้างด้วยความใส่ใจทุกรายละเอียด ทั้งบ้านเดี่ยว คอนโด และรีสอร์ท
+                                ผลงานการก่อสร้างบ้านจริง ที่ลูกค้าไว้วางใจให้เราดูแล
                             </Typography>
                         </Box>
                     </FadeInSection>
@@ -59,7 +62,7 @@ function Projects({ projects }) {
                                 component={Link}
                                 href={`/projects/${project.slug}`}
                                 key={index}
-                                size={{ xs: 12, sm: 6, md: 3, lg: 2.4 }}
+                                size={{ xs: 12, sm: 6, lg: 3 }}
                             >
                                 <Card sx={{ height: "100%" }}>
                                     <Box width="100%" height="180px" position="relative">
@@ -67,7 +70,7 @@ function Projects({ projects }) {
                                             src={project.images[0]}
                                             alt={`${project.title} โดย Mepatcs`}
                                             fill
-                                            sizes={gridToSizes({ xs: 12, sm: 6, md: 3, lg: 2.4 }, 1400)}
+                                            sizes={gridToSizes({ xs: 12, sm: 6, lg: 3 }, 1400)}
                                             style={{ objectFit: "cover" }}
                                         />
                                     </Box>
@@ -100,6 +103,22 @@ function Projects({ projects }) {
                                         >
                                             {project.description}
                                         </Typography>
+                                        <Box mt={4} display="flex" flexWrap="wrap" justifyContent="flex-start" alignItems="center" gap={2}>
+                                            <Box display="flex" justifyContent="flex-start" alignItems="center" gap={0.5}>
+                                                <BedIcon fontSize="small" />
+                                                <Typography variant="body2">{project.bedroom} ห้องนอน</Typography>
+                                            </Box>
+
+                                            <Box display="flex" justifyContent="flex-start" alignItems="center" gap={0.5}>
+                                                <BathtubIcon fontSize="small" />
+                                                <Typography variant="body2">{project.bathroom} ห้องน้ำ</Typography>
+                                            </Box>
+
+                                            <Box display="flex" justifyContent="flex-start" alignItems="center" gap={0.5}>
+                                                <KitchenIcon fontSize="small" />
+                                                <Typography variant="body2">{project.kitchen} ห้องครัว</Typography>
+                                            </Box>
+                                        </Box>
                                     </CardContent>
                                 </Card>
                             </Grid>
