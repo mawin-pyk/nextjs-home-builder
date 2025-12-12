@@ -71,7 +71,7 @@ function ServiceSection() {
                         <Box
                             key={index}
                             component={Link}
-                            href={`/services/${service.slug}`}
+                            href={`/services`}
                             sx={{
                                 flex: "0 0 85%",
                                 scrollSnapAlign: "center",
