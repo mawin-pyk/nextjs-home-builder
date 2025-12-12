@@ -5,7 +5,7 @@ import {
     Typography,
     Grid,
 } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 import { gridToSizes } from "@/helpers/helpers";
 
@@ -45,7 +45,7 @@ function AboutSection() {
                             เราคือใคร?
                         </Typography>
                         <Typography variant="subtitle1">
-                            {'สวัสดีค่ะ! เราคือทีมงาน เมพัฒน์.ซีเอส ที่นี่เราไม่ได้มองว่าตัวเองเป็นแค่ "ผู้รับเหมา" แต่เราอยากเป็นเหมือน "พี่ชาย/น้องสาว" หรือ "เพื่อนสนิท" ที่คุณไว้ใจให้ช่วยดูแลงานก่อสร้างทุกอย่าง เราเข้าใจดีว่าการจะสร้างอะไรสักอย่าง ทั้งบ้านพักอาศัย หรืออาคารธุรกิจ มันคือการลงทุนครั้งใหญ่ในชีวิต ดังนั้น... เราจะดูแลให้ดีที่สุดเหมือนเป็นของของเราเองค่ะ!'}
+                            {'สวัสดีค่ะ เราคือทีมงาน เมพัฒน์.ซีเอส ที่นี่เราไม่ได้มองว่าตัวเองเป็นแค่ "ผู้รับเหมา" แต่เราอยากเป็นเหมือน พี่ชาย/น้องสาว หรือ เพื่อนสนิท ที่คุณไว้ใจให้ช่วยดูแลงานก่อสร้างทุกอย่าง เราเข้าใจดีว่าการจะสร้างอะไรสักอย่าง ทั้งบ้านพักอาศัย หรืออาคารธุรกิจ มันคือการลงทุนครั้งใหญ่ในชีวิต ดังนั้น เราจะดูแลให้ดีที่สุดเหมือนเป็นของของเราเองค่ะ'}
                         </Typography>
                         <Box mt={4} display="flex" flexDirection="column" gap={1}>
 
@@ -60,23 +60,23 @@ function AboutSection() {
                                 งานที่เราพร้อมดูแลให้คุณ
                             </Typography>
                             <Box display="flex" justifyContent="flex-start" alignItems="flex-start" gap={1}>
-                                <CheckCircleIcon fontSize="small" color="success" />
-                                <Typography variant="body1">ไม่ว่าโปรเจกต์จะเล็กจะใหญ่ แค่ไหน เราก็พร้อมลุย!</Typography>
+                                <CheckBoxIcon fontSize="small" color="success" />
+                                <Typography variant="body1">ไม่ว่าโปรเจกต์จะเล็กจะใหญ่ แค่ไหน เราก็พร้อมลุย</Typography>
                             </Box>
                             <Box display="flex" justifyContent="flex-start" alignItems="flex-start" gap={1}>
-                                <CheckCircleIcon fontSize="small" color="success" />
+                                <CheckBoxIcon fontSize="small" color="success" />
                                 <Typography variant="body1">งานบ้านในฝัน: บ้านเดี่ยว, ทาวน์โฮม, อาคารที่พักอาศัย</Typography>
                             </Box>
                             <Box display="flex" justifyContent="flex-start" alignItems="flex-start" gap={1}>
-                                <CheckCircleIcon fontSize="small" color="success" />
+                                <CheckBoxIcon fontSize="small" color="success" />
                                 <Typography variant="body1">งานอาคารธุรกิจ: ออฟฟิศ, ร้านอาหาร, โรงแรม</Typography>
                             </Box>
                             <Box display="flex" justifyContent="flex-start" alignItems="flex-start" gap={1}>
-                                <CheckCircleIcon fontSize="small" color="success" />
+                                <CheckBoxIcon fontSize="small" color="success" />
                                 <Typography variant="body1">งานโครงสร้างโรงงาน/คลังสินค้า: งานใหญ่ที่ต้องการความเชี่ยวชาญเฉพาะทาง</Typography>
                             </Box>
                             <Typography variant="body1" fontWeight="600" mt={2}>
-                                ❤️ สิ่งที่เราให้ความสำคัญเหนือสิ่งอื่นใด ความรับผิดชอบจนจบงาน
+                                สิ่งที่เราให้ความสำคัญเหนือสิ่งอื่นใด ความรับผิดชอบจนจบงาน
                             </Typography>
 
                         </Box>
