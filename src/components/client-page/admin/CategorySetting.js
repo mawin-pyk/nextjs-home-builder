@@ -5,15 +5,9 @@ import { useForm } from "react-hook-form";
 
 import {
     Box,
+    Paper,
     TextField,
     Button,
-    Typography,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
     IconButton,
     Dialog,
     DialogTitle,
@@ -24,6 +18,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Loading from "@/components/share/Loading";
 import SnackbarAlert from "@/components/share/SnackbarAlert";
 import ConfirmDialog from "@/components/share/ConfirmDialog";
+
+import { DataGrid } from "@mui/x-data-grid";
 
 function CategorySetting({ heading, collectionName }) {
     const [categories, setCategories] = useState([]);
@@ -208,57 +204,70 @@ function CategorySetting({ heading, collectionName }) {
         setAlert({ open: false, severity: "", message: "" });
     }
 
+    const columns = [
+        {
+            field: "name",
+            headerName: heading,
+            flex: 1
+        },
+        {
+            field: "actions",
+            headerName: "จัดการ",
+            sortable: false,
+            renderCell: ({ row }) => (
+                <>
+                    <IconButton onClick={() => handleEdit(row.id)}>
+                        <EditIcon />
+                    </IconButton>
+                    <IconButton color="error" onClick={() => handleDelete(row.id)}>
+                        <DeleteIcon />
+                    </IconButton>
+                </>
+            )
+        },
+    ];
+
     return (
-        <Box
-            maxWidth="sm"
-            p={4}
-            display="flex"
-            flexDirection="column"
-            gap={4}
-            border="1px solid"
-            borderColor="divider"
+        <Paper
+            sx={{
+                maxWidth: "sm",
+                p: 4,
+                display: "flex",
+                flexDirection: "column",
+                gap: 4
+            }}
         >
-            <Typography
-                variant="h1"
-                fontSize="20px"
-                fontWeight="400"
-            >
-                {heading}
-            </Typography>
             <Button variant="contained" sx={{ m: "0px auto 0px 0px" }} onClick={() => setFormDialog(true)} >
                 เพิ่ม{heading}
             </Button>
-            <TableContainer
-                sx={{
-                    border: "1px solid",
-                    borderColor: "divider",
-                    borderBottom: "unset"
+            <DataGrid
+                columns={columns}
+                rows={categories}
+                sortingOrder={["asc", "desc"]}
+                initialState={{
+                    pagination: {
+                        paginationModel: { pageSize: 10, page: 0 },
+                    },
                 }}
-            >
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>{heading}</TableCell>
-                            <TableCell align="right">จัดการ</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {categories.length > 0 && categories.map((row, index) => (
-                            <TableRow key={row.id}>
-                                <TableCell>{row.name}</TableCell>
-                                <TableCell align="right">
-                                    <IconButton onClick={() => handleEdit(row.id)}>
-                                        <EditIcon />
-                                    </IconButton>
-                                    <IconButton color="error" onClick={() => handleDelete(row.id)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                pageSizeOptions={[10, 25, 50, 100]}
+                autoHeight
+                // rowHeight={128}
+                disableRowSelectionOnClick
+                // checkboxSelection
+                // onRowClick={(params) => console.log("Row clicked:", params.row)}
+                sx={{
+                    '& .MuiDataGrid-columnHeader': {
+                        p: 1,
+                        display: "flex",
+                        alignItems: "center"
+                    },
+                    "& .MuiDataGrid-cell": {
+                        p: 1,
+                        display: "flex",
+                        alignItems: "center"
+                    }
+                }}
+            />
             <Dialog
                 fullWidth
                 maxWidth="xs"
@@ -315,7 +324,7 @@ function CategorySetting({ heading, collectionName }) {
                 message={alert.message}
             />
             <Loading open={loading} />
-        </Box>
+        </Paper>
     );
 }
 

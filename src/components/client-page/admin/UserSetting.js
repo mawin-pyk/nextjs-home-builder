@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 import {
-    Box,
+    Paper,
     Typography,
     Table,
     TableBody,
@@ -14,6 +14,8 @@ import {
     TableRow,
     Switch
 } from "@mui/material";
+
+import { DataGrid } from "@mui/x-data-grid";
 
 import Loading from "@/components/share/Loading";
 import SnackbarAlert from "@/components/share/SnackbarAlert";
@@ -84,16 +86,47 @@ function UserSetting() {
         setAlert({ open: false, severity: "", message: "" });
     }
 
-    const cellStyle = { whiteSpace: "nowrap" }
+    const columns = [
+        {
+            field: "username",
+            headerName: "ชื่อผู้ใช้",
+            flex: 1
+        },
+        {
+            field: "email",
+            headerName: "อีเมล",
+            flex: 1
+        },
+        {
+            field: "role",
+            headerName: "บทบาท",
+            flex: 1
+        },
+        {
+            field: "actions",
+            headerName: "เปิดการใช้งาน",
+            sortable: false,
+            renderCell: ({ row }) => (
+                <Switch
+                    checked={row.enable}
+                    onChange={(e) => handleToggle(e.target.checked, row.id)}
+                    disabled={loading}
+                    slotProps={{
+                        input: { "aria-label": "toggle switch" },
+                    }}
+                />
+            )
+        },
+    ];
 
     return (
-        <Box
-            p={4}
-            display="flex"
-            flexDirection="column"
-            gap={4}
-            border="1px solid"
-            borderColor="divider"
+        <Paper
+            sx={{
+                p: 4,
+                display: "flex",
+                flexDirection: "column",
+                gap: 4
+            }}
         >
             <Typography
                 variant="h1"
@@ -102,43 +135,34 @@ function UserSetting() {
             >
                 ผู้ใช้งาน
             </Typography>
-            <TableContainer
-                sx={{
-                    border: "1px solid",
-                    borderColor: "divider",
-                    borderBottom: "unset"
+            <DataGrid
+                columns={columns}
+                rows={users}
+                sortingOrder={["asc", "desc"]}
+                initialState={{
+                    pagination: {
+                        paginationModel: { pageSize: 10, page: 0 },
+                    },
                 }}
-            >
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell sx={cellStyle}>ชื่อผู้ใช้</TableCell>
-                            <TableCell sx={cellStyle}>อีเมล</TableCell>
-                            <TableCell sx={cellStyle}>บทบาท</TableCell>
-                            <TableCell sx={cellStyle} align="right">เปิดการใช้งาน</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {users.length > 0 && users.map((row, index) => (
-                            <TableRow key={row.id}>
-                                <TableCell>{row.username}</TableCell>
-                                <TableCell>{row.email}</TableCell>
-                                <TableCell>{row.role}</TableCell>
-                                <TableCell sx={cellStyle} align="right">
-                                    <Switch
-                                        checked={row.enable}
-                                        onChange={(e) => handleToggle(e.target.checked, row.id)}
-                                        disabled={loading}
-                                        slotProps={{
-                                            input: { "aria-label": "toggle switch" },
-                                        }}
-                                    />
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                pageSizeOptions={[10, 25, 50, 100]}
+                autoHeight
+                // rowHeight={128}
+                disableRowSelectionOnClick
+                // checkboxSelection
+                // onRowClick={(params) => console.log("Row clicked:", params.row)}
+                sx={{
+                    '& .MuiDataGrid-columnHeader': {
+                        p: 1,
+                        display: "flex",
+                        alignItems: "center"
+                    },
+                    "& .MuiDataGrid-cell": {
+                        p: 1,
+                        display: "flex",
+                        alignItems: "center"
+                    }
+                }}
+            />
             <SnackbarAlert
                 open={alert.open}
                 onClose={handleCloseAlert}
@@ -146,7 +170,7 @@ function UserSetting() {
                 message={alert.message}
             />
             <Loading open={loading} />
-        </Box>
+        </Paper>
     );
 }
 

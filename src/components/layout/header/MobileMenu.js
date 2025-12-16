@@ -69,8 +69,9 @@ function MobileMenu({ navLinks }) {
                                     href={item.href}
                                     aria-current={isActive(item.href) ? "page" : undefined}
                                     sx={{
-                                        color: isActive(item.href) ? "primary.main" : "text.primary",
-                                        backgroundColor: isActive(item.href) ? "rgba(0, 0, 0, 0.1)" : "transparent",
+                                        color: isActive(item.href) ? "#ffffff" : "text.primary",
+                                        backgroundColor: isActive(item.href) ? "primary.main" : "transparent",
+                                        "&:hover": { backgroundColor: isActive(item.href) ? "primary.main" : "action.hover" }
                                     }}
                                 >
                                     <ListItemText primary={item.label} />

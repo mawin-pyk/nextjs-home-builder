@@ -8,17 +8,12 @@ import imageCompression from "browser-image-compression";
 
 import {
     Box,
+    Paper,
     Grid,
     TextField,
     Autocomplete,
     Button,
     Typography,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
     IconButton,
     Dialog,
     DialogTitle,
@@ -28,6 +23,8 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CancelIcon from "@mui/icons-material/Cancel";
+
+import { DataGrid } from "@mui/x-data-grid";
 
 import Tiptap from "@/components/share/Tiptap";
 import FileDropZone from "@/components/share/FileDropZone";
@@ -297,77 +294,100 @@ function ArticleSetting() {
         setAlert({ open: false, severity: "", message: "" });
     }
 
-    const cellStyle = { whiteSpace: "nowrap" }
+    const columns = [
+        {
+            field: "images",
+            headerName: "",
+            minWidth: 166,
+            sortable: false,
+            renderCell: ({ row }) => (
+                row.images[0] ? (
+                    <Box
+                        sx={{
+                            width: 150,
+                            height: 112.25,
+                            position: "relative",
+                        }}
+                    >
+                        <Image
+                            src={row.images[0]}
+                            alt={row.title}
+                            fill
+                            sizes="150px"
+                            style={{ objectFit: "cover" }}
+                            priority
+                        />
+                    </Box>
+                ) : "No Image"
+            ),
+        },
+        {
+            field: "title",
+            headerName: "ชื่อบทความ",
+            flex: 1
+        },
+        {
+            field: "slug",
+            headerName: "ชื่อ URL",
+            flex: 1
+        },
+        {
+            field: "actions",
+            headerName: "จัดการ",
+            sortable: false,
+            renderCell: ({ row }) => (
+                <>
+                    <IconButton onClick={() => handleEdit(row.id)}>
+                        <EditIcon />
+                    </IconButton>
+                    <IconButton color="error" onClick={() => handleDelete(row.id)}>
+                        <DeleteIcon />
+                    </IconButton>
+                </>
+            )
+        },
+    ];
 
     return (
-        <Box
-            p={4}
-            display="flex"
-            flexDirection="column"
-            gap={4}
-            border="1px solid"
-            borderColor="divider"
+        <Paper
+            sx={{
+                p: 4,
+                display: "flex",
+                flexDirection: "column",
+                gap: 4
+            }}
         >
-            <Typography
-                variant="h1"
-                fontSize="20px"
-                fontWeight="400"
-            >
-                บทความ
-            </Typography>
             <Button variant="contained" sx={{ m: "0px auto 0px 0px" }} onClick={() => setFormDialog(true)} >
                 เพิ่มบทความ
             </Button>
-            <TableContainer
-                sx={{
-                    border: "1px solid",
-                    borderColor: "divider",
-                    borderBottom: "unset"
+            <DataGrid
+                columns={columns}
+                rows={articles}
+                sortingOrder={["asc", "desc"]}
+                initialState={{
+                    pagination: {
+                        paginationModel: { pageSize: 10, page: 0 },
+                    },
                 }}
-            >
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell sx={cellStyle}></TableCell>
-                            <TableCell sx={cellStyle}>ชื่อบทความ</TableCell>
-                            <TableCell sx={cellStyle}>ชื่อ URL</TableCell>
-                            <TableCell sx={cellStyle}>อัพเดท</TableCell>
-                            <TableCell sx={cellStyle} align="right">จัดการ</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {articles.length > 0 && articles.map((row, index) => (
-                            <TableRow key={row.id}>
-                                <TableCell>
-                                    {row.images && row.images[0] ?
-                                        <Image
-                                            src={row.images[0]}
-                                            alt={row.title}
-                                            width={100}
-                                            height={75}
-                                            style={{ objectFit: "cover" }}
-                                            priority
-                                        />
-                                        :
-                                        "No Image"
-                                    }
-                                </TableCell>
-                                <TableCell>{row.title}</TableCell>
-                                <TableCell>{row.slug}</TableCell>
-                                <TableCell>{row.updatedAt}</TableCell>
-                                <TableCell sx={cellStyle} align="right">
-                                    <IconButton size="small" onClick={() => handleEdit(row.id)}>
-                                        <EditIcon />
-                                    </IconButton >
-                                    <IconButton size="small" color="error" onClick={() => handleDelete(row.id)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                pageSizeOptions={[10, 25, 50, 100]}
+                autoHeight
+                rowHeight={128}
+                disableRowSelectionOnClick
+                // checkboxSelection
+                // onRowClick={(params) => console.log("Row clicked:", params.row)}
+                sx={{
+                    '& .MuiDataGrid-columnHeader': {
+                        p: 1,
+                        display: "flex",
+                        alignItems: "center"
+                    },
+                    "& .MuiDataGrid-cell": {
+                        p: 1,
+                        display: "flex",
+                        alignItems: "center"
+                    }
+                }}
+            />
             <Dialog
                 fullWidth
                 maxWidth="md"
@@ -578,7 +598,7 @@ function ArticleSetting() {
                 message={alert.message}
             />
             <Loading open={loading} />
-        </Box>
+        </Paper>
     );
 }
 

@@ -50,8 +50,9 @@ function AdminMenu({ children, navLinks }) {
                             component={Link}
                             href={item.href}
                             sx={{
-                                color: isActive(item.href) ? "primary.main" : "text.primary",
-                                backgroundColor: isActive(item.href) ? "rgba(0, 0, 0, 0.1)" : "transparent",
+                                color: isActive(item.href) ? "#ffffff" : "text.primary",
+                                backgroundColor: isActive(item.href) ? "primary.main" : "transparent",
+                                "&:hover": { backgroundColor: isActive(item.href) ? "primary.main" : "action.hover" }
                             }}
                         >
                             <ListItemText primary={item.label} />
@@ -63,7 +64,7 @@ function AdminMenu({ children, navLinks }) {
     );
 
     return (
-        <Box minHeight="100vh" display="flex">
+        <Box minHeight="100vh" display="flex" bgcolor="#f1f3f5">
             <Drawer
                 variant="permanent"
                 sx={{
