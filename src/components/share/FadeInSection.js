@@ -7,6 +7,9 @@ function FadeInSection({ children, direction = "up", threshold = 0.4 }) {
     const domRef = useRef(null);
 
     useEffect(() => {
+        const element = domRef.current;
+        if (!element) return;
+
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -19,10 +22,10 @@ function FadeInSection({ children, direction = "up", threshold = 0.4 }) {
             { threshold }
         );
 
-        if (domRef.current) observer.observe(domRef.current);
+        observer.observe(element);
 
         return () => {
-            if (domRef.current) observer.unobserve(domRef.current);
+            observer.unobserve(element);
         };
 
     }, []);
