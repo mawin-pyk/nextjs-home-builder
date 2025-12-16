@@ -28,7 +28,7 @@ function FadeInSection({ children, direction = "up", threshold = 0.4 }) {
             observer.unobserve(element);
         };
 
-    }, []);
+    }, [threshold]);
 
     const getTransform = () => {
         if (!isVisible) {
