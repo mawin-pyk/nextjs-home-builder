@@ -16,9 +16,9 @@ export async function GET(request) {
         const houseStylesOptions = houseStyles.empty ? [] : houseStyles.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         options.houseStyles = houseStylesOptions;
 
-        const housePlans = await db.collection("house-plans").get();
-        const housePlansOptions = housePlans.empty ? [] : housePlans.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        options.housePlans = housePlansOptions;
+        const propertyTypes = await db.collection("property-types").get();
+        const propertyTypesOptions = propertyTypes.empty ? [] : propertyTypes.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        options.propertyTypes = propertyTypesOptions;
 
 
         return NextResponse.json({ data: { options } }, { status: 200 });

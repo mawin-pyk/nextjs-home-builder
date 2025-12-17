@@ -35,7 +35,7 @@ import ConfirmDialog from "@/components/share/ConfirmDialog";
 function ArticleSetting() {
     const [options, setoptions] = useState({
         houseStyles: [],
-        housePlans: []
+        propertyTypes: []
     });
     const [articles, setArticles] = useState([]);
     const [keyword, setKeyword] = useState("");

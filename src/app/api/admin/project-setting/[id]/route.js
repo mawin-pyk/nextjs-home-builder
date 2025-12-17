@@ -101,7 +101,7 @@ export async function PUT(request, { params }) {
         const description = data.get("description");
         const keywords = data.getAll("keywords") || [];
         const houseStyle = data.get("houseStyle");
-        const housePlan = data.get("housePlan");
+        const propertyType = data.get("propertyType");
         const detail = data.get("detail");
         const area = data.get("area");
         const space = data.get("space");
@@ -168,7 +168,7 @@ export async function PUT(request, { params }) {
             description,
             keywords,
             houseStyle,
-            housePlan,
+            propertyType,
             detail,
             area,
             space,

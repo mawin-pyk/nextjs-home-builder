@@ -15,7 +15,7 @@ async function AdminLayout({ children }) {
 
     const allNavLinks = [
         { label: "สไตล์บ้าน", href: "/admin/house-style-setting", roles: ["admin", "super"] },
-        { label: "แบบบ้าน", href: "/admin/house-plan-setting", roles: ["admin", "super"] },
+        { label: "ประเภทที่พักอาศัย", href: "/admin/property-type-setting", roles: ["admin", "super"] },
         { label: "ผลงาน", href: "/admin/project-setting", roles: ["admin", "super"] },
         { label: "บทความ", href: "/admin/article-setting", roles: ["admin", "super"] },
         { label: "ผู้ใช้งาน", href: "/admin/user-setting", roles: ["super"] },

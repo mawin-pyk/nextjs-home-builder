@@ -34,7 +34,7 @@ import ConfirmDialog from "@/components/share/ConfirmDialog";
 function ProjectSetting() {
     const [options, setoptions] = useState({
         houseStyles: [],
-        housePlans: []
+        propertyTypes: []
     });
     const [projects, setProjects] = useState([]);
     const [keyword, setKeyword] = useState("");
@@ -53,7 +53,7 @@ function ProjectSetting() {
             description: "",
             keywords: [],
             houseStyle: "",
-            housePlan: "",
+            propertyType: "",
             detail: "",
             area: "",
             space: "",
@@ -218,7 +218,7 @@ function ProjectSetting() {
                 description: project.description,
                 keywords: project.keywords,
                 houseStyle: project.houseStyle,
-                housePlan: project.housePlan,
+                propertyType: project.propertyType,
                 detail: project.detail,
                 area: project.area,
                 space: project.space,
@@ -608,26 +608,26 @@ function ProjectSetting() {
 
                             <Grid size={{ xs: 12, sm: 6 }}>
                                 <Controller
-                                    name="housePlan"
+                                    name="propertyType"
                                     control={control}
                                     defaultValue=""
                                     rules={{ required: "กรุณาเลือกสไตล์" }}
                                     render={({ field }) => {
-                                        const selectedOption = options.housePlans.find(option => option.id === field.value) || null;
+                                        const selectedOption = options.propertyTypes.find(option => option.id === field.value) || null;
                                         return (
                                             <Autocomplete
                                                 fullWidth
                                                 size="small"
-                                                options={options.housePlans}
+                                                options={options.propertyTypes}
                                                 getOptionLabel={(option) => option.name}
                                                 value={selectedOption}
                                                 onChange={(event, newValue) => field.onChange(newValue ? newValue.id : "")}
                                                 renderInput={(params) => (
                                                     <TextField
                                                         {...params}
-                                                        label="แบบบ้าน"
-                                                        error={!!errors.housePlan}
-                                                        helperText={errors.housePlan?.message}
+                                                        label="ประเภทที่พักอาศัย"
+                                                        error={!!errors.propertyType}
+                                                        helperText={errors.propertyType?.message}
                                                     />
                                                 )}
                                             />
