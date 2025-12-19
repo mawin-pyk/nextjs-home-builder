@@ -2,10 +2,8 @@ import Link from "next/link";
 
 import {
     Box,
-    Container,
     Grid,
     Typography,
-    Stack,
     Divider,
     IconButton
 } from "@mui/material";
@@ -22,8 +20,10 @@ function Footer() {
             width="100%"
             py={{ xs: 6, sm: 8 }}
             px={{ xs: 2, sm: 3 }}
-            bgcolor="#f1f3f5"
             boxSizing="border-box"
+            borderTop="1px solid"
+            borderColor="divider"
+            bgcolor="#f1f3f5"
         >
             <Box
                 width="100%"
@@ -43,29 +43,30 @@ function Footer() {
                         <Typography variant="subtitle1" fontWeight="600" gutterBottom>
                             เมนู
                         </Typography>
-                        <Stack spacing={1}>
+                        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="flex-start" gap={1}>
                             <Link href="/" color="textPrimary"><Typography variant="span" color="textPrimary">หน้าแรก</Typography></Link>
                             <Link href="/services" color="textPrimary"><Typography variant="span" color="textPrimary">บริการของเรา</Typography></Link>
-                            <Link href="/projects" color="textPrimary"><Typography variant="span" color="textPrimary">ผลงานของเรา</Typography></Link>
+                            {/* <Link href="/projects" color="textPrimary"><Typography variant="span" color="textPrimary">ผลงานของเรา</Typography></Link> */}
+                            <Link href="/home-designs" color="textPrimary"><Typography variant="span" color="textPrimary">แบบบ้าน</Typography></Link>
                             <Link href="/articles" color="textPrimary"><Typography variant="span" color="textPrimary">บทความ</Typography></Link>
                             <Link href="/contact" color="textPrimary"><Typography variant="span" color="textPrimary">ติดต่อเรา</Typography></Link>
-                        </Stack>
+                        </Box>
                     </Grid>
                     <Grid size={{ xs: 12, md: 3 }}>
                         <Typography variant="subtitle1" fontWeight="600" gutterBottom>
                             ติดต่อ
                         </Typography>
-                        <Stack spacing={1}>
+                        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="flex-start" gap={1}>
                             <Typography variant="body2">58/1 หมู่5 ตำบลบางรักพัฒนา <br /> อำเภอบางบัวทอง จังหวัดนนทบุรี 11110</Typography>
                             <Typography variant="body2">ติดต่อ: 02-120-6859, 064-649-8717</Typography>
                             <Typography variant="body2">mepatcs.co.th@gmail.com</Typography>
-                        </Stack>
+                        </Box>
                     </Grid>
                     <Grid size={{ xs: 12, md: 3 }}>
                         <Typography variant="subtitle1" fontWeight="600" gutterBottom>
                             ติดตามเรา
                         </Typography>
-                        <Stack direction="row" spacing={1}>
+                        <Box display="flex" justifyContent="flex-start" alignItems="center" gap={1}>
                             <IconButton component="a" href="https://www.facebook.com/MepatCS" target="_blank" rel="me noopener noreferrer" size="small">
                                 <FacebookIcon />
                             </IconButton>
@@ -75,7 +76,7 @@ function Footer() {
                             <IconButton component="a" href="https://www.youtube.com/@mepatcs" target="_blank" rel="me noopener noreferrer" size="small">
                                 <YouTubeIcon />
                             </IconButton>
-                        </Stack>
+                        </Box>
                     </Grid>
                 </Grid>
                 <Divider sx={{ my: 3 }} />

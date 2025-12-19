@@ -20,7 +20,8 @@ import AccountMenu from "@/components/layout/header/AccountMenu";
 const navLinks = [
     { label: "หน้าแรก", href: "/" },
     { label: "บริการของเรา", href: "/services" },
-    { label: "ผลงานของเรา", href: "/projects" },
+    // { label: "ผลงานของเรา", href: "/projects" },
+    { label: "แบบบ้าน", href: "/home-designs" },
     { label: "บทความ", href: "/articles" },
     { label: "ติดต่อเรา", href: "/contact" },
 ];

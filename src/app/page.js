@@ -37,6 +37,26 @@ const getProjects = async () => {
     }
 }
 
+const getHomeDesigns = async () => {
+    try {
+        const snapshot = await db.collection("home-designs").limit(4).get();
+        const homeDesigns = snapshot.docs.map((doc) => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                ...data,
+                createdAt: data.createdAt ? format(data.createdAt.toDate(), "dd/MM/yyyy HH:mm") : null,
+                updatedAt: data.updatedAt ? format(data.updatedAt.toDate(), "dd/MM/yyyy HH:mm") : null,
+            };
+        });
+        return homeDesigns;
+
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
+
 const getArticles = async () => {
     try {
         const snapshot = await db.collection("articles").limit(4).get();
@@ -58,10 +78,14 @@ const getArticles = async () => {
 }
 
 async function HomePage() {
-    const [projects, articles] = await Promise.all([getProjects(), getArticles()]);
+    const [projects, articles, homeDesigns] = await Promise.all([getProjects(), getArticles(), getHomeDesigns()]);
 
     return (
-        <Home projects={projects} articles={articles} />
+        <Home
+            projects={projects}
+            articles={articles}
+            homeDesigns={homeDesigns}
+        />
     );
 }
 

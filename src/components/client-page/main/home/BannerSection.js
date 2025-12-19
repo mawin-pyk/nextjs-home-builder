@@ -68,7 +68,7 @@ function BannerSection() {
                 <Box mt={8} display="flex" justifyContent="center" alignItems="center" gap={2}>
                     <Button
                         component={Link}
-                        href="/"
+                        href="/home-designs"
                         variant="outlined"
                         size="large"
                         sx={{
