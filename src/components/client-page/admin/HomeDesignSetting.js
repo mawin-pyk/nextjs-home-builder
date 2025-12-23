@@ -5,6 +5,8 @@ import { useForm, Controller } from "react-hook-form";
 import Image from "next/image";
 
 import imageCompression from "browser-image-compression";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
 
 import {
     Box,
@@ -15,10 +17,16 @@ import {
     Button,
     Typography,
     IconButton,
+    Switch,
     Dialog,
     DialogTitle,
     DialogContent,
-    Divider
+    Divider,
+    Table,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -30,6 +38,8 @@ import FileDropZone from "@/components/share/FileDropZone";
 import Loading from "@/components/share/Loading";
 import SnackbarAlert from "@/components/share/SnackbarAlert";
 import ConfirmDialog from "@/components/share/ConfirmDialog";
+import SortableTableBody from "@/components/share/dnd/SortableTableBody";
+import SortableTableRow from "@/components/share/dnd/SortableTableRow";
 
 function HomeDesignSetting() {
     const [options, setoptions] = useState({
@@ -40,7 +50,10 @@ function HomeDesignSetting() {
     const [keyword, setKeyword] = useState("");
     const [editId, setEditId] = useState(null);
 
+    const [homeDesignsHighlight, setHomeDesignsHighlight] = useState([]);
+
     const [formDialog, setFormDialog] = useState(false);
+    const [highlightDialog, setHighlightDialog] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState({ open: false, severity: "", message: "" });
@@ -302,6 +315,93 @@ function HomeDesignSetting() {
         }
     }
 
+    const updateHomeDesignHighLight = async (checked, id) => {
+        setLoading(true);
+        try {
+            const res = await fetch(`/api/admin/home-design-setting/highlight/${id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ highlight: checked }),
+            });
+
+            if (!res.ok) {
+                const error = await res.json();
+                throw new Error(error.message);
+            }
+
+            const result = await res.json();
+            getHomeDesigns();
+            setAlert({ open: true, severity: "success", message: result.message });
+
+        } catch (error) {
+            console.error(error);
+
+        } finally {
+
+            setLoading(false);
+        }
+    }
+
+    const getHomeDesignsHighlight = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch(`/api/admin/home-design-setting/highlight`);
+
+            if (!res.ok) {
+                const error = await res.json();
+                throw new Error(error.message);
+            }
+
+            const result = await res.json();
+            setHomeDesignsHighlight(result.data.homeDesigns);
+            setHighlightDialog(true);
+
+        } catch (error) {
+            console.error(error);
+            setAlert({ open: true, severity: "error", message: error.message });
+
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const saveHighlightOrder = async () => {
+        setLoading(true);
+
+        const payload = homeDesignsHighlight.map((item, index) => ({
+            id: item.id,
+            order: index + 1,
+        }));
+
+        try {
+            const res = await fetch(`/api/admin/home-design-setting/highlight`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ homeDesigns: payload }),
+            });
+
+            if (!res.ok) {
+                const error = await res.json();
+                throw new Error(error.message);
+            }
+
+            const result = await res.json();
+            handleCloseHighlightDialog();
+            setAlert({ open: true, severity: "success", message: result.message });
+
+        } catch (error) {
+            console.error(error);
+            setAlert({ open: true, severity: "error", message: error.message });
+
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const handleEdit = async (id) => {
         await getHomeDesign(id);
         setEditId(id);
@@ -319,6 +419,21 @@ function HomeDesignSetting() {
         });
     }
 
+    const handleDragEnd = (event) => {
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
+
+        setHomeDesignsHighlight((prev) => {
+            const oldIndex = prev.findIndex(
+                (i) => i.id === active.id
+            );
+            const newIndex = prev.findIndex(
+                (i) => i.id === over.id
+            );
+            return arrayMove(prev, oldIndex, newIndex);
+        });
+    }
+
     const handleCloseConfirmDialog = () => {
         setConfirmDialog({ open: false, message: "", onConfirm: null });
     }
@@ -331,9 +446,17 @@ function HomeDesignSetting() {
         }
     }
 
+    const handleCloseHighlightDialog = (e, reason) => {
+        if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+            setHighlightDialog(false);
+        }
+    }
+
     const handleCloseAlert = () => {
         setAlert({ open: false, severity: "", message: "" });
     }
+
+    const highlightCount = homeDesigns.filter((item) => item.highlight).length;
 
     const columns = [
         {
@@ -381,6 +504,21 @@ function HomeDesignSetting() {
             flex: 1,
         },
         {
+            field: "highlight",
+            headerName: "ไฮไลท์",
+            sortable: false,
+            renderCell: ({ row }) => (
+                <Switch
+                    checked={row.highlight}
+                    onChange={(e) => updateHomeDesignHighLight(e.target.checked, row.id)}
+                    disabled={loading || (!row.highlight && highlightCount >= 4)}
+                    slotProps={{
+                        input: { "aria-label": "toggle switch" },
+                    }}
+                />
+            )
+        },
+        {
             field: "actions",
             headerName: "จัดการ",
             sortable: false,
@@ -406,9 +544,14 @@ function HomeDesignSetting() {
                 gap: 4
             }}
         >
-            <Button variant="contained" sx={{ m: "0px auto 0px 0px" }} onClick={() => setFormDialog(true)} >
-                เพิ่มแบบบ้าน
-            </Button>
+            <Box display="flex" justifyContent="flex-start" alignItems="center" gap={2}>
+                <Button variant="contained" onClick={() => setFormDialog(true)} >
+                    เพิ่มแบบบ้าน
+                </Button>
+                <Button variant="outlined" onClick={getHomeDesignsHighlight}>
+                    จัดลำดับไฮไลท์
+                </Button>
+            </Box>
             <DataGrid
                 columns={columns}
                 rows={homeDesigns}
@@ -787,6 +930,52 @@ function HomeDesignSetting() {
                         <Box display="flex" justifyContent="flex-end" alignItems="center" gap={2}>
                             <Button onClick={handleCloseFormDialog}>ยกเลิก</Button>
                             <Button variant="contained" type="submit">{editId ? "บันทึก" : "เพิ่ม"}</Button>
+                        </Box>
+                    </Box>
+                </DialogContent>
+            </Dialog>
+            <Dialog
+                fullWidth
+                maxWidth="md"
+                open={highlightDialog}
+                onClose={handleCloseHighlightDialog}
+                scroll="body"
+            >
+                <DialogTitle>จัดลำดับไฮไลท์</DialogTitle>
+                <DialogContent>
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        gap={4}
+                        mt={2}
+                    >
+                        <DndContext
+                            collisionDetection={closestCenter}
+                            onDragEnd={handleDragEnd}
+                        >
+                            <TableContainer sx={{ overflowX: "hidden" }}>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell />
+                                            <TableCell>ลำดับ</TableCell>
+                                            <TableCell>ชื่อแบบบ้าน</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <SortableTableBody items={homeDesignsHighlight} getId={(row) => row.id}>
+                                        {(row, index) => (
+                                            <SortableTableRow key={row.id} id={row.id}>
+                                                <TableCell>{index + 1}</TableCell>
+                                                <TableCell>{row.title}</TableCell>
+                                            </SortableTableRow>
+                                        )}
+                                    </SortableTableBody>
+                                </Table>
+                            </TableContainer>
+                        </DndContext>
+                        <Box display="flex" justifyContent="flex-end" alignItems="center" gap={2}>
+                            <Button onClick={handleCloseHighlightDialog}>ยกเลิก</Button>
+                            <Button variant="contained" onClick={saveHighlightOrder}>บันทึก</Button>
                         </Box>
                     </Box>
                 </DialogContent>

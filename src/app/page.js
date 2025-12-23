@@ -39,7 +39,13 @@ const getProjects = async () => {
 
 const getHomeDesigns = async () => {
     try {
-        const snapshot = await db.collection("home-designs").limit(4).get();
+        const snapshot = await db
+            .collection("home-designs")
+            .where("highlight", "==", true)
+            .orderBy("highlightOrder", "asc")
+            .limit(4)
+            .get();
+
         const homeDesigns = snapshot.docs.map((doc) => {
             const data = doc.data();
             return {

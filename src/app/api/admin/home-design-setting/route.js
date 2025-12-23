@@ -59,6 +59,8 @@ export async function POST(request) {
             kitchen,
             parking,
             images: [],
+            highlight: false,
+            HighlightOrder: 0,
             createdAt: new Date(),
             updatedAt: new Date()
         });
