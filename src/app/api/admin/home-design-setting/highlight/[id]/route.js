@@ -25,11 +25,12 @@ export async function PATCH(request, { params }) {
 
         const updateResult = await docRef.update({
             highlight: highlight,
+            highlightOrder: 0,
             updatedAt: new Date()
         });
 
         if (!updateResult) {
-            return NextResponse.json({ message: "อัปเดตสถานะผู้ใช้งานไม่สำเร็จ" }, { status: 500 });
+            return NextResponse.json({ message: "อัปเดตการใช้งานไม่สำเร็จ" }, { status: 500 });
         }
 
         return NextResponse.json({ message: highlight ? "เปิดการใช้งานสำเร็จ" : "ปิดการใช้งานสำเร็จ" }, { status: 200 });
