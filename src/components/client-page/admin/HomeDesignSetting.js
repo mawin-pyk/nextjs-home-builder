@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Image from "next/image";
 
@@ -84,6 +84,29 @@ function HomeDesignSetting() {
         getHomeDesigns();
 
     }, []);
+
+    const optionMaps = useMemo(() => {
+        return {
+            houseStyle: Object.fromEntries(
+                options.houseStyles.map((item) => [item.id, item.name])
+            ),
+            propertyType: Object.fromEntries(
+                options.propertyTypes.map((item) => [item.id, item.name])
+            ),
+        };
+
+    }, [options.houseStyles, options.propertyTypes]);
+
+    const rows = useMemo(() => {
+        if (!homeDesigns?.length) return [];
+
+        return homeDesigns.map((row) => ({
+            ...row,
+            houseStyleName: optionMaps.houseStyle[row.houseStyle] ?? "",
+            propertyTypeName: optionMaps.propertyType[row.propertyType] ?? "",
+        }));
+
+    }, [homeDesigns, optionMaps]);
 
     const getContext = async () => {
         setLoading(true);
@@ -496,11 +519,8 @@ function HomeDesignSetting() {
             flex: 1
         },
         {
-            field: "houseStyle",
+            field: "houseStyleName",
             headerName: "สไตล์",
-            renderCell: ({ row }) => {
-                return options.houseStyles.find((option) => option.id === row.houseStyle)?.name
-            },
             flex: 1,
         },
         {
@@ -554,7 +574,7 @@ function HomeDesignSetting() {
             </Box>
             <DataGrid
                 columns={columns}
-                rows={homeDesigns}
+                rows={rows}
                 sortingOrder={["asc", "desc"]}
                 initialState={{
                     pagination: {
