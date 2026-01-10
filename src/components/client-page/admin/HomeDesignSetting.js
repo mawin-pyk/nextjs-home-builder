@@ -88,10 +88,10 @@ function HomeDesignSetting() {
     const optionMaps = useMemo(() => {
         return {
             houseStyle: Object.fromEntries(
-                options.houseStyles.map((item) => [item.id, item.name])
+                options.houseStyles.map((item) => [item.id, item.title])
             ),
             propertyType: Object.fromEntries(
-                options.propertyTypes.map((item) => [item.id, item.name])
+                options.propertyTypes.map((item) => [item.id, item.title])
             ),
         };
 
@@ -752,7 +752,7 @@ function HomeDesignSetting() {
                                                 fullWidth
                                                 size="small"
                                                 options={options.houseStyles}
-                                                getOptionLabel={(option) => option.name}
+                                                getOptionLabel={(option) => option.title}
                                                 value={selectedOption}
                                                 onChange={(event, newValue) => field.onChange(newValue ? newValue.id : "")}
                                                 renderInput={(params) => (
@@ -782,7 +782,7 @@ function HomeDesignSetting() {
                                                 fullWidth
                                                 size="small"
                                                 options={options.propertyTypes}
-                                                getOptionLabel={(option) => option.name}
+                                                getOptionLabel={(option) => option.title}
                                                 value={selectedOption}
                                                 onChange={(event, newValue) => field.onChange(newValue ? newValue.id : "")}
                                                 renderInput={(params) => (

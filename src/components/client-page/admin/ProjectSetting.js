@@ -376,7 +376,7 @@ function ProjectSetting() {
             field: "houseStyle",
             headerName: "สไตล์",
             renderCell: ({ row }) => {
-                return options.houseStyles.find((option) => option.id === row.houseStyle)?.name
+                return options.houseStyles.find((option) => option.id === row.houseStyle)?.title
             },
             flex: 1,
         },
@@ -589,7 +589,7 @@ function ProjectSetting() {
                                                 fullWidth
                                                 size="small"
                                                 options={options.houseStyles}
-                                                getOptionLabel={(option) => option.name}
+                                                getOptionLabel={(option) => option.title}
                                                 value={selectedOption}
                                                 onChange={(event, newValue) => field.onChange(newValue ? newValue.id : "")}
                                                 renderInput={(params) => (
@@ -619,7 +619,7 @@ function ProjectSetting() {
                                                 fullWidth
                                                 size="small"
                                                 options={options.propertyTypes}
-                                                getOptionLabel={(option) => option.name}
+                                                getOptionLabel={(option) => option.title}
                                                 value={selectedOption}
                                                 onChange={(event, newValue) => field.onChange(newValue ? newValue.id : "")}
                                                 renderInput={(params) => (

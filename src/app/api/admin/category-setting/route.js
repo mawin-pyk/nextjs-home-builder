@@ -14,15 +14,15 @@ export async function POST(request) {
         const collectionName = searchParams.get("collection");
 
         const data = await request.json();
-        const name = data.name;
+        const title = data.title;
 
-        if (!name) {
+        if (!title) {
             return NextResponse.json({ message: "ข้อมูลไม่ครบ" }, { status: 400 });
         }
 
         const snapshot = await db
             .collection(collectionName)
-            .where("name", "==", name)
+            .where("title", "==", title)
             .get();
 
         if (!snapshot.empty) {
@@ -30,7 +30,7 @@ export async function POST(request) {
         }
 
         const docRef = await db.collection(collectionName).add({
-            name,
+            title,
         });
 
         if (!docRef.id) {

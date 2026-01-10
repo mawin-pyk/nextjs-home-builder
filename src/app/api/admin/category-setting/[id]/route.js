@@ -81,15 +81,15 @@ export async function PUT(request, { params }) {
         }
 
         const data = await request.json();
-        const name = data.name;
+        const title = data.title;
 
-        if (!name) {
+        if (!title) {
             return NextResponse.json({ message: "ข้อมูลไม่ครบ" }, { status: 400 });
         }
 
         const snapshot = await db
             .collection(collectionName)
-            .where("name", "==", name)
+            .where("title", "==", title)
             .get();
 
         if (!snapshot.empty) {

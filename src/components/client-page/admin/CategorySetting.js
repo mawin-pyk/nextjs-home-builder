@@ -33,7 +33,7 @@ function CategorySetting({ heading, collectionName }) {
 
     const { handleSubmit, register, control, watch, setValue, formState: { errors }, setError, reset } = useForm({
         defaultValues: {
-            name: "",
+            title: "",
         },
     });
 
@@ -131,7 +131,7 @@ function CategorySetting({ heading, collectionName }) {
             }
 
             const result = await res.json();
-            setValue("name", result.data.name);
+            setValue("title", result.data.title);
 
         } catch (error) {
             console.log(error);
@@ -206,7 +206,7 @@ function CategorySetting({ heading, collectionName }) {
 
     const columns = [
         {
-            field: "name",
+            field: "title",
             headerName: heading,
             flex: 1
         },
@@ -296,13 +296,13 @@ function CategorySetting({ heading, collectionName }) {
                             fullWidth
                             size="small"
                             label={`ชื่อ${heading}`}
-                            {...register("name", {
+                            {...register("title", {
                                 required: `กรุณากรอกชื่อ${heading}`,
                                 minLength: { value: 2, message: "ต้องมีความยาวอย่างน้อย 2 ตัวอักษร" },
                                 maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
                             })}
-                            error={!!errors.name}
-                            helperText={errors.name?.message}
+                            error={!!errors.title}
+                            helperText={errors.title?.message}
                         />
                         <Box display="flex" justifyContent="flex-end" alignItems="center" gap={2}>
                             <Button onClick={handleCloseFormDialog}>ยกเลิก</Button>
