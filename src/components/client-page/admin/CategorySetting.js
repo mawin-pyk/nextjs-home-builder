@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 import {
     Box,
@@ -12,9 +12,13 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
+    Grid,
+    Typography
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CancelIcon from "@mui/icons-material/Cancel";
+
 import Loading from "@/components/share/Loading";
 import SnackbarAlert from "@/components/share/SnackbarAlert";
 import ConfirmDialog from "@/components/share/ConfirmDialog";
@@ -23,6 +27,7 @@ import { DataGrid } from "@mui/x-data-grid";
 
 function CategorySetting({ heading, collectionName }) {
     const [categories, setCategories] = useState([]);
+    const [keyword, setKeyword] = useState("");
     const [editId, setEditId] = useState(null);
 
     const [formDialog, setFormDialog] = useState(false);
@@ -34,6 +39,9 @@ function CategorySetting({ heading, collectionName }) {
     const { handleSubmit, register, control, watch, setValue, formState: { errors }, setError, reset } = useForm({
         defaultValues: {
             title: "",
+            slug: "",
+            description: "",
+            keywords: [],
         },
     });
 
@@ -131,7 +139,12 @@ function CategorySetting({ heading, collectionName }) {
             }
 
             const result = await res.json();
-            setValue("title", result.data.title);
+            reset({
+                title: result.data.title,
+                slug: result.data.slug,
+                description: result.data.description,
+                keywords: result.data.keywords,
+            });
 
         } catch (error) {
             console.log(error);
@@ -270,7 +283,7 @@ function CategorySetting({ heading, collectionName }) {
             />
             <Dialog
                 fullWidth
-                maxWidth="xs"
+                maxWidth="md"
                 open={formDialog}
                 onClose={handleCloseFormDialog}
                 scroll="body"
@@ -292,18 +305,119 @@ function CategorySetting({ heading, collectionName }) {
                         gap={4}
                         mt={2}
                     >
-                        <TextField
-                            fullWidth
-                            size="small"
-                            label={`ชื่อ${heading}`}
-                            {...register("title", {
-                                required: `กรุณากรอกชื่อ${heading}`,
-                                minLength: { value: 2, message: "ต้องมีความยาวอย่างน้อย 2 ตัวอักษร" },
-                                maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
-                            })}
-                            error={!!errors.title}
-                            helperText={errors.title?.message}
-                        />
+                        <Grid container spacing={4}>
+
+                            <Grid size={{ xs: 12, sm: 6 }}>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    label={`ชื่อ${heading}`}
+                                    {...register("title", {
+                                        required: `กรุณากรอกชื่อ${heading}`,
+                                        minLength: { value: 2, message: "ต้องมีความยาวอย่างน้อย 2 ตัวอักษร" },
+                                        maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.title}
+                                    helperText={errors.title?.message}
+                                />
+                            </Grid>
+
+                            <Grid size={{ xs: 12, sm: 6 }}>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    label="URL"
+                                    {...register("slug", {
+                                        required: "กรุณากรอกชื่อ URL",
+                                        pattern: { value: /^[\u0E00-\u0E7Fa-z0-9-]+$/, message: "ใช้ได้เฉพาะภาษาไทย, อังกฤษ, ตัวเลข และขีดกลาง (-)" },
+                                        minLength: { value: 2, message: "ต้องมีความยาวอย่างน้อย 2 ตัวอักษร" },
+                                        maxLength: { value: 60, message: "ต้องมีความยาวไม่เกิน 60 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.slug}
+                                    helperText={errors.slug?.message}
+                                />
+                            </Grid>
+
+                            <Grid size={{ xs: 12 }}>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    label="คำอธิบาย"
+                                    {...register("description", {
+                                        required: "กรุณากรอกคำอธิบาย",
+                                        minLength: { value: 2, message: "ต้องมีความยาวอย่างน้อย 2 ตัวอักษร" },
+                                        maxLength: { value: 160, message: "ต้องมีความยาวไม่เกิน 160 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.description}
+                                    helperText={errors.description?.message}
+                                />
+                            </Grid>
+
+                            <Grid size={{ xs: 12 }}>
+                                <Controller
+                                    name="keywords"
+                                    control={control}
+                                    defaultValue={[]}
+                                    rules={{ validate: (value) => (value.length > 0 ? true : "กรุณาเพิ่มอย่างน้อย 1 Keyword") }}
+                                    render={({ field, fieldState }) => (
+                                        <>
+                                            <Box display="flex" justifyContent="flex-start" alignItems="center" gap={2}>
+                                                <TextField
+                                                    size="small"
+                                                    label="Keyword"
+                                                    value={keyword}
+                                                    onChange={(e) => setKeyword(e.target.value)}
+                                                />
+                                                <Button
+                                                    variant="contained"
+                                                    onClick={() => {
+                                                        if (!keyword.trim()) return;
+                                                        if (field.value.includes(keyword.trim())) return;
+                                                        field.onChange([...field.value, keyword.trim()]);
+                                                        setKeyword("");
+                                                    }}
+                                                >
+                                                    เพิ่ม
+                                                </Button>
+                                            </Box>
+
+                                            <Box mt={field.value.length > 0 ? 2 : 0} display="flex" flexWrap="wrap" gap={2}>
+                                                {field.value.map((kw, index) => (
+                                                    <Box
+                                                        key={index}
+                                                        py={0.5}
+                                                        px={1}
+                                                        position="relative"
+                                                        bgcolor="divider"
+                                                        borderRadius={1}
+                                                    >
+                                                        {kw}
+                                                        <IconButton
+                                                            size="small"
+                                                            sx={{ position: "absolute", top: -15, right: -15 }}
+                                                            onClick={() => {
+                                                                const newKeywords = field.value.filter((_, i) => i !== index);
+                                                                field.onChange(newKeywords);
+                                                            }}
+                                                        >
+                                                            <CancelIcon color="error" fontSize="small" />
+                                                        </IconButton>
+                                                    </Box>
+                                                ))}
+                                            </Box>
+
+                                            {fieldState.error && (
+                                                <Typography color="error" fontSize={12} mt={0.5} mx="14px">
+                                                    {fieldState.error.message}
+                                                </Typography>
+                                            )}
+                                        </>
+                                    )}
+                                />
+                            </Grid>
+
+                        </Grid>
+
                         <Box display="flex" justifyContent="flex-end" alignItems="center" gap={2}>
                             <Button onClick={handleCloseFormDialog}>ยกเลิก</Button>
                             <Button variant="contained" type="submit">{editId ? "บันทึก" : "เพิ่ม"}</Button>

@@ -15,22 +15,39 @@ export async function POST(request) {
 
         const data = await request.json();
         const title = data.title;
+        const slug = data.slug;
+        const description = data.description;
+        const keywords = data.keywords || [];
 
         if (!title) {
             return NextResponse.json({ message: "ข้อมูลไม่ครบ" }, { status: 400 });
         }
 
-        const snapshot = await db
-            .collection(collectionName)
-            .where("title", "==", title)
-            .get();
+        const [titleSnap, slugSnap] = await Promise.all([
+            db.collection(collectionName)
+                .where("title", "==", title)
+                .limit(1)
+                .get(),
 
-        if (!snapshot.empty) {
-            return NextResponse.json({ message: "มีข้อมูลนี้แล้ว" }, { status: 400 });
+            db.collection(collectionName)
+                .where("slug", "==", slug)
+                .limit(1)
+                .get(),
+        ]);
+
+        if (!titleSnap.empty) {
+            return NextResponse.json({ message: "มีชื่อนี้แล้ว" }, { status: 400 });
+        }
+
+        if (!slugSnap.empty) {
+            return NextResponse.json({ message: "มี URL นี้แล้ว" }, { status: 400 });
         }
 
         const docRef = await db.collection(collectionName).add({
             title,
+            slug,
+            description,
+            keywords,
         });
 
         if (!docRef.id) {
