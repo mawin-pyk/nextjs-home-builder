@@ -208,7 +208,12 @@ function CategorySetting({ heading, collectionName }) {
     const handleCloseFormDialog = (e, reason) => {
         if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
             setFormDialog(false);
-            reset();
+            reset({
+                title: "",
+                slug: "",
+                description: "",
+                keywords: [],
+            })
             setEditId(null);
         }
     }
@@ -269,7 +274,7 @@ function CategorySetting({ heading, collectionName }) {
                 // checkboxSelection
                 // onRowClick={(params) => console.log("Row clicked:", params.row)}
                 sx={{
-                    '& .MuiDataGrid-columnHeader': {
+                    "& .MuiDataGrid-columnHeader": {
                         p: 1,
                         display: "flex",
                         alignItems: "center"

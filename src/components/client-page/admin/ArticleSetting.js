@@ -54,6 +54,7 @@ function ArticleSetting() {
             description: "",
             keywords: [],
             content: "",
+            files: [],
         },
     });
 
@@ -285,7 +286,14 @@ function ArticleSetting() {
     const handleCloseFormDialog = (e, reason) => {
         if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
             setFormDialog(false);
-            reset();
+            reset({
+                title: "",
+                slug: "",
+                description: "",
+                keywords: [],
+                content: "",
+                files: [],
+            })
             setEditId(null);
         }
     }
@@ -376,7 +384,7 @@ function ArticleSetting() {
                 // checkboxSelection
                 // onRowClick={(params) => console.log("Row clicked:", params.row)}
                 sx={{
-                    '& .MuiDataGrid-columnHeader': {
+                    "& .MuiDataGrid-columnHeader": {
                         p: 1,
                         display: "flex",
                         alignItems: "center"

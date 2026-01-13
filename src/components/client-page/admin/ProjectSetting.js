@@ -326,7 +326,23 @@ function ProjectSetting() {
     const handleCloseFormDialog = (e, reason) => {
         if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
             setFormDialog(false);
-            reset();
+            reset({
+                title: "",
+                slug: "",
+                description: "",
+                keywords: [],
+                houseStyle: "",
+                propertyType: "",
+                detail: "",
+                area: "",
+                space: "",
+                bedroom: "",
+                bathroom: "",
+                livingroom: "",
+                kitchen: "",
+                parking: "",
+                files: [],
+            });
             setEditId(null);
         }
     }
@@ -425,7 +441,7 @@ function ProjectSetting() {
                 // checkboxSelection
                 // onRowClick={(params) => console.log("Row clicked:", params.row)}
                 sx={{
-                    '& .MuiDataGrid-columnHeader': {
+                    "& .MuiDataGrid-columnHeader": {
                         p: 1,
                         display: "flex",
                         alignItems: "center"

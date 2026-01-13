@@ -151,7 +151,7 @@ function UserSetting() {
                 // checkboxSelection
                 // onRowClick={(params) => console.log("Row clicked:", params.row)}
                 sx={{
-                    '& .MuiDataGrid-columnHeader': {
+                    "& .MuiDataGrid-columnHeader": {
                         p: 1,
                         display: "flex",
                         alignItems: "center"
