@@ -78,7 +78,7 @@ function HomeDesigns({ propertyTypes, houseStyles, homeDesigns, category, catego
 
                     <Grid container spacing={4}>
                         {homeDesigns.map((homeDesign, index) => {
-                            const categorySlug = category ? category : propertyTypes.find((type) => type.id === homeDesign.propertyType).slug;
+                            const categorySlug = category ? category : propertyTypes.find((propertyType) => propertyType.id === homeDesign.propertyType).slug;
 
                             return (
                                 <Grid

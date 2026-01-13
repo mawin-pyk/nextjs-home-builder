@@ -3,19 +3,20 @@ import { format } from "date-fns";
 import { createMetadata } from "@/helpers/metadata";
 import Home from "@/components/client-page/main/home/Home";
 
-export const metadata = createMetadata({
-    title: "Mepatcs | รับสร้างบ้านครบวงจร งานโครงสร้างและตกแต่งภายใน",
-    description: "Mepatcs รับสร้างบ้านครบวงจร ตั้งแต่แบบบ้าน งานโครงสร้าง จนถึงตกแต่งภายใน ทีมงานมืออาชีพ ดูแลทุกขั้นตอนอย่างใส่ใจ รับประกันคุณภาพทุกหลัง",
-    keywords: [
-        "รับสร้างบ้าน",
-        "บริษัทรับสร้างบ้าน",
-        "ออกแบบบ้าน",
-        "บ้านคุณภาพ",
-        "สร้างบ้านครบวงจร",
-        "Mepatcs"
-    ],
-    canonical: "/",
-});
+const getPropertyTypes = async () => {
+    try {
+        const snapshot = await db.collection("property-types").get();
+        const propertyTypes = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
+        return propertyTypes;
+
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
 
 const getProjects = async () => {
     try {
@@ -83,11 +84,26 @@ const getArticles = async () => {
     }
 }
 
+export const metadata = createMetadata({
+    title: "Mepatcs | รับสร้างบ้านครบวงจร งานโครงสร้างและตกแต่งภายใน",
+    description: "Mepatcs รับสร้างบ้านครบวงจร ตั้งแต่แบบบ้าน งานโครงสร้าง จนถึงตกแต่งภายใน ทีมงานมืออาชีพ ดูแลทุกขั้นตอนอย่างใส่ใจ รับประกันคุณภาพทุกหลัง",
+    keywords: [
+        "รับสร้างบ้าน",
+        "บริษัทรับสร้างบ้าน",
+        "ออกแบบบ้าน",
+        "บ้านคุณภาพ",
+        "สร้างบ้านครบวงจร",
+        "Mepatcs"
+    ],
+    canonical: "/",
+});
+
 async function HomePage() {
-    const [projects, articles, homeDesigns] = await Promise.all([getProjects(), getArticles(), getHomeDesigns()]);
+    const [propertyTypes, projects, articles, homeDesigns] = await Promise.all([getPropertyTypes(), getProjects(), getArticles(), getHomeDesigns()]);
 
     return (
         <Home
+            propertyTypes={propertyTypes}
             projects={projects}
             articles={articles}
             homeDesigns={homeDesigns}

@@ -7,13 +7,13 @@ import AboutSection from "@/components/client-page/main/home/AboutSection";
 import ArticleSection from "@/components/client-page/main/home/ArticleSection";
 import Footer from "@/components/layout/Footer";
 
-function Home({ projects, articles, homeDesigns }) {
+function Home({ propertyTypes, projects, articles, homeDesigns }) {
     return (
         <Box component="main">
             <BannerSection />
             <ServiceSection />
             {/* <ProjectSection projects={projects} /> */}
-            <HomeDesignSection homeDesigns={homeDesigns} />
+            <HomeDesignSection propertyTypes={propertyTypes} homeDesigns={homeDesigns} />
             <AboutSection />
             <ArticleSection articles={articles} />
             <Footer />
