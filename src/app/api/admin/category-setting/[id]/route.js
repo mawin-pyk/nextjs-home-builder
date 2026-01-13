@@ -87,14 +87,26 @@ export async function PUT(request, { params }) {
             return NextResponse.json({ message: "ข้อมูลไม่ครบ" }, { status: 400 });
         }
 
-        const snapshot = await db
-            .collection(collectionName)
-            .where("title", "==", title)
-            .get();
+        const [titleSnap, slugSnap] = await Promise.all([
+            db.collection(collectionName)
+                .where("title", "==", title)
+                .limit(1)
+                .get(),
 
-        if (!snapshot.empty) {
-            const isDuplicate = snapshot.docs.some((doc) => doc.id !== id);
-            if (isDuplicate) return NextResponse.json({ message: "มีข้อมูลนี้แล้ว" }, { status: 400 });
+            db.collection(collectionName)
+                .where("slug", "==", slug)
+                .limit(1)
+                .get(),
+        ]);
+
+        if (!titleSnap.empty) {
+            const isDuplicate = titleSnap.docs.some((doc) => doc.id !== id);
+            if (isDuplicate) return NextResponse.json({ message: "มีชื่อนี้แล้ว" }, { status: 400 });
+        }
+
+        if (!slugSnap.empty) {
+            const isDuplicate = slugSnap.docs.some((doc) => doc.id !== id);
+            if (isDuplicate) return NextResponse.json({ message: "มี URL นี้แล้ว" }, { status: 400 });
         }
 
         const updateResult = await docRef.update({
