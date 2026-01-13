@@ -82,6 +82,7 @@ export async function PUT(request, { params }) {
 
         const data = await request.json();
         const title = data.title;
+        const slug = data.slug;
 
         if (!title) {
             return NextResponse.json({ message: "ข้อมูลไม่ครบ" }, { status: 400 });
@@ -90,12 +91,10 @@ export async function PUT(request, { params }) {
         const [titleSnap, slugSnap] = await Promise.all([
             db.collection(collectionName)
                 .where("title", "==", title)
-                .limit(1)
                 .get(),
 
             db.collection(collectionName)
                 .where("slug", "==", slug)
-                .limit(1)
                 .get(),
         ]);
 
