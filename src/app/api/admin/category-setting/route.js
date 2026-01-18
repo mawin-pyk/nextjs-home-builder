@@ -18,6 +18,7 @@ export async function POST(request) {
         const slug = data.slug;
         const description = data.description;
         const keywords = data.keywords || [];
+        const detail = data.detail
 
         if (!title) {
             return NextResponse.json({ message: "ข้อมูลไม่ครบ" }, { status: 400 });
@@ -48,6 +49,7 @@ export async function POST(request) {
             slug,
             description,
             keywords,
+            detail
         });
 
         if (!docRef.id) {

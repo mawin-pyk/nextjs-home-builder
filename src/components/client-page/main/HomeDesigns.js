@@ -51,7 +51,7 @@ function HomeDesigns({ propertyTypes, houseStyles, homeDesigns, category, catego
                                 {categoryData ? categoryData.title : "แบบบ้าน"}
                             </Typography>
                             <Typography variant="subtitle1" color="textSecondary">
-                                {categoryData ? categoryData.description : "แบบบ้านที่ออกแบบจากการใช้งานจริง ตอบโจทย์ฟังก์ชันและงบประมาณ"}
+                                {categoryData ? categoryData.detail : "แบบบ้านที่ออกแบบจากการใช้งานจริง ตอบโจทย์ฟังก์ชันและงบประมาณ"}
                             </Typography>
                         </Box>
                     </FadeInSection>

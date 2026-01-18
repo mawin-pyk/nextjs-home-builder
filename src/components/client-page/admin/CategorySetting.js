@@ -13,7 +13,8 @@ import {
     DialogTitle,
     DialogContent,
     Grid,
-    Typography
+    Typography,
+    Divider
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -42,6 +43,7 @@ function CategorySetting({ heading, collectionName }) {
             slug: "",
             description: "",
             keywords: [],
+            detail: ""
         },
     });
 
@@ -144,6 +146,7 @@ function CategorySetting({ heading, collectionName }) {
                 slug: result.data.slug,
                 description: result.data.description,
                 keywords: result.data.keywords,
+                detail: result.data.detail
             });
 
         } catch (error) {
@@ -213,6 +216,7 @@ function CategorySetting({ heading, collectionName }) {
                 slug: "",
                 description: "",
                 keywords: [],
+                detail: ""
             })
             setEditId(null);
         }
@@ -418,6 +422,27 @@ function CategorySetting({ heading, collectionName }) {
                                             )}
                                         </>
                                     )}
+                                />
+                            </Grid>
+
+                            <Grid size={{ xs: 12 }}>
+                                <Divider sx={{ my: 2 }} />
+                            </Grid>
+
+                            <Grid size={{ xs: 12 }}>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    label="รายละเอียด"
+                                    multiline
+                                    rows={4}
+                                    {...register("detail", {
+                                        required: "กรุณากรอกรายละเอียด",
+                                        minLength: { value: 1, message: "ต้องมีความยาวอย่างน้อย 1 ตัวอักษร" },
+                                        maxLength: { value: 1000, message: "ต้องมีความยาวไม่เกิน 1000 ตัวอักษร" },
+                                    })}
+                                    error={!!errors.detail}
+                                    helperText={errors.detail?.message}
                                 />
                             </Grid>
 
