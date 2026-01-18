@@ -67,13 +67,13 @@ function HomeDesigns({ propertyTypes, houseStyles, homeDesigns, category, catego
                                 </Button>
                             ))}
                         </Box>
-                        <Box width="100%" display="flex" flexWrap="wrap" justifyContent="center" alignItems="center" gap={2}>
+                        {/* <Box width="100%" display="flex" flexWrap="wrap" justifyContent="center" alignItems="center" gap={2}>
                             {houseStyles.map((houseStyle) => (
                                 <Button key={houseStyle.id} component={Link} href={`/home-designs/${houseStyle.slug}`} variant={category === houseStyle.slug ? "contained" : "outlined"} size="small">
                                     {houseStyle.title}
                                 </Button>
                             ))}
-                        </Box>
+                        </Box> */}
                     </Box>
 
                     <Grid container spacing={4}>
