@@ -105,14 +105,14 @@ export default async function sitemap() {
                 }))
         ),
 
-        ...houseStyles.flatMap((category) =>
-            homeDesigns
-                .filter((design) => design.houseStyle === category.id)
-                .map((item) => ({
-                    url: `${baseUrl}/home-designs/${category.slug}/${item.slug}`,
-                    lastModified: item.updatedAt.toDate(),
-                }))
-        ),
+        // ...houseStyles.flatMap((category) =>
+        //     homeDesigns
+        //         .filter((design) => design.houseStyle === category.id)
+        //         .map((item) => ({
+        //             url: `${baseUrl}/home-designs/${category.slug}/${item.slug}`,
+        //             lastModified: item.updatedAt.toDate(),
+        //         }))
+        // ),
 
         ...articles.map((item) => ({
             url: `${baseUrl}/articles/${item.slug}`,
