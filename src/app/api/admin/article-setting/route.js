@@ -20,6 +20,7 @@ export async function POST(request) {
         const keywords = data.getAll("keywords") || [];
         const content = data.get("content");
         const files = data.getAll("files") || [];
+        const contentImages = data.getAll("contentImages") || [];
 
         if (!title) {
             return NextResponse.json({ message: "ข้อมูลไม่ครบ" }, { status: 400 });
@@ -79,6 +80,40 @@ export async function POST(request) {
 
             const updateResult = await docRef.update({
                 images: result.data
+            });
+
+            if (!updateResult) {
+                return NextResponse.json({ message: "ไม่สามารถเพิ่มข้อมูลภาพได้" }, { status: 500 });
+            }
+        }
+
+        if (contentImages.length > 0) {
+            const fd = new FormData();
+            fd.append("path", `${collectionName}/${docRef.id}`);
+            contentImages.forEach((file) => fd.append("files", file));
+
+            const res = await fetch(`${request.nextUrl.origin}/api/admin/image-upload`, {
+                method: "POST",
+                body: fd,
+            });
+
+            if (!res.ok) {
+                const error = await res.json();
+                return NextResponse.json({ message: error.message }, { status: 500 });
+            }
+
+            const result = await res.json();
+            const uploadUrls = result.data;
+
+            let currentIndex = 0;
+            const updateContent = content.replace(/src="(blob:[^"]+)"/g, () => {
+                const url = uploadUrls[currentIndex];
+                currentIndex++;
+                return `src="${url}"`;
+            });
+
+            const updateResult = await docRef.update({
+                content: updateContent
             });
 
             if (!updateResult) {

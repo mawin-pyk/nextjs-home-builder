@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import { TextStyle } from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
+import Image from "tiptap-extension-resize-image";
 
 import {
     Box,
     IconButton,
     Typography
 } from "@mui/material";
+import ImageIcon from "@mui/icons-material/Image";
 
 import {
     FormatBold,
@@ -27,7 +29,7 @@ import {
     Redo,
 } from "@mui/icons-material";
 
-const Tiptap = ({ value, onChange }) => {
+const Tiptap = ({ value, onChange, onUpload }) => {
 
     const editor = useEditor({
         extensions: [
@@ -35,6 +37,7 @@ const Tiptap = ({ value, onChange }) => {
             TextAlign.configure({ types: ["heading", "paragraph"] }),
             TextStyle,
             Color,
+            Image
         ],
         content: value,
         onUpdate({ editor }) {
@@ -43,6 +46,8 @@ const Tiptap = ({ value, onChange }) => {
         immediatelyRender: false,
     });
 
+    const fileInputRef = useRef(null);
+
     useEffect(() => {
         if (editor && value !== editor.getHTML()) {
             editor.commands.setContent(value);
@@ -50,6 +55,22 @@ const Tiptap = ({ value, onChange }) => {
     }, [value, editor]);
 
     if (!editor) return null;
+
+    const insertImage = () => {
+        fileInputRef.current?.click();
+    }
+
+    const handleImageChange = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (onUpload) {
+            const blobUrl = onUpload(file);
+            if (blobUrl) editor.chain().focus().setImage({ src: blobUrl }).run();
+        }
+
+        e.target.value = "";
+    }
 
     const setLink = () => {
         const url = prompt("ใส่ URL:");
@@ -78,7 +99,7 @@ const Tiptap = ({ value, onChange }) => {
                         width: 36,
                         height: 36,
                         bgcolor: editor.isActive("bold") ? "divider" : "transparent",
-                        '&:hover': { bgcolor: editor.isActive("bold") ? "divider" : "action.hover" }
+                        "&:hover": { bgcolor: editor.isActive("bold") ? "divider" : "action.hover" }
                     }}
                     size="small"
                     onClick={() => editor.chain().focus().toggleBold().run()}
@@ -91,7 +112,7 @@ const Tiptap = ({ value, onChange }) => {
                         width: 36,
                         height: 36,
                         bgcolor: editor.isActive("italic") ? "divider" : "transparent",
-                        '&:hover': { bgcolor: editor.isActive("italic") ? "divider" : "action.hover" }
+                        "&:hover": { bgcolor: editor.isActive("italic") ? "divider" : "action.hover" }
                     }}
                     size="small"
                     onClick={() => editor.chain().focus().toggleItalic().run()}
@@ -104,7 +125,7 @@ const Tiptap = ({ value, onChange }) => {
                         width: 36,
                         height: 36,
                         bgcolor: editor.isActive("underline") ? "divider" : "transparent",
-                        '&:hover': { bgcolor: editor.isActive("underline") ? "divider" : "action.hover" }
+                        "&:hover": { bgcolor: editor.isActive("underline") ? "divider" : "action.hover" }
                     }}
                     size="small"
                     onClick={() => editor.chain().focus().toggleUnderline().run()}
@@ -121,7 +142,7 @@ const Tiptap = ({ value, onChange }) => {
                             height: 36,
                             p: 1,
                             bgcolor: editor.isActive("heading", { level }) ? "divider" : "transparent",
-                            '&:hover': { bgcolor: editor.isActive("heading", { level }) ? "divider" : "action.hover" },
+                            "&:hover": { bgcolor: editor.isActive("heading", { level }) ? "divider" : "action.hover" },
                         }}
                         onClick={() => editor.chain().focus().toggleHeading({ level }).run()}
                     >
@@ -134,7 +155,7 @@ const Tiptap = ({ value, onChange }) => {
                         width: 36,
                         height: 36,
                         bgcolor: editor.isActive("bulletList") ? "divider" : "transparent",
-                        '&:hover': { bgcolor: editor.isActive("bulletList") ? "divider" : "action.hover" }
+                        "&:hover": { bgcolor: editor.isActive("bulletList") ? "divider" : "action.hover" }
                     }}
                     size="small"
                     onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -147,7 +168,7 @@ const Tiptap = ({ value, onChange }) => {
                         width: 36,
                         height: 36,
                         bgcolor: editor.isActive("orderedList") ? "divider" : "transparent",
-                        '&:hover': { bgcolor: editor.isActive("orderedList") ? "divider" : "action.hover" }
+                        "&:hover": { bgcolor: editor.isActive("orderedList") ? "divider" : "action.hover" }
                     }}
                     size="small"
                     onClick={() => editor.chain().focus().toggleOrderedList().run()}
@@ -160,7 +181,7 @@ const Tiptap = ({ value, onChange }) => {
                         width: 36,
                         height: 36,
                         bgcolor: editor.isActive({ textAlign: "left" }) ? "divider" : "transparent",
-                        '&:hover': { bgcolor: editor.isActive({ textAlign: "left" }) ? "divider" : "action.hover" }
+                        "&:hover": { bgcolor: editor.isActive({ textAlign: "left" }) ? "divider" : "action.hover" }
                     }}
                     size="small"
                     onClick={() => editor.chain().focus().setTextAlign("left").run()}
@@ -173,7 +194,7 @@ const Tiptap = ({ value, onChange }) => {
                         width: 36,
                         height: 36,
                         bgcolor: editor.isActive({ textAlign: "center" }) ? "divider" : "transparent",
-                        '&:hover': { bgcolor: editor.isActive({ textAlign: "center" }) ? "divider" : "action.hover" }
+                        "&:hover": { bgcolor: editor.isActive({ textAlign: "center" }) ? "divider" : "action.hover" }
                     }}
                     size="small"
                     onClick={() => editor.chain().focus().setTextAlign("center").run()}
@@ -186,7 +207,7 @@ const Tiptap = ({ value, onChange }) => {
                         width: 36,
                         height: 36,
                         bgcolor: editor.isActive({ textAlign: "right" }) ? "divider" : "transparent",
-                        '&:hover': { bgcolor: editor.isActive({ textAlign: "right" }) ? "divider" : "action.hover" }
+                        "&:hover": { bgcolor: editor.isActive({ textAlign: "right" }) ? "divider" : "action.hover" }
                     }}
                     size="small"
                     onClick={() => editor.chain().focus().setTextAlign("right").run()}
@@ -200,6 +221,13 @@ const Tiptap = ({ value, onChange }) => {
                 >
                     <FormatColorText fontSize="small" />
                 </IconButton> */}
+
+                <IconButton
+                    size="small"
+                    onClick={insertImage}
+                >
+                    <ImageIcon fontSize="small" />
+                </IconButton>
 
                 <IconButton
                     size="small"
@@ -244,8 +272,20 @@ const Tiptap = ({ value, onChange }) => {
                 className="tiptap-content"
             />
 
+            <input
+                hidden
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+            />
+
             <style jsx global>
                 {`
+                    .tiptap-content .ProseMirror:focus {
+                        outline: none;
+                    }
+
                     .tiptap-content p,
                     .tiptap-content h1,
                     .tiptap-content h2,
@@ -265,8 +305,10 @@ const Tiptap = ({ value, onChange }) => {
                         padding-left: 40px;
                     }
 
-                    .tiptap-content [contenteditable="true"]:focus {
-                        outline: none;
+                    .tiptap-content img {
+                        max-width: 100%;
+                        height: auto;
+                        cursor: pointer;
                     }
                 `}
             </style>

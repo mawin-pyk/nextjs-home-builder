@@ -13,7 +13,7 @@ import {
     CardContent,
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 // lightbox
 import { PhotoProvider, PhotoView } from "react-photo-view";
@@ -33,6 +33,17 @@ const breadcrumbs = [
 
 function ArticleDetail({ article, otherArticles }) {
     const shareUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/articles/${article.slug}`;
+
+    const parseImageAlignment = (html) => {
+        return html.replace(
+            /<img([^>]*?)containerstyle="([^"]*)"([^>]*?)>/g,
+            (match, before, containerStyle, after) => {
+                const marginMatch = containerStyle.match(/margin:\s*([^;]+)/);
+                const margin = marginMatch ? marginMatch[1] : "0px";
+                return `<img${before}containerstyle="${containerStyle}"${after} style="display:block;margin:${margin}">`;
+            }
+        );
+    }
 
     return (
         <>
@@ -99,7 +110,8 @@ function ArticleDetail({ article, otherArticles }) {
 
                     <Box width="100%" maxWidth="lg" m="0px auto">
                         <div
-                            dangerouslySetInnerHTML={{ __html: article.content }}
+                            className="tiptap-content"
+                            dangerouslySetInnerHTML={{ __html: parseImageAlignment(article.content) }}
                         />
                     </Box>
 

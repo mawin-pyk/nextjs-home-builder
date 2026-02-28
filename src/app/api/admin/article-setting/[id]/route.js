@@ -79,7 +79,6 @@ export async function GET(request, { params }) {
     }
 }
 
-
 export async function PUT(request, { params }) {
     try {
         const userToken = await verifyToken(["admin", "super"]);
@@ -104,6 +103,7 @@ export async function PUT(request, { params }) {
         const content = data.get("content");
         const files = data.getAll("files") || [];
         const urls = data.getAll("urls") || [];
+        const contentImages = data.getAll("contentImages") || [];
 
         if (!title) {
             return NextResponse.json({ message: "ข้อมูลไม่ครบ" }, { status: 400 });
@@ -165,12 +165,56 @@ export async function PUT(request, { params }) {
             images = result.data;
         }
 
+        let finalContent = content;
+        if (contentImages.length > 0) {
+            const fd = new FormData();
+            fd.append("path", `${collectionName}/${docRef.id}`);
+            contentImages.forEach((file) => fd.append("files", file));
+
+            const res = await fetch(`${request.nextUrl.origin}/api/admin/image-upload`, {
+                method: "POST",
+                body: fd,
+            });
+
+            if (!res.ok) {
+                const error = await res.json();
+                return NextResponse.json({ message: error.message }, { status: 500 });
+            }
+
+            const result = await res.json();
+            const uploadUrls = result.data;
+
+            let currentIndex = 0;
+            finalContent = content.replace(/src="(blob:[^"]+)"/g, () => {
+                const url = uploadUrls[currentIndex];
+                currentIndex++;
+                return `src="${url}"`;
+            });
+        }
+
+        const oldContent = docSnap.data().content || "";
+        const oldContentUrls = [...oldContent.matchAll(/src="(https:\/\/[^"]+)"/g)].map(m => m[1]);
+        const newContentUrls = [...finalContent.matchAll(/src="(https:\/\/[^"]+)"/g)].map(m => m[1]);
+        const contentFilesToDelete = oldContentUrls.filter((url) => !newContentUrls.includes(url));
+        if (contentFilesToDelete.length > 0) {
+            const res = await fetch(`${request.nextUrl.origin}/api/admin/image-upload/${collectionName}/${id}`, {
+                method: "PUT",
+                body: JSON.stringify({ images: contentFilesToDelete }),
+                headers: { "Content-Type": "application/json" }
+            });
+
+            if (!res.ok) {
+                const error = await res.json();
+                return NextResponse.json({ message: error.message }, { status: 500 });
+            }
+        }
+
         const updateResult = await docRef.update({
             title,
             slug,
             description,
             keywords,
-            content,
+            content: finalContent,
             images: [...urls, ...images],
             updatedAt: new Date()
         });

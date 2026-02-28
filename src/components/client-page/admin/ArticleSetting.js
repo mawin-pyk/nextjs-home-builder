@@ -47,6 +47,8 @@ function ArticleSetting() {
     const [alert, setAlert] = useState({ open: false, severity: "", message: "" });
     const [confirmDialog, setConfirmDialog] = useState({ open: false, message: "", onConfirm: null, });
 
+    const [contentImages, setContentImages] = useState([]);
+
     const { handleSubmit, register, control, watch, setValue, formState: { errors }, setError, reset } = useForm({
         defaultValues: {
             title: "",
@@ -62,6 +64,12 @@ function ArticleSetting() {
         getArticles();
 
     }, [])
+
+    const handleTiptapImage = (file) => {
+        const blobUrl = URL.createObjectURL(file);
+        setContentImages((prev) => [...prev, { file, blobUrl }]);
+        return blobUrl;
+    }
 
     const getArticles = async () => {
         setLoading(true);
@@ -102,6 +110,21 @@ function ArticleSetting() {
                 })
             );
 
+            const compressedContentImages = await Promise.all(
+                contentImages
+                    .filter((item) => {
+                        return data.content.includes(item.blobUrl);
+                    }).map(async (file) => {
+                        const options = {
+                            maxSizeMB: 0.25,
+                            maxWidthOrHeight: undefined,
+                            fileType: "image/webp",
+                            useWebWorker: true
+                        };
+                        return await imageCompression(file.file, options);
+                    })
+            );
+
             Object.entries(data).forEach(([key, value]) => {
                 if (key !== "keywords" && key !== "files") {
                     fd.append(key, value);
@@ -111,6 +134,7 @@ function ArticleSetting() {
             data.keywords.forEach((keyword) => fd.append("keywords", keyword));
 
             compressedFiles.forEach((file) => fd.append("files", file));
+            compressedContentImages.forEach((file) => fd.append("contentImages", file));
 
             const res = await fetch(`/api/admin/article-setting`, {
                 method: "POST",
@@ -221,6 +245,22 @@ function ArticleSetting() {
                 })
             );
 
+            const compressedContentImages = await Promise.all(
+                contentImages
+                    .filter((file) => {
+                        return data.content.includes(file.blobUrl);
+                    })
+                    .map(async (file) => {
+                        const options = {
+                            maxSizeMB: 0.25,
+                            maxWidthOrHeight: undefined,
+                            fileType: "image/webp",
+                            useWebWorker: true,
+                        };
+                        return await imageCompression(file.file, options);
+                    })
+            );
+
             Object.entries(data).forEach(([key, value]) => {
                 if (key !== "keywords" && key !== "files") {
                     fd.append(key, value);
@@ -237,6 +277,7 @@ function ArticleSetting() {
                     fd.append("urls", file.preview);
                 }
             });
+            compressedContentImages.forEach((file) => fd.append("contentImages", file));
 
             const res = await fetch(`/api/admin/article-setting/${id}`, {
                 method: "PUT",
@@ -294,6 +335,7 @@ function ArticleSetting() {
                 content: "",
                 files: [],
             })
+            setContentImages([]);
             setEditId(null);
         }
     }
@@ -549,6 +591,7 @@ function ArticleSetting() {
                                             <Tiptap
                                                 value={field.value}
                                                 onChange={(html) => field.onChange(html)}
+                                                onUpload={handleTiptapImage}
                                             />
                                             {fieldState.error && (
                                                 <Typography color="error" fontSize={12} mt={0.5} mx="14px" >
