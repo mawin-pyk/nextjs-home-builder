@@ -75,7 +75,7 @@ function HomeDesignDetail({ homeDesign, otherHomeDesigns, propertyTypes }) {
                                     <Box position="relative" width="100%" height="400px">
                                         <Image
                                             src={homeDesign.images[0]}
-                                            alt="บ้านสไตล์โมเดิร์น 2 ชั้น"
+                                            alt={`${homeDesign.title}`}
                                             fill
                                             sizes={gridToSizes({ xs: 12, sm: 6 }, 1400)}
                                             style={{ objectFit: "cover", cursor: "pointer" }}
@@ -94,7 +94,7 @@ function HomeDesignDetail({ homeDesign, otherHomeDesigns, propertyTypes }) {
                                         <PhotoView key={i + 1} src={src}>
                                             <Image
                                                 src={src}
-                                                alt={`ภาพตัวอย่าง ${i + 2}`}
+                                                alt={`${homeDesign.title}`}
                                                 width={160}
                                                 height={120}
                                                 style={{
@@ -250,7 +250,7 @@ function HomeDesignDetail({ homeDesign, otherHomeDesigns, propertyTypes }) {
                                             <Box width="100%" height="180px" position="relative">
                                                 <Image
                                                     src={homeDesign.images[0]}
-                                                    alt={`${homeDesign.title} โดย Mepatcs`}
+                                                    alt={`${homeDesign.title}`}
                                                     fill
                                                     sizes={gridToSizes({ xs: 12, sm: 6, lg: 3 }, 1400)}
                                                     style={{ objectFit: "cover" }}

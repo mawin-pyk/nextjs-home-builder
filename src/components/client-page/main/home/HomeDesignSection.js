@@ -63,7 +63,7 @@ function HomeDesignSection({ propertyTypes, homeDesigns }) {
                                 <Box width="100%" height="180px" position="relative">
                                     <Image
                                         src={homeDesign.images[0]}
-                                        alt={`${homeDesign.title} โดย Mepatcs`}
+                                        alt={`${homeDesign.title}`}
                                         fill
                                         sizes={gridToSizes({ xs: 12, sm: 6, lg: 3 }, 1400)}
                                         style={{ objectFit: "cover" }}
@@ -136,7 +136,7 @@ function HomeDesignSection({ propertyTypes, homeDesigns }) {
                                         <Box width="100%" height="180px" position="relative">
                                             <Image
                                                 src={homeDesign.images[0]}
-                                                alt={`${homeDesign.title} โดย Mepatcs`}
+                                                alt={`${homeDesign.title}`}
                                                 fill
                                                 sizes={gridToSizes({ xs: 12, sm: 6, lg: 3 }, 1400)}
                                                 style={{ objectFit: "cover" }}

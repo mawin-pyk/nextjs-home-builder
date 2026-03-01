@@ -78,7 +78,7 @@ function ArticleDetail({ article, otherArticles }) {
                             <Box width="100%" height="500px" position="relative">
                                 <Image
                                     src={article.images[0]}
-                                    alt="service"
+                                    alt={`${article.title}`}
                                     fill
                                     // sizes={gridToSizes({ xs: 12, md: 5 }, 1200)}
                                     style={{ objectFit: "cover" }}
@@ -133,7 +133,7 @@ function ArticleDetail({ article, otherArticles }) {
                                         <Box width="100%" height="180px" position="relative">
                                             <Image
                                                 src={article.images[0]}
-                                                alt={`${article.title} โดย Mepatcs`}
+                                                alt={`${article.title}`}
                                                 fill
                                                 sizes={gridToSizes({ xs: 12, sm: 6, lg: 3, }, 1400)}
                                                 style={{ objectFit: "cover" }}

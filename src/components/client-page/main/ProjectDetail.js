@@ -75,7 +75,7 @@ function ProjectDetail({ project, otherProjects }) {
                                     <Box position="relative" width="100%" height="400px">
                                         <Image
                                             src={project.images[0]}
-                                            alt="บ้านสไตล์โมเดิร์น 2 ชั้น"
+                                            alt={`${project.title}`}
                                             fill
                                             sizes={gridToSizes({ xs: 12, sm: 6 }, 1400)}
                                             style={{ objectFit: "cover", cursor: "pointer" }}
@@ -94,7 +94,7 @@ function ProjectDetail({ project, otherProjects }) {
                                         <PhotoView key={i + 1} src={src}>
                                             <Image
                                                 src={src}
-                                                alt={`ภาพตัวอย่าง ${i + 2}`}
+                                                alt={`${project.title}`}
                                                 width={160}
                                                 height={120}
                                                 style={{
@@ -247,7 +247,7 @@ function ProjectDetail({ project, otherProjects }) {
                                         <Box width="100%" height="180px" position="relative">
                                             <Image
                                                 src={project.images[0]}
-                                                alt={`${project.title} โดย Mepatcs`}
+                                                alt={`${project.title}`}
                                                 fill
                                                 sizes={gridToSizes({ xs: 12, sm: 6, lg: 3 }, 1400)}
                                                 style={{ objectFit: "cover" }}

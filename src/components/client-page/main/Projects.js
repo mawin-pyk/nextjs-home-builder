@@ -68,7 +68,7 @@ function Projects({ projects }) {
                                     <Box width="100%" height="180px" position="relative">
                                         <Image
                                             src={project.images[0]}
-                                            alt={`${project.title} โดย Mepatcs`}
+                                            alt={`${project.title}`}
                                             fill
                                             sizes={gridToSizes({ xs: 12, sm: 6, lg: 3 }, 1400)}
                                             style={{ objectFit: "cover" }}

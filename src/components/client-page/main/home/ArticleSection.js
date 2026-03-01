@@ -62,7 +62,7 @@ function ArticleSection({ articles }) {
                                 <Box width="100%" height="180px" position="relative">
                                     <Image
                                         src={article.images[0]}
-                                        alt={`${article.title} โดย Mepatcs`}
+                                        alt={`${article.title}`}
                                         fill
                                         sizes={gridToSizes({ xs: 12, sm: 6, lg: 3, }, 1400)}
                                         style={{ objectFit: "cover" }}
@@ -119,7 +119,7 @@ function ArticleSection({ articles }) {
                                     <Box width="100%" height="180px" position="relative">
                                         <Image
                                             src={article.images[0]}
-                                            alt={`${article.title} โดย Mepatcs`}
+                                            alt={`${article.title}`}
                                             fill
                                             sizes={gridToSizes({ xs: 12, sm: 6, lg: 3, }, 1400)}
                                             style={{ objectFit: "cover" }}
