@@ -19,7 +19,11 @@ export const metadata = createMetadata({
 
 const getArticles = async () => {
     try {
-        const snapshot = await db.collection("articles").get();
+        const snapshot = await db
+            .collection("articles")
+            .where("publish", "==", true)
+            .get();
+
         const articles = snapshot.docs.map((doc) => {
             const data = doc.data();
             return {

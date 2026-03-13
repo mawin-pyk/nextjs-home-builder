@@ -57,7 +57,12 @@ export async function generateMetadata({ params }) {
 
 const getOtherArticles = async (excludeSlug) => {
     try {
-        const snapshot = await db.collection("articles").limit(5).get();
+        const snapshot = await db
+            .collection("articles")
+            .where("publish", "==", true)
+            .limit(5)
+            .get();
+            
         const articles = snapshot.docs.map((doc) => {
             const data = doc.data();
             return {

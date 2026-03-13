@@ -53,6 +53,7 @@ export async function POST(request) {
             keywords,
             content,
             images: [],
+            publish: false,
             createdAt: new Date(),
             updatedAt: new Date()
         });

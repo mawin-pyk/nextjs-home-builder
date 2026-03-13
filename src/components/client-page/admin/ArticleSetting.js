@@ -18,7 +18,8 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
-    Divider
+    Divider,
+    Switch
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -303,6 +304,34 @@ function ArticleSetting() {
         }
     }
 
+    const handleToggle = async (checked, id) => {
+        setLoading(true);
+        try {
+            const res = await fetch(`/api/admin/article-setting/${id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ publish: checked }),
+            });
+
+            if (!res.ok) {
+                const error = await res.json();
+                throw new Error(error.message);
+            }
+
+            const result = await res.json();
+            getArticles();
+            setAlert({ open: true, severity: "success", message: result.message });
+
+        } catch (error) {
+            console.error(error);
+
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const handleEdit = async (id) => {
         await getArticle(id);
         setEditId(id);
@@ -380,6 +409,21 @@ function ArticleSetting() {
             field: "slug",
             headerName: "ชื่อ URL",
             flex: 1
+        },
+        {
+            field: "publish",
+            headerName: "เผยแพร่",
+            sortable: false,
+            renderCell: ({ row }) => (
+                <Switch
+                    checked={row.publish}
+                    onChange={(e) => handleToggle(e.target.checked, row.id)}
+                    disabled={loading}
+                    slotProps={{
+                        input: { "aria-label": "toggle switch" },
+                    }}
+                />
+            )
         },
         {
             field: "actions",

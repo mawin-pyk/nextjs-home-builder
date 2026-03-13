@@ -229,3 +229,38 @@ export async function PUT(request, { params }) {
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }
+
+export async function PATCH(request, { params }) {
+    try {
+        const userToken = await verifyToken(["admin", "super"]);
+
+        if (!userToken) {
+            return NextResponse.json({ message: "ไม่ได้รับอนุญาต" }, { status: 401 });
+        }
+
+        const { id } = await params;
+        const docRef = db.collection(collectionName).doc(id);
+        const docSnap = await docRef.get();
+
+        if (!docSnap.exists) {
+            return NextResponse.json({ message: "ไม่พบข้อมูล" }, { status: 404 });
+        }
+
+        const data = await request.json();
+        const publish = data.publish;
+
+        const updateResult = await docRef.update({
+            publish: publish,
+            updatedAt: new Date()
+        });
+
+        if (!updateResult) {
+            return NextResponse.json({ message: "อัปเดตสถานะเผยแพร่ไม่สำเร็จ" }, { status: 500 });
+        }
+
+        return NextResponse.json({ message: publish ? "เผยแพร่สำเร็จ" : "หยุดการเผยแพร่สำเร็จ" }, { status: 200 });
+
+    } catch (error) {
+        return NextResponse.json({ message: error.message }, { status: 500 });
+    }
+}
