@@ -113,8 +113,54 @@ async function HomeDesignsCategoryPage({ params }) {
     const homeDesigns = await getHomeDesigns(fieldName, categoryData.id);
     if (!homeDesigns) return notFound();
 
+    const schema = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "CollectionPage",
+                "name": categoryData.title,
+                "description": categoryData.description,
+                "url": `${process.env.NEXT_PUBLIC_BASE_URL}/home-designs/${category}`
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "หน้าแรก",
+                        "item": `${process.env.NEXT_PUBLIC_BASE_URL}`
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "แบบบ้าน"
+                    }
+                ]
+            },
+            {
+                "@type": "ItemList",
+                "name": `แบบบ้านหมวดหมู่ ${categoryData.title}`,
+                "itemListElement": homeDesigns.map((homeDesign, index) => {
+                    const propertyType = propertyTypes.find((type) => type.id === homeDesign.propertyType);
+
+                    return {
+                        "@type": "ListItem",
+                        "position": index + 1,
+                        "name": homeDesign.title,
+                        "url": `${process.env.NEXT_PUBLIC_BASE_URL}/home-designs/${propertyType?.slug}/${homeDesign.slug}`
+                    };
+                })
+            }
+        ]
+    }
+
     return (
-        <HomeDesigns propertyTypes={propertyTypes} houseStyles={houseStyles} homeDesigns={homeDesigns} category={category} categoryData={categoryData} />
+        <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+
+            <HomeDesigns propertyTypes={propertyTypes} houseStyles={houseStyles} homeDesigns={homeDesigns} category={category} categoryData={categoryData} />
+        </>
     );
 }
 

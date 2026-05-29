@@ -62,7 +62,7 @@ const getOtherArticles = async (excludeSlug) => {
             .where("publish", "==", true)
             .limit(5)
             .get();
-            
+
         const articles = snapshot.docs.map((doc) => {
             const data = doc.data();
             return {
@@ -87,5 +87,59 @@ export default async function ArticleDetailPage({ params }) {
 
     const otherArticles = await getOtherArticles(slug);
 
-    return <ArticleDetail article={article} otherArticles={otherArticles} />;
+    const schema = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "BlogPosting",
+                "headline": article.title,
+                "description": article.description,
+                "image": article.images || [],
+                "datePublished": article.createdAt,
+                "dateModified": article.updatedAt,
+                "author": {
+                    "@type": "Organization",
+                    "name": "Mepatcs"
+                },
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "Mepatcs"
+                },
+                "mainEntityOfPage": {
+                    "@type": "WebPage",
+                    "@id": `${process.env.NEXT_PUBLIC_BASE_URL}/articles/${slug}`
+                }
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "หน้าแรก",
+                        "item": `${process.env.NEXT_PUBLIC_BASE_URL}`
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "บทความ",
+                        "item": `${process.env.NEXT_PUBLIC_BASE_URL}/articles`
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": article.title
+                    }
+                ]
+            }
+        ]
+    }
+
+    return (
+        <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+            
+            <ArticleDetail article={article} otherArticles={otherArticles} />
+        </>
+    );
 }

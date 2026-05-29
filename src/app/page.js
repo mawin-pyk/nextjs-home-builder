@@ -71,7 +71,7 @@ const getArticles = async () => {
             .where("publish", "==", true)
             .limit(4)
             .get();
-            
+
         const articles = snapshot.docs.map((doc) => {
             const data = doc.data();
             return {
@@ -106,13 +106,73 @@ export const metadata = createMetadata({
 async function HomePage() {
     const [propertyTypes, projects, articles, homeDesigns] = await Promise.all([getPropertyTypes(), getProjects(), getArticles(), getHomeDesigns()]);
 
+    const schema = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Organization",
+                "name": "บริษัท เมพัฒน์.ซีเอส จำกัด",
+                "alternateName": "Mepatcs",
+                "url": `${process.env.NEXT_PUBLIC_BASE_URL}`,
+                "logo": `${process.env.NEXT_PUBLIC_BASE_URL}/logo.png`,
+                "email": "mepatcs.co.th@gmail.com",
+                "telephone": [
+                    "+66-2-120-6859",
+                    "+66-64-649-8717"
+                ],
+                "email": "mepatcs.co.th@gmail.com",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "58/1 หมู่5 ตำบลบางรักพัฒนา",
+                    "addressLocality": "บางบัวทอง",
+                    "addressRegion": "นนทบุรี",
+                    "postalCode": "11110",
+                    "addressCountry": "TH"
+                },
+                "sameAs": [
+                    "https://www.facebook.com/MepatCS",
+                    "https://www.instagram.com/mepat.cs",
+                    "https://www.youtube.com/@mepatcs"
+                ]
+            },
+            {
+                "@type": "WebSite",
+                "name": "Mepatcs",
+                "url": `${process.env.NEXT_PUBLIC_BASE_URL}`
+            },
+            {
+                "@type": "WebPage",
+                "name": "Mepatcs",
+                "url": `${process.env.NEXT_PUBLIC_BASE_URL}`,
+            },
+            {
+                "@type": "ItemList",
+                "name": "แบบบ้านแนะนำ",
+                "itemListElement": homeDesigns.map((homeDesign, index) => {
+                    const propertyType = propertyTypes.find((type) => type.id === homeDesign.propertyType);
+
+                    return {
+                        "@type": "ListItem",
+                        "position": index + 1,
+                        "name": homeDesign.title,
+                        "url": `${process.env.NEXT_PUBLIC_BASE_URL}/home-designs/${propertyType?.slug}/${homeDesign.slug}`
+                    };
+                })
+            }
+        ]
+    }
+
     return (
-        <Home
-            propertyTypes={propertyTypes}
-            projects={projects}
-            articles={articles}
-            homeDesigns={homeDesigns}
-        />
+        <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+
+            <Home
+                propertyTypes={propertyTypes}
+                projects={projects}
+                articles={articles}
+                homeDesigns={homeDesigns}
+            />
+        </>
     );
 }
 

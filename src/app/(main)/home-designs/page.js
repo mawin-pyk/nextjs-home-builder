@@ -74,8 +74,54 @@ async function HomeDesignsPage() {
         getHomeDesigns()
     ]);
 
+    const schema = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "CollectionPage",
+                "name": "แบบบ้าน",
+                "url": `${process.env.NEXT_PUBLIC_BASE_URL}/home-designs`,
+                "description": "รวมแบบบ้านหลากหลายสไตล์ ออกแบบใช้งานจริง ปรับแบบได้ตามงบประมาณและความต้องการ"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "หน้าแรก",
+                        "item": `${process.env.NEXT_PUBLIC_BASE_URL}`
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "แบบบ้าน"
+                    }
+                ]
+            },
+            {
+                "@type": "ItemList",
+                "name": "รายการแบบบ้าน",
+                "itemListElement": homeDesigns.map((homeDesign, index) => {
+                    const propertyType = propertyTypes.find((type) => type.id === homeDesign.propertyType);
+
+                    return {
+                        "@type": "ListItem",
+                        "position": index + 1,
+                        "name": homeDesign.title,
+                        "url": `${process.env.NEXT_PUBLIC_BASE_URL}/home-designs/${propertyType?.slug}/${homeDesign.slug}`
+                    };
+                })
+            }
+        ]
+    }
+
     return (
-        <HomeDesigns propertyTypes={propertyTypes} houseStyles={houseStyles} homeDesigns={homeDesigns} />
+        <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+
+            <HomeDesigns propertyTypes={propertyTypes} houseStyles={houseStyles} homeDesigns={homeDesigns} />
+        </>
     );
 }
 

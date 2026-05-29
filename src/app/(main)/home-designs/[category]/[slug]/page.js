@@ -106,5 +106,55 @@ export default async function HomeDesignDetailPage({ params }) {
 
     const otherHomeDesigns = await getOtherHomeDesigns(slug);
 
-    return <HomeDesignDetail homeDesign={homeDesign} otherHomeDesigns={otherHomeDesigns} propertyTypes={propertyTypes} />;
+    const schema = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "SingleFamilyResidence",
+                "name": homeDesign.title,
+                "description": homeDesign.description,
+                "url": `${process.env.NEXT_PUBLIC_BASE_URL}/home-designs/${category}/${homeDesign.slug}`,
+                "image": homeDesign.images || [],
+                "numberOfRooms": homeDesign.bedroom,
+                "numberOfBathroomsTotal": homeDesign.bathroom,
+                "floorSize": homeDesign.area
+                    ? {
+                        "@type": "QuantitativeValue",
+                        "value": homeDesign.area,
+                        "unitCode": "MTK"
+                    }
+                    : undefined
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "หน้าแรก",
+                        "item": `${process.env.NEXT_PUBLIC_BASE_URL}`
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "แบบบ้าน",
+                        "item": `${process.env.NEXT_PUBLIC_BASE_URL}/home-designs`
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": homeDesign.title
+                    }
+                ]
+            }
+        ]
+    }
+
+    return (
+        <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+
+            <HomeDesignDetail homeDesign={homeDesign} otherHomeDesigns={otherHomeDesigns} propertyTypes={propertyTypes} />
+        </>
+    );
 }
