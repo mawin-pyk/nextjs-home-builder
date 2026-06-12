@@ -18,6 +18,7 @@ async function AdminLayout({ children }) {
         { label: "ประเภทที่พักอาศัย", href: "/admin/property-type-setting", roles: ["admin", "super"] },
         { label: "ผลงาน", href: "/admin/project-setting", roles: ["admin", "super"] },
         { label: "แบบบ้าน", href: "/admin/home-design-setting", roles: ["admin", "super"] },
+        { label: "รับสร้างบ้าน", href: "/admin/service-home-building-setting", roles: ["admin", "super"] },
         { label: "บทความ", href: "/admin/article-setting", roles: ["admin", "super"] },
         { label: "ผู้ใช้งาน", href: "/admin/user-setting", roles: ["super"] },
     ];
