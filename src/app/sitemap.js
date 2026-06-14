@@ -77,15 +77,32 @@ export default async function sitemap() {
         }
     }
 
+    const getServices = async () => {
+        try {
+            const snapshot = await db.collection("home-building-services").get();
+            const services = snapshot.docs.map((doc) => {
+                const data = doc.data();
+                return data;
+            });
+            return services;
+
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    }
+
     const propertyTypes = await getPropertyTypes();
     const houseStyles = await getHouseStyles();
     const projects = await getProjects();
     const homeDesigns = await getHomeDesigns();
     const articles = await getArticles();
+    const services = await getServices();
 
     return [
         { url: `${baseUrl}/`, lastModified: new Date() },
         { url: `${baseUrl}/services`, lastModified: new Date() },
+        { url: `${baseUrl}/services/home-building`, lastModified: new Date() },
         { url: `${baseUrl}/projects`, lastModified: new Date() },
         { url: `${baseUrl}/home-designs`, lastModified: new Date() },
         { url: `${baseUrl}/articles`, lastModified: new Date() },
@@ -116,6 +133,11 @@ export default async function sitemap() {
 
         ...articles.map((item) => ({
             url: `${baseUrl}/articles/${item.slug}`,
+            lastModified: item.updatedAt.toDate(),
+        })),
+
+        ...services.map((item) => ({
+            url: `${baseUrl}/services/home-building/${item.slug}`,
             lastModified: item.updatedAt.toDate(),
         })),
     ];

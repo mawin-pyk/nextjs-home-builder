@@ -1,14 +1,17 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import {
     Box,
     Grid,
     Typography,
+    Button,
 } from "@mui/material";
 import RoofingOutlinedIcon from '@mui/icons-material/RoofingOutlined';
 import SquareFootOutlinedIcon from '@mui/icons-material/SquareFootOutlined';
 import CarpenterOutlinedIcon from '@mui/icons-material/CarpenterOutlined';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import { gridToSizes } from "@/helpers/helpers";
 
@@ -23,9 +26,10 @@ const breadcrumbs = [
 
 const services = [
     {
-        title: "งานก่อสร้าง",
+        title: "รับสร้างบ้าน",
         description: "บริการสร้างบ้านครบวงจร ตั้งแต่วางแผนจนส่งมอบบ้าน",
         image: "/construct.webp",
+        href: "/services/home-building",
         icon: <RoofingOutlinedIcon fontSize="large" />,
         list: [
             "งานโครงสร้างหลัก: เสาเข็ม ฐานราก คาน-เสา พื้น และโครงสร้างทั้งหมดตามมาตรฐานวิศวกรรม",
@@ -130,7 +134,7 @@ function Services() {
                                                 style={{ objectFit: "cover" }}
                                             />
                                         </Box>
-                                        <Box p={4} border="1px solid" borderColor="divider" sx={{ color: "text.primary" }} flexGrow={1}>
+                                        <Box p={4} border="1px solid" borderColor="divider" sx={{ color: "text.primary" }} flexGrow={1} display="flex" flexDirection="column">
                                             <Box display="flex" justifyContent="flex-start" alignItems="center" gap={2}>
                                                 <Box
                                                     width="50px"
@@ -161,6 +165,18 @@ function Services() {
                                                     </Box>
                                                 ))}
                                             </Box>
+                                            {service.href && (
+                                                <Box mt="auto" pt={4}>
+                                                    <Button
+                                                        component={Link}
+                                                        href={service.href}
+                                                        variant="outlined"
+                                                        endIcon={<ArrowForwardIcon />}
+                                                    >
+                                                        ดูพื้นที่ให้บริการ
+                                                    </Button>
+                                                </Box>
+                                            )}
                                         </Box>
                                     </Box>
                                 </Box>
@@ -187,7 +203,7 @@ function Services() {
                                                     style={{ objectFit: "cover" }}
                                                 />
                                             </Box>
-                                            <Box p={4} border="1px solid" borderColor="divider" sx={{ color: "text.primary" }} flexGrow={1}>
+                                            <Box p={4} border="1px solid" borderColor="divider" sx={{ color: "text.primary" }} flexGrow={1} display="flex" flexDirection="column">
                                                 <Box display="flex" justifyContent="flex-start" alignItems="center" gap={2}>
                                                     <Box
                                                         width="50px"
@@ -218,6 +234,18 @@ function Services() {
                                                         </Box>
                                                     ))}
                                                 </Box>
+                                                {service.href && (
+                                                    <Box mt="auto" pt={4}>
+                                                        <Button
+                                                            component={Link}
+                                                            href={service.href}
+                                                            variant="outlined"
+                                                            endIcon={<ArrowForwardIcon />}
+                                                        >
+                                                            ดูพื้นที่ให้บริการ
+                                                        </Button>
+                                                    </Box>
+                                                )}
                                             </Box>
                                         </Box>
                                     </Grid>
