@@ -6,18 +6,29 @@ import {
     Grid,
     Typography,
     Button,
+    Divider,
 } from "@mui/material";
 import RoofingOutlinedIcon from '@mui/icons-material/RoofingOutlined';
 import SquareFootOutlinedIcon from '@mui/icons-material/SquareFootOutlined';
 import CarpenterOutlinedIcon from '@mui/icons-material/CarpenterOutlined';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
+import EngineeringOutlinedIcon from '@mui/icons-material/EngineeringOutlined';
+import RequestQuoteOutlinedIcon from '@mui/icons-material/RequestQuoteOutlined';
+import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
 
 import { gridToSizes } from "@/helpers/helpers";
 
 import CustomBreadcrumbs from "@/components/share/CustomBreadcrumbs";
 import Footer from "@/components/layout/Footer";
 import FadeInSection from "@/components/share/FadeInSection";
+
+// โทนสีอิงจาก theme primary (#845ef7)
+const PURPLE_SOFT = "rgba(132, 94, 247, 0.08)";
+const PURPLE_FAINT = "rgba(132, 94, 247, 0.03)";
+const PURPLE_BORDER = "rgba(132, 94, 247, 0.3)";
+const PURPLE_SHADOW = "0 12px 28px rgba(132, 94, 247, 0.18)";
 
 const breadcrumbs = [
     { label: "หน้าแรก", href: "/" },
@@ -71,6 +82,133 @@ const services = [
     }
 ];
 
+const features = [
+    {
+        icon: <VerifiedOutlinedIcon />,
+        title: "มาตรฐานงานก่อสร้าง",
+        description: "ควบคุมคุณภาพทุกขั้นตอนตามหลักวิศวกรรม ตรวจจุดสำคัญก่อนส่งมอบ",
+    },
+    {
+        icon: <EngineeringOutlinedIcon />,
+        title: "ทีมงานมืออาชีพ",
+        description: "ดูแลด้วยทีมเดียวตั้งแต่ออกแบบ ก่อสร้าง จนส่งมอบบ้าน",
+    },
+    {
+        icon: <RequestQuoteOutlinedIcon />,
+        title: "ราคาโปร่งใส",
+        description: "แจกแจงงบประมาณและแผนงานชัดเจน ไม่บานปลายภายหลัง",
+    },
+    {
+        icon: <SupportAgentOutlinedIcon />,
+        title: "ปรึกษาฟรี",
+        description: "พูดคุยความต้องการและประเมินราคาเบื้องต้นฟรี ก่อนตัดสินใจ",
+    },
+];
+
+const stats = [
+    { value: `${services.length}`, label: "บริการหลัก" },
+    { value: "ครบวงจร", label: "ดูแลทุกขั้นตอน" },
+    { value: "ฟรี", label: "ปรึกษา & ประเมินราคา" },
+];
+
+function ServiceCard({ service, index }) {
+    return (
+        <Box
+            display="flex"
+            flexDirection="column"
+            height="100%"
+            boxSizing="border-box"
+            border="1px solid"
+            borderColor="divider"
+            sx={{
+                color: "text.primary",
+                transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",
+                "&:hover": {
+                    transform: "translateY(-4px)",
+                    boxShadow: PURPLE_SHADOW,
+                    borderColor: PURPLE_BORDER,
+                },
+                "&:hover .service-img": { transform: "scale(1.05)" },
+                "&:hover .card-arrow": { transform: "translateX(4px)" },
+            }}
+        >
+            <Box position="relative" width="100%" height="280px" overflow="hidden">
+                <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    sizes={gridToSizes({ xs: 12, sm: 6, lg: 4 }, 1400)}
+                    className="service-img"
+                    style={{ objectFit: "cover", transition: "transform 0.4s ease" }}
+                />
+                <Box
+                    position="absolute"
+                    top={16}
+                    left={16}
+                    px={1.5}
+                    py={0.5}
+                    bgcolor="background.paper"
+                    boxShadow={2}
+                >
+                    <Typography variant="overline" color="primary" fontWeight="700" letterSpacing="0.15em">
+                        บริการที่ {String(index + 1).padStart(2, "0")}
+                    </Typography>
+                </Box>
+            </Box>
+
+            <Box p={4} flexGrow={1} display="flex" flexDirection="column">
+                <Box display="flex" alignItems="center" gap={2} mb={1.5}>
+                    <Box
+                        width="56px"
+                        height="56px"
+                        flexShrink={0}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        bgcolor={PURPLE_SOFT}
+                        borderRadius="50%"
+                        color="primary.main"
+                    >
+                        {service.icon}
+                    </Box>
+                    <Typography variant="h4" fontSize="22px" fontWeight="600">
+                        {service.title}
+                    </Typography>
+                </Box>
+
+                <Typography variant="body2" color="textSecondary">
+                    {service.description}
+                </Typography>
+
+                <Divider sx={{ my: 2.5 }} />
+
+                <Box display="flex" flexDirection="column" gap={1.5}>
+                    {service.list.map((item, idx) => (
+                        <Box key={idx} display="flex" alignItems="flex-start" gap={1}>
+                            <CheckCircleOutlineRoundedIcon fontSize="small" sx={{ color: "primary.main", mt: "2px", flexShrink: 0 }} />
+                            <Typography variant="body2" color="textSecondary">{item}</Typography>
+                        </Box>
+                    ))}
+                </Box>
+
+                <Box mt="auto" pt={4}>
+                    <Button
+                        component={Link}
+                        href={service.href || "/contact"}
+                        variant="outlined"
+                        endIcon={<ArrowForwardIcon className="card-arrow" />}
+                        sx={{
+                            "& .card-arrow": { transition: "transform 0.3s ease" },
+                        }}
+                    >
+                        {service.href ? "ดูพื้นที่ให้บริการ" : "สอบถามบริการนี้"}
+                    </Button>
+                </Box>
+            </Box>
+        </Box>
+    );
+}
+
 function Services() {
     return (
         <>
@@ -87,18 +225,41 @@ function Services() {
                     m="0px auto"
                     display="flex"
                     flexDirection="column"
-                    gap={8}
+                    gap={14}
                 >
                     <CustomBreadcrumbs items={breadcrumbs} />
 
                     <FadeInSection>
                         <Box textAlign="center">
+                            <Typography variant="overline" color="primary" fontWeight="600" letterSpacing="0.2em">
+                                MEPATCS SERVICE
+                            </Typography>
                             <Typography variant="h1" fontSize={{ xs: "32px", md: "40px" }} fontWeight="400" gutterBottom>
                                 บริการของเรา
                             </Typography>
+                            <Box width="56px" height="4px" bgcolor="primary.main" mx="auto" mb={2} />
                             <Typography variant="subtitle1" color="textSecondary">
                                 เราพร้อมดูแลทุกขั้นตอนในการสร้างบ้านในฝันของคุณ
                             </Typography>
+
+                            <Box
+                                mt={5}
+                                display="flex"
+                                flexWrap="wrap"
+                                justifyContent="center"
+                                gap={{ xs: 3, md: 6 }}
+                            >
+                                {stats.map((stat, index) => (
+                                    <Box key={index} minWidth="120px" textAlign="center">
+                                        <Typography fontSize={{ xs: "28px", md: "36px" }} fontWeight="700" color="primary.main" lineHeight={1.2}>
+                                            {stat.value}
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary">
+                                            {stat.label}
+                                        </Typography>
+                                    </Box>
+                                ))}
+                            </Box>
                         </Box>
                     </FadeInSection>
 
@@ -107,6 +268,7 @@ function Services() {
                             display={{ xs: "flex", sm: "none" }}
                             overflow="auto"
                             gap={2}
+                            pb={1}
                             sx={{
                                 scrollSnapType: "x mandatory",
                                 "&::-webkit-scrollbar": { display: "none" },
@@ -120,139 +282,138 @@ function Services() {
                                         scrollSnapAlign: "center",
                                     }}
                                 >
-                                    <Box
-                                        display="flex"
-                                        flexDirection="column"
-                                        height="100%"
-                                    >
-                                        <Box position="relative" width="100%" height="360px">
-                                            <Image
-                                                src={service.image}
-                                                alt={service.title}
-                                                fill
-                                                sizes={gridToSizes({ xs: 12, sm: 6, lg: 4 }, 1400)}
-                                                style={{ objectFit: "cover" }}
-                                            />
-                                        </Box>
-                                        <Box p={4} border="1px solid" borderColor="divider" sx={{ color: "text.primary" }} flexGrow={1} display="flex" flexDirection="column">
-                                            <Box display="flex" justifyContent="flex-start" alignItems="center" gap={2}>
-                                                <Box
-                                                    width="50px"
-                                                    height="50px"
-                                                    mb={2}
-                                                    p={1}
-                                                    boxSizing="border-box"
-                                                    display="flex"
-                                                    alignItems="center"
-                                                    justifyContent="center"
-                                                    bgcolor="divider"
-                                                    borderRadius="50%"
-                                                >
-                                                    {service.icon}
-                                                </Box>
-                                                <Typography variant="h4" fontSize="22px" fontWeight="600" gutterBottom>
-                                                    {service.title}
-                                                </Typography>
-                                            </Box>
-                                            <Typography variant="body2">
-                                                {service.description}
-                                            </Typography>
-                                            <Box mt={4} display="flex" flexDirection="column" gap={1}>
-                                                {service.list.map((item, idx) => (
-                                                    <Box key={idx} display="flex" justifyContent="flex-start" alignItems="flex-start" gap={1}>
-                                                        <CheckBoxIcon fontSize="small" color="success" />
-                                                        <Typography variant="body2">{item}</Typography>
-                                                    </Box>
-                                                ))}
-                                            </Box>
-                                            {service.href && (
-                                                <Box mt="auto" pt={4}>
-                                                    <Button
-                                                        component={Link}
-                                                        href={service.href}
-                                                        variant="outlined"
-                                                        endIcon={<ArrowForwardIcon />}
-                                                    >
-                                                        ดูพื้นที่ให้บริการ
-                                                    </Button>
-                                                </Box>
-                                            )}
-                                        </Box>
-                                    </Box>
+                                    <ServiceCard service={service} index={index} />
                                 </Box>
                             ))}
                         </Box>
                         <Box display={{ xs: "none", sm: "block" }}>
-                            <Grid container spacing={4} width="100%" maxWidth="1400px" m="0px auto">
+                            <Grid container spacing={4}>
                                 {services.map((service, index) => (
                                     <Grid
                                         key={index}
                                         size={{ xs: 12, sm: 6, lg: 4 }}
                                     >
-                                        <Box
-                                            display="flex"
-                                            flexDirection="column"
-                                            height="100%"
-                                        >
-                                            <Box position="relative" width="100%" height="360px">
-                                                <Image
-                                                    src={service.image}
-                                                    alt={service.title}
-                                                    fill
-                                                    sizes={gridToSizes({ xs: 12, sm: 6, lg: 4 }, 1400)}
-                                                    style={{ objectFit: "cover" }}
-                                                />
-                                            </Box>
-                                            <Box p={4} border="1px solid" borderColor="divider" sx={{ color: "text.primary" }} flexGrow={1} display="flex" flexDirection="column">
-                                                <Box display="flex" justifyContent="flex-start" alignItems="center" gap={2}>
-                                                    <Box
-                                                        width="50px"
-                                                        height="50px"
-                                                        mb={2}
-                                                        p={1}
-                                                        boxSizing="border-box"
-                                                        display="flex"
-                                                        alignItems="center"
-                                                        justifyContent="center"
-                                                        bgcolor="divider"
-                                                        borderRadius="50%"
-                                                    >
-                                                        {service.icon}
-                                                    </Box>
-                                                    <Typography variant="h4" fontSize="22px" fontWeight="600" gutterBottom>
-                                                        {service.title}
-                                                    </Typography>
-                                                </Box>
-                                                <Typography variant="body2">
-                                                    {service.description}
-                                                </Typography>
-                                                <Box mt={4} display="flex" flexDirection="column" gap={2}>
-                                                    {service.list.map((item, idx) => (
-                                                        <Box key={idx} display="flex" justifyContent="flex-start" alignItems="flex-start" gap={1}>
-                                                            <CheckBoxIcon fontSize="small" color="success" />
-                                                            <Typography variant="body2">{item}</Typography>
-                                                        </Box>
-                                                    ))}
-                                                </Box>
-                                                {service.href && (
-                                                    <Box mt="auto" pt={4}>
-                                                        <Button
-                                                            component={Link}
-                                                            href={service.href}
-                                                            variant="outlined"
-                                                            endIcon={<ArrowForwardIcon />}
-                                                        >
-                                                            ดูพื้นที่ให้บริการ
-                                                        </Button>
-                                                    </Box>
-                                                )}
-                                            </Box>
-                                        </Box>
+                                        <ServiceCard service={service} index={index} />
                                     </Grid>
                                 ))}
                             </Grid>
                         </Box>
                     </>
+
+                    <Box display="flex" flexDirection="column" gap={6}>
+                        <FadeInSection>
+                            <Box textAlign="center">
+                                <Typography variant="overline" color="primary" fontWeight="600" letterSpacing="0.2em">
+                                    WHY MEPATCS
+                                </Typography>
+                                <Typography variant="h2" fontSize={{ xs: "26px", md: "32px" }} fontWeight="400" gutterBottom>
+                                    ทำไมต้องเลือกเรา
+                                </Typography>
+                                <Box width="56px" height="4px" bgcolor="primary.main" mx="auto" mb={2} />
+                                <Typography variant="subtitle1" color="textSecondary">
+                                    ดูแลครบทุกขั้นตอน ด้วยทีมงานเดียวตั้งแต่ต้นจนจบ โปร่งใสทุกกระบวนการ
+                                </Typography>
+                            </Box>
+                        </FadeInSection>
+
+                        <Grid container spacing={4}>
+                            {features.map((feature, index) => (
+                                <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
+                                    <Box
+                                        p={3}
+                                        height="100%"
+                                        boxSizing="border-box"
+                                        border="1px solid"
+                                        borderColor="divider"
+                                        bgcolor={PURPLE_FAINT}
+                                        display="flex"
+                                        flexDirection="column"
+                                        gap={1.5}
+                                        sx={{
+                                            transition: "border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease",
+                                            "&:hover": {
+                                                borderColor: PURPLE_BORDER,
+                                                boxShadow: PURPLE_SHADOW,
+                                                transform: "translateY(-4px)",
+                                            },
+                                        }}
+                                    >
+                                        <Box
+                                            width="48px"
+                                            height="48px"
+                                            display="flex"
+                                            alignItems="center"
+                                            justifyContent="center"
+                                            bgcolor={PURPLE_SOFT}
+                                            borderRadius="50%"
+                                            color="primary.main"
+                                        >
+                                            {feature.icon}
+                                        </Box>
+                                        <Typography variant="h3" fontSize="18px" fontWeight="600">
+                                            {feature.title}
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary">
+                                            {feature.description}
+                                        </Typography>
+                                    </Box>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Box>
+
+                    <FadeInSection>
+                        <Box
+                            position="relative"
+                            overflow="hidden"
+                            py={{ xs: 6, md: 8 }}
+                            px={{ xs: 3, md: 8 }}
+                            textAlign="center"
+                            color="primary.contrastText"
+                            sx={{ background: "linear-gradient(135deg, #845ef7 0%, #6741d9 100%)" }}
+                        >
+                            <Box position="relative" zIndex={1}>
+                                <Typography variant="h2" fontSize={{ xs: "24px", md: "32px" }} fontWeight="600" gutterBottom>
+                                    พร้อมเริ่มสร้างบ้านในฝันของคุณหรือยัง?
+                                </Typography>
+                                <Typography variant="subtitle1" mb={4} sx={{ opacity: 0.9 }}>
+                                    ปรึกษาทีมงานมืออาชีพของเราได้ฟรี ประเมินราคาเบื้องต้นไม่มีค่าใช้จ่าย
+                                </Typography>
+                                <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2}>
+                                    <Button
+                                        component={Link}
+                                        href="/contact"
+                                        variant="contained"
+                                        size="large"
+                                        sx={{
+                                            bgcolor: "background.paper",
+                                            color: "primary.main",
+                                            "&:hover": { bgcolor: "background.default" },
+                                        }}
+                                    >
+                                        ติดต่อเรา
+                                    </Button>
+                                    <Button
+                                        component={Link}
+                                        href="/home-designs"
+                                        variant="outlined"
+                                        size="large"
+                                        endIcon={<ArrowForwardIcon />}
+                                        sx={{
+                                            color: "primary.contrastText",
+                                            borderColor: "rgba(255, 255, 255, 0.6)",
+                                            "&:hover": {
+                                                borderColor: "primary.contrastText",
+                                                bgcolor: "rgba(255, 255, 255, 0.08)",
+                                            },
+                                        }}
+                                    >
+                                        ดูแบบบ้านของเรา
+                                    </Button>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </FadeInSection>
                 </Box>
             </Box>
             <Footer />
