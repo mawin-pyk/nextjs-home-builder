@@ -3,6 +3,7 @@ import { Noto_Sans_Thai } from "next/font/google";
 import "./globals.css";
 import MuiThemeProvider from "./MuiThemeProvider";
 import Header from "@/components/layout/header/Header";
+import FloatingContact from "@/components/share/FloatingContact";
 
 const gscid = process.env.NEXT_PUBLIC_GOOGLE_SEARCH_CONSOLE_ID;
 const gtmId = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID;
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
                 <MuiThemeProvider>
                     <Header />
                     {children}
+                    <FloatingContact />
                 </MuiThemeProvider>
             </body>
         </html>

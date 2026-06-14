@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import {
@@ -17,8 +16,6 @@ import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 import EngineeringOutlinedIcon from '@mui/icons-material/EngineeringOutlined';
 import RequestQuoteOutlinedIcon from '@mui/icons-material/RequestQuoteOutlined';
 import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
-
-import { gridToSizes } from "@/helpers/helpers";
 
 import CustomBreadcrumbs from "@/components/share/CustomBreadcrumbs";
 import Footer from "@/components/layout/Footer";
@@ -39,7 +36,6 @@ const services = [
     {
         title: "รับสร้างบ้าน",
         description: "บริการสร้างบ้านครบวงจร ตั้งแต่วางแผนจนส่งมอบบ้าน",
-        image: "/construct.webp",
         href: "/services/home-building",
         icon: <RoofingOutlinedIcon fontSize="large" />,
         list: [
@@ -55,7 +51,6 @@ const services = [
     {
         title: "ออกแบบ/เขียนแบบ",
         description: "ออกแบบบ้านให้ตรงกับความต้องการของคุณ พร้อมคำแนะนำ",
-        image: "/plan.webp",
         icon: <SquareFootOutlinedIcon fontSize="large" />,
         list: [
             "ออกแบบบ้านใหม่: ออกแบบผังบ้าน พร้อมภาพ 3D เพื่อให้เห็นดีไซน์ก่อนสร้างจริง",
@@ -69,7 +64,6 @@ const services = [
     {
         title: "งานรีโนเวท/ต่อเติม",
         description: "ปรับปรุงบ้านเก่าให้เหมือนใหม่ พร้อมโครงสร้างปลอดภัย",
-        image: "/renovate.webp",
         icon: <CarpenterOutlinedIcon fontSize="large" />,
         list: [
             "รีโนเวทบ้านทั้งหลัง: ปรับปรุงงานโครงสร้าง ระบบไฟ–ประปา และงานตกแต่งให้ใช้งานได้ดีขึ้น",
@@ -114,12 +108,13 @@ const stats = [
 function ServiceCard({ service, index }) {
     return (
         <Box
-            display="flex"
-            flexDirection="column"
             height="100%"
             boxSizing="border-box"
+            display="flex"
+            flexDirection="column"
             border="1px solid"
             borderColor="divider"
+            bgcolor="background.paper"
             sx={{
                 color: "text.primary",
                 transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",
@@ -128,54 +123,61 @@ function ServiceCard({ service, index }) {
                     boxShadow: PURPLE_SHADOW,
                     borderColor: PURPLE_BORDER,
                 },
-                "&:hover .service-img": { transform: "scale(1.05)" },
-                "&:hover .card-arrow": { transform: "translateX(4px)" },
             }}
         >
-            <Box position="relative" width="100%" height="280px" overflow="hidden">
-                <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    sizes={gridToSizes({ xs: 12, sm: 6, lg: 4 }, 1400)}
-                    className="service-img"
-                    style={{ objectFit: "cover", transition: "transform 0.4s ease" }}
-                />
-                <Box
-                    position="absolute"
-                    top={16}
-                    left={16}
-                    px={1.5}
-                    py={0.5}
-                    bgcolor="background.paper"
-                    boxShadow={2}
+            <Box
+                position="relative"
+                overflow="hidden"
+                p={3.5}
+                display="flex"
+                alignItems="center"
+                gap={2}
+                bgcolor={PURPLE_SOFT}
+                borderBottom="1px solid"
+                borderColor={PURPLE_BORDER}
+            >
+                <Typography
+                    aria-hidden
+                    sx={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "12px",
+                        fontSize: "88px",
+                        fontWeight: 700,
+                        lineHeight: 1,
+                        color: "rgba(132, 94, 247, 0.13)",
+                        pointerEvents: "none",
+                    }}
                 >
+                    {String(index + 1).padStart(2, "0")}
+                </Typography>
+
+                <Box
+                    width="64px"
+                    height="64px"
+                    flexShrink={0}
+                    zIndex={1}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    bgcolor="background.paper"
+                    borderRadius="50%"
+                    color="primary.main"
+                    boxShadow="0 4px 12px rgba(132, 94, 247, 0.18)"
+                >
+                    {service.icon}
+                </Box>
+                <Box zIndex={1}>
                     <Typography variant="overline" color="primary" fontWeight="700" letterSpacing="0.15em">
-                        บริการที่ {String(index + 1).padStart(2, "0")}
+                        บริการ
+                    </Typography>
+                    <Typography variant="h3" fontSize="24px" fontWeight="600" lineHeight={1.2}>
+                        {service.title}
                     </Typography>
                 </Box>
             </Box>
 
             <Box p={4} flexGrow={1} display="flex" flexDirection="column">
-                <Box display="flex" alignItems="center" gap={2} mb={1.5}>
-                    <Box
-                        width="56px"
-                        height="56px"
-                        flexShrink={0}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        bgcolor={PURPLE_SOFT}
-                        borderRadius="50%"
-                        color="primary.main"
-                    >
-                        {service.icon}
-                    </Box>
-                    <Typography variant="h4" fontSize="22px" fontWeight="600">
-                        {service.title}
-                    </Typography>
-                </Box>
-
                 <Typography variant="body2" color="textSecondary">
                     {service.description}
                 </Typography>
@@ -199,6 +201,7 @@ function ServiceCard({ service, index }) {
                         endIcon={<ArrowForwardIcon className="card-arrow" />}
                         sx={{
                             "& .card-arrow": { transition: "transform 0.3s ease" },
+                            "&:hover .card-arrow": { transform: "translateX(4px)" },
                         }}
                     >
                         {service.href ? "ดูพื้นที่ให้บริการ" : "สอบถามบริการนี้"}
@@ -263,42 +266,40 @@ function Services() {
                         </Box>
                     </FadeInSection>
 
-                    <>
-                        <Box
-                            display={{ xs: "flex", sm: "none" }}
-                            overflow="auto"
-                            gap={2}
-                            pb={1}
-                            sx={{
-                                scrollSnapType: "x mandatory",
-                                "&::-webkit-scrollbar": { display: "none" },
-                            }}
-                        >
+                    <Box
+                        display={{ xs: "flex", sm: "none" }}
+                        overflow="auto"
+                        gap={2}
+                        pb={1}
+                        sx={{
+                            scrollSnapType: "x mandatory",
+                            "&::-webkit-scrollbar": { display: "none" },
+                        }}
+                    >
+                        {services.map((service, index) => (
+                            <Box
+                                key={index}
+                                sx={{
+                                    flex: "0 0 85%",
+                                    scrollSnapAlign: "center",
+                                }}
+                            >
+                                <ServiceCard service={service} index={index} />
+                            </Box>
+                        ))}
+                    </Box>
+                    <Box display={{ xs: "none", sm: "block" }}>
+                        <Grid container spacing={4}>
                             {services.map((service, index) => (
-                                <Box
+                                <Grid
                                     key={index}
-                                    sx={{
-                                        flex: "0 0 85%",
-                                        scrollSnapAlign: "center",
-                                    }}
+                                    size={{ xs: 12, sm: 6, lg: 4 }}
                                 >
                                     <ServiceCard service={service} index={index} />
-                                </Box>
+                                </Grid>
                             ))}
-                        </Box>
-                        <Box display={{ xs: "none", sm: "block" }}>
-                            <Grid container spacing={4}>
-                                {services.map((service, index) => (
-                                    <Grid
-                                        key={index}
-                                        size={{ xs: 12, sm: 6, lg: 4 }}
-                                    >
-                                        <ServiceCard service={service} index={index} />
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </Box>
-                    </>
+                        </Grid>
+                    </Box>
 
                     <Box display="flex" flexDirection="column" gap={6}>
                         <FadeInSection>
