@@ -121,7 +121,7 @@ function HomeDesignSection({ propertyTypes, homeDesigns }) {
                 </Box>
             </FadeInSection>
 
-            <FadeInSection>
+            <FadeInSection direction="right">
                 <Box
                     display={{ xs: "flex", sm: "none" }}
                     overflow="auto"

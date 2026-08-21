@@ -38,16 +38,13 @@ const services = [
     }
 ];
 
-function ServiceCard({ service, index }) {
+function ServiceCard({ service }) {
     return (
         <Box
             height="100%"
             boxSizing="border-box"
             position="relative"
             overflow="hidden"
-            p={4}
-            display="flex"
-            flexDirection="column"
             border="1px solid"
             borderColor="divider"
             bgcolor="background.paper"
@@ -62,47 +59,49 @@ function ServiceCard({ service, index }) {
                 "&:hover .service-arrow": { transform: "translateX(4px)" },
             }}
         >
-            <Typography
+            {/* ไอคอน watermark โผล่บางส่วนจากมุมการ์ด */}
+            <Box
                 aria-hidden
                 sx={{
                     position: "absolute",
-                    top: "12px",
-                    right: "16px",
-                    fontSize: "88px",
-                    fontWeight: 700,
-                    lineHeight: 1,
+                    top: "0px",
+                    right: "0px",
+                    lineHeight: 0,
                     color: "rgba(132, 94, 247, 0.08)",
                     pointerEvents: "none",
+                    "& svg": { fontSize: "150px" },
                 }}
-            >
-                {String(index + 1).padStart(2, "0")}
-            </Typography>
-
-            <Box
-                width="64px"
-                height="64px"
-                mb={2.5}
-                flexShrink={0}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                bgcolor={PURPLE_SOFT}
-                borderRadius="50%"
-                color="primary.main"
             >
                 {service.icon}
             </Box>
-            <Typography variant="h4" fontSize="22px" fontWeight="600" gutterBottom>
-                {service.title}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-                {service.description}
-            </Typography>
-            <Box mt="auto" pt={3} display="flex" alignItems="center" gap={0.5} color="primary.main">
-                <Typography variant="body2" fontWeight="600">
-                    ดูเพิ่มเติม
+
+            <Box position="relative" zIndex={1} p={4} height="100%" display="flex" flexDirection="column">
+                <Box
+                    width="64px"
+                    height="64px"
+                    mb={2.5}
+                    flexShrink={0}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    bgcolor={PURPLE_SOFT}
+                    borderRadius="50%"
+                    color="primary.main"
+                >
+                    {service.icon}
+                </Box>
+                <Typography variant="h4" fontSize="22px" fontWeight="600" gutterBottom>
+                    {service.title}
                 </Typography>
-                <ArrowForwardIcon className="service-arrow" fontSize="small" sx={{ transition: "transform 0.3s ease" }} />
+                <Typography variant="body2" color="textSecondary">
+                    {service.description}
+                </Typography>
+                <Box mt="auto" pt={3} display="flex" alignItems="center" gap={0.5} color="primary.main">
+                    <Typography variant="body2" fontWeight="600">
+                        ดูเพิ่มเติม
+                    </Typography>
+                    <ArrowForwardIcon className="service-arrow" fontSize="small" sx={{ transition: "transform 0.3s ease" }} />
+                </Box>
             </Box>
         </Box>
     );
@@ -137,7 +136,7 @@ function ServiceSection() {
                 </Box>
             </FadeInSection>
 
-            <FadeInSection>
+            <FadeInSection direction="right">
                 <Box
                     display={{ xs: "flex", sm: "none" }}
                     overflow="auto"
@@ -159,7 +158,7 @@ function ServiceSection() {
                                 textDecoration: "none",
                             }}
                         >
-                            <ServiceCard service={service} index={index} />
+                            <ServiceCard service={service} />
                         </Box>
                     ))}
                 </Box>
@@ -174,7 +173,7 @@ function ServiceSection() {
                                 size={{ xs: 12, sm: 6, lg: 4 }}
                                 sx={{ textDecoration: "none" }}
                             >
-                                <ServiceCard service={service} index={index} />
+                                <ServiceCard service={service} />
                             </Grid>
                         ))}
                     </Grid>

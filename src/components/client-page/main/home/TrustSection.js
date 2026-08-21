@@ -47,34 +47,32 @@ function TrustSection() {
             bgcolor="background.paper"
         >
             <Box width="100%" maxWidth="1400px" m="0px auto">
-                <FadeInSection>
-                    <Grid container spacing={4}>
-                        {trustItems.map((item, index) => (
-                            <Grid key={index} size={{ xs: 6, md: 3 }}>
-                                <Box display="flex" flexDirection="column" alignItems="center" textAlign="center" gap={1}>
-                                    <Box
-                                        width="56px"
-                                        height="56px"
-                                        display="flex"
-                                        alignItems="center"
-                                        justifyContent="center"
-                                        bgcolor={PURPLE_SOFT}
-                                        borderRadius="50%"
-                                        color="primary.main"
-                                    >
-                                        {item.icon}
-                                    </Box>
-                                    <Typography fontSize={{ xs: "22px", md: "28px" }} fontWeight="700" color="primary.main" lineHeight={1.2}>
-                                        {item.value}
-                                    </Typography>
-                                    <Typography variant="body2" color="textSecondary">
-                                        {item.label}
-                                    </Typography>
+                <Grid container spacing={4}>
+                    {trustItems.map((item, index) => (
+                        <Grid key={index} size={{ xs: 6, md: 3 }}>
+                            <Box display="flex" flexDirection="column" alignItems="center" textAlign="center" gap={1}>
+                                <Box
+                                    width="56px"
+                                    height="56px"
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    bgcolor={PURPLE_SOFT}
+                                    borderRadius="50%"
+                                    color="primary.main"
+                                >
+                                    {item.icon}
                                 </Box>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </FadeInSection>
+                                <Typography fontSize={{ xs: "22px", md: "28px" }} fontWeight="700" color="primary.main" lineHeight={1.2}>
+                                    {item.value}
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary">
+                                    {item.label}
+                                </Typography>
+                            </Box>
+                        </Grid>
+                    ))}
+                </Grid>
             </Box>
         </Box>
     );

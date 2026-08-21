@@ -32,15 +32,13 @@ function AboutSection() {
             boxSizing="border-box"
             bgcolor="#e9ecef"
         >
-            <Grid container spacing={6} maxWidth="1400px" m="0px auto" alignItems="flex-start">
+            <Grid container spacing={6} maxWidth="1400px" m="0px auto" alignItems="center">
                 <Grid size={{ xs: 12, lg: 6 }}>
                     <Box
                         position="relative"
                         width="100%"
                         height={{ xs: 250, sm: 350, md: 450 }}
                         sx={{
-                            position: { lg: "sticky" },
-                            top: { lg: "100px" },
                             "&::after": {
                                 content: '""',
                                 position: "absolute",
@@ -81,39 +79,23 @@ function AboutSection() {
                             เราคือใคร?
                         </Typography>
                         <Box width="56px" height="4px" bgcolor="primary.main" mt={1.5} mb={3} />
-                        <Typography variant="subtitle1" color="textSecondary">
-                            {'สวัสดีค่ะ เราคือทีมงาน เมพัฒน์.ซีเอส ที่นี่เราไม่ได้มองว่าตัวเองเป็นแค่ "ผู้รับเหมา" แต่เราอยากเป็นเหมือน พี่ชาย/น้องสาว หรือ เพื่อนสนิท ที่คุณไว้ใจให้ช่วยดูแลงานก่อสร้างทุกอย่าง เราเข้าใจดีว่าการจะสร้างอะไรสักอย่าง ทั้งบ้านพักอาศัย หรืออาคารธุรกิจ มันคือการลงทุนครั้งใหญ่ในชีวิต ดังนั้น เราจะดูแลให้ดีที่สุดเหมือนเป็นของของเราเองค่ะ'}
+                        <Typography variant="subtitle1" color="textSecondary" sx={{ lineHeight: 1.8 }}>
+                            {'เราคือทีมงาน เมพัฒน์.ซีเอส ที่ไม่ได้มองตัวเองเป็นแค่ "ผู้รับเหมา" แต่เป็นเหมือนคนในครอบครัวที่คุณไว้ใจ ดูแลงานก่อสร้างทุกอย่างเหมือนเป็นของของเราเอง ตั้งแต่วันแรกที่คุยกันจนถึงวันส่งมอบกุญแจ'}
                         </Typography>
 
-                        <Box mt={4} display="flex" flexDirection="column" gap={3}>
+                        <Box mt={3.5} display="flex" flexDirection="column" gap={2.5}>
                             <Box>
-                                <Typography variant="h4" fontSize="20px" fontWeight="600" gutterBottom>
-                                    ทำไมถึงวางใจให้ เมพัฒน์.ซีเอส ดูแลได้?
-                                </Typography>
-                                <Typography variant="body1" color="textSecondary">
-                                    เราอยากให้คุณสบายใจที่สุด ตั้งแต่วันแรกที่คุยกันจนกระทั่งวันส่งมอบกุญแจ
-                                </Typography>
-                            </Box>
-
-                            <Box>
-                                <Typography variant="h4" fontSize="20px" fontWeight="600" gutterBottom>
+                                <Typography fontSize="18px" fontWeight="600" gutterBottom>
                                     งานที่เราพร้อมดูแลให้คุณ
                                 </Typography>
-                                <Typography variant="body1" color="textSecondary" mb={2}>
-                                    ไม่ว่าโปรเจกต์จะเล็กจะใหญ่ แค่ไหน เราก็พร้อมลุย
-                                </Typography>
-                                <Box display="flex" flexDirection="column" gap={1.5}>
+                                <Box display="flex" flexDirection="column" gap={1.25}>
                                     {workItems.map((item, index) => (
-                                        <Box key={index} display="flex" alignItems="flex-start" gap={1.5}>
+                                        <Box key={index} display="flex" alignItems="flex-start" gap={1.25}>
                                             <CheckCircleOutlineRoundedIcon fontSize="small" sx={{ color: "primary.main", mt: "3px", flexShrink: 0 }} />
-                                            <Box>
-                                                <Typography variant="body1" fontWeight="600" lineHeight={1.4}>
-                                                    {item.title}
-                                                </Typography>
-                                                <Typography variant="body2" color="textSecondary">
-                                                    {item.description}
-                                                </Typography>
-                                            </Box>
+                                            <Typography variant="body2" color="textSecondary">
+                                                <Box component="span" fontWeight="600" color="text.primary">{item.title}</Box>
+                                                {" — "}{item.description}
+                                            </Typography>
                                         </Box>
                                     ))}
                                 </Box>
@@ -124,10 +106,10 @@ function AboutSection() {
                                 borderColor="primary.main"
                                 bgcolor={PURPLE_FAINT}
                                 pl={2.5}
-                                py={2}
+                                py={1.75}
                             >
                                 <Typography variant="body1" fontWeight="600">
-                                    สิ่งที่เราให้ความสำคัญเหนือสิ่งอื่นใด ความรับผิดชอบจนจบงาน
+                                    สิ่งที่เราให้ความสำคัญเหนือสิ่งอื่นใด คือความรับผิดชอบจนจบงาน
                                 </Typography>
                             </Box>
                         </Box>
