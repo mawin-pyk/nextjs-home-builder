@@ -7,7 +7,6 @@ import {
     Button,
     Divider,
 } from "@mui/material";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import DesignServicesOutlinedIcon from '@mui/icons-material/DesignServicesOutlined';
 import EngineeringOutlinedIcon from '@mui/icons-material/EngineeringOutlined';
@@ -17,6 +16,7 @@ import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
 import CustomBreadcrumbs from "@/components/share/CustomBreadcrumbs";
 import Footer from "@/components/layout/Footer";
 import FadeInSection from "@/components/share/FadeInSection";
+import CtaBanner from "@/components/share/CtaBanner";
 
 // โทนสีอิงจาก theme primary (#845ef7)
 const PURPLE_SOFT = "rgba(132, 94, 247, 0.08)";
@@ -217,58 +217,12 @@ function HomeBuildingServiceDetail({ service, otherServices }) {
                         </Box>
                     )}
 
-                    <FadeInSection>
-                        <Box
-                            position="relative"
-                            overflow="hidden"
-                            py={{ xs: 6, md: 8 }}
-                            px={{ xs: 3, md: 8 }}
-                            textAlign="center"
-                            color="primary.contrastText"
-                            sx={{ background: "linear-gradient(135deg, #845ef7 0%, #6741d9 100%)" }}
-                        >
-                            <Box position="relative" zIndex={1}>
-                                <Typography variant="h2" fontSize={{ xs: "24px", md: "32px" }} fontWeight="600" gutterBottom>
-                                    พร้อมเริ่มสร้างบ้านในพื้นที่ของคุณหรือยัง?
-                                </Typography>
-                                <Typography variant="subtitle1" mb={4} sx={{ opacity: 0.9 }}>
-                                    ปรึกษาทีมงานมืออาชีพของเราได้ฟรี ประเมินราคาเบื้องต้นไม่มีค่าใช้จ่าย
-                                </Typography>
-                                <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2}>
-                                    <Button
-                                        component={Link}
-                                        href="/contact"
-                                        variant="contained"
-                                        size="large"
-                                        sx={{
-                                            bgcolor: "background.paper",
-                                            color: "primary.main",
-                                            "&:hover": { bgcolor: "background.default" },
-                                        }}
-                                    >
-                                        ติดต่อเรา
-                                    </Button>
-                                    <Button
-                                        component={Link}
-                                        href="/services/home-building"
-                                        variant="outlined"
-                                        size="large"
-                                        endIcon={<ArrowForwardIcon />}
-                                        sx={{
-                                            color: "primary.contrastText",
-                                            borderColor: "rgba(255, 255, 255, 0.6)",
-                                            "&:hover": {
-                                                borderColor: "primary.contrastText",
-                                                bgcolor: "rgba(255, 255, 255, 0.08)",
-                                            },
-                                        }}
-                                    >
-                                        ดูพื้นที่ให้บริการทั้งหมด
-                                    </Button>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </FadeInSection>
+                    <CtaBanner
+                        title="พร้อมเริ่มสร้างบ้านในพื้นที่ของคุณหรือยัง?"
+                        description="ปรึกษาทีมงานมืออาชีพของเราได้ฟรี ประเมินราคาเบื้องต้นไม่มีค่าใช้จ่าย"
+                        secondaryLabel="ดูพื้นที่ให้บริการทั้งหมด"
+                        secondaryHref="/services/home-building"
+                    />
                 </Box>
             </Box>
             <Footer />

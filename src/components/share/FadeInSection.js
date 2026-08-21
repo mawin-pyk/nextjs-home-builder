@@ -4,7 +4,9 @@ import { useState, useRef, useEffect } from "react";
 
 function FadeInSection({ children, direction = "up", threshold = 0.4 }) {
     const [isVisible, setIsVisible] = useState(false);
+    const [isSettled, setIsSettled] = useState(false);
     const domRef = useRef(null);
+    const innerRef = useRef(null);
 
     useEffect(() => {
         const element = domRef.current;
@@ -48,16 +50,23 @@ function FadeInSection({ children, direction = "up", threshold = 0.4 }) {
         return "translate(0,0)";
     }
 
+    const handleTransitionEnd = (event) => {
+        if (event.target === innerRef.current) setIsSettled(true);
+    };
+
     return (
-        <div
-            ref={domRef}
-            style={{
-                opacity: isVisible ? 1 : 0,
-                transform: getTransform(),
-                transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
-            }}
-        >
-            {children}
+        <div ref={domRef} style={{ overflowX: isSettled ? "visible" : "clip" }}>
+            <div
+                ref={innerRef}
+                onTransitionEnd={handleTransitionEnd}
+                style={{
+                    opacity: isVisible ? 1 : 0,
+                    transform: getTransform(),
+                    transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+                }}
+            >
+                {children}
+            </div>
         </div>
     );
 }
