@@ -149,7 +149,7 @@ function Footer() {
                             </Box>
                             <Box display="flex" alignItems="flex-start" gap={1.25}>
                                 <EmailOutlinedIcon fontSize="small" sx={{ color: "primary.main", mt: "2px", flexShrink: 0 }} />
-                                <Typography component="a" href="mailto:mepatcs.co.th@gmail.com" variant="body2" sx={linkSx}>
+                                <Typography component="a" href="mailto:mepatcs.co.th@gmail.com" variant="body2" sx={{ ...linkSx, minWidth: 0, overflowWrap: "anywhere" }}>
                                     mepatcs.co.th@gmail.com
                                 </Typography>
                             </Box>
