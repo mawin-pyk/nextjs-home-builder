@@ -93,6 +93,11 @@ function HomeDesignCard({ homeDesign }) {
 }
 
 function HomeDesignSection({ propertyTypes, homeDesigns }) {
+    const getHomeDesignHref = (homeDesign) => {
+        const categorySlug = propertyTypes.find((propertyType) => propertyType.id === homeDesign.propertyType).slug;
+        return `/home-designs/${categorySlug}/${homeDesign.slug}`;
+    };
+
     return (
         <Box
             component="section"
@@ -136,7 +141,7 @@ function HomeDesignSection({ propertyTypes, homeDesigns }) {
                         <Box
                             key={index}
                             component={Link}
-                            href={`/home-designs/${homeDesign.slug}`}
+                            href={getHomeDesignHref(homeDesign)}
                             sx={{
                                 flex: "0 0 85%",
                                 scrollSnapAlign: "center",
@@ -150,21 +155,17 @@ function HomeDesignSection({ propertyTypes, homeDesigns }) {
 
                 <Box display={{ xs: "none", sm: "block" }}>
                     <Grid container spacing={4} width="100%" maxWidth="1400px" m="0px auto">
-                        {homeDesigns.map((homeDesign, index) => {
-                            const categorySlug = propertyTypes.find((propertyType) => propertyType.id === homeDesign.propertyType).slug;
-
-                            return (
-                                <Grid
-                                    component={Link}
-                                    href={`/home-designs/${categorySlug}/${homeDesign.slug}`}
-                                    key={index}
-                                    size={{ xs: 12, sm: 6, lg: 3 }}
-                                    sx={{ textDecoration: "none" }}
-                                >
-                                    <HomeDesignCard homeDesign={homeDesign} />
-                                </Grid>
-                            )
-                        })}
+                        {homeDesigns.map((homeDesign, index) => (
+                            <Grid
+                                component={Link}
+                                href={getHomeDesignHref(homeDesign)}
+                                key={index}
+                                size={{ xs: 12, sm: 6, lg: 3 }}
+                                sx={{ textDecoration: "none" }}
+                            >
+                                <HomeDesignCard homeDesign={homeDesign} />
+                            </Grid>
+                        ))}
                     </Grid>
                 </Box>
             </FadeInSection>
